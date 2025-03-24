@@ -2,7 +2,8 @@ import { useState } from "react";
 import { IoCopyOutline } from "react-icons/io5";
 
 // Also install this npm i --save-dev @types/react-lottie
-import Lottie from "react-lottie";
+import dynamic from "next/dynamic";
+const Lottie = dynamic(() => import("react-lottie"), { ssr: false });
 
 import { cn } from "@/lib/utils";
 
@@ -66,9 +67,10 @@ export const BentoGridItem = ({
   };
 
   const handleCopy = () => {
-    const text = "chiragjain7300@gmail.com";
-    navigator.clipboard.writeText(text);
-    setCopied(true);
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText("chiragjain7300@gmail.com");
+      setCopied(true);
+    }
   };
 
   return (
