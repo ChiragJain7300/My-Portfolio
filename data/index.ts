@@ -49,7 +49,7 @@ export const gridItems = [
 
   {
     id: 5,
-    title: "Currently building a JS Animation library",
+    title: "Currently building a Job Tracking and Management App",
     description: "The Inside Scoop",
     className: "md:col-span-3 md:row-span-2",
     imgClassName: "absolute right-0 bottom-0 md:w-96 w-60",
@@ -174,27 +174,31 @@ export const workExperience = [
   {
     id: 1,
     title: "Web Developer Intern",
+    duration: "May 2021 - July 2021",
     desc: "Assisted in the development of a web-based platform using MERN stack, enhancing interactivity.",
     className: "md:col-span-2",
     thumbnail: "/exp1.svg",
   },
   {
     id: 2,
-    title: "Software Development Intern",
+    title: "Application Developer at Mastek",
+    duration: "Jan 2022 - October 2022",
     desc: "Designed and developed ERP software modules, enhancing user experience and performance using Oracle ADF at Mastek.",
     className: "md:col-span-2", // change to md:col-span-2
     thumbnail: "/exp2.svg",
   },
   {
     id: 3,
-    title: "Freelance App Dev Project",
+    title: "Freelance Full Stack Developer",
+    duration: "Jan 2023 - July 2025",
     desc: "Led the dev of a website for a client, from initial concept to deployment on web.",
     className: "md:col-span-2", // change to md:col-span-2
     thumbnail: "/exp3.svg",
   },
   {
     id: 4,
-    title: "Associate Consultant at Mastek",
+    title: "Full Stack Developer at Inventam Tech Solutions",
+    duration: "Aug 2025 - Present",
     desc: "Developed and maintained ERP products using modern full stack technologies.",
     className: "md:col-span-2",
     thumbnail: "/exp4.svg",
