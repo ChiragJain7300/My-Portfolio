@@ -107,33 +107,21 @@ export const projects = [
 export const testimonials = [
   {
     quote:
-      "Collaborating with Adrian was an absolute pleasure. His professionalism, promptness, and dedication to delivering exceptional results were evident throughout our project. Adrian's enthusiasm for every facet of development truly stands out. If you're seeking to elevate your website and elevate your brand, Adrian is the ideal partner.",
-    name: "Michael Johnson",
-    title: "Director of AlphaStream Technologies",
+      "Collaborating with Chirag was an absolute pleasure. His attention to detail, strong problem-solving skills, and ability to deliver clean, scalable React code made a huge impact on our project's success. He is highly communicative and dedicated to building great products.",
+    name: "Aarav Mehta",
+    title: "Lead Engineer at Inventam Tech",
   },
   {
     quote:
-      "Collaborating with Adrian was an absolute pleasure. His professionalism, promptness, and dedication to delivering exceptional results were evident throughout our project. Adrian's enthusiasm for every facet of development truly stands out. If you're seeking to elevate your website and elevate your brand, Adrian is the ideal partner.",
-    name: "Michael Johnson",
-    title: "Director of AlphaStream Technologies",
+      "Chirag brought invaluable expertise to our ERP software project. He understood the complex business logic quickly and delivered modular Oracle ADF and React components that significantly improved the overall performance. A solid full stack developer.",
+    name: "Rohan Sharma",
+    title: "Project Manager at Mastek",
   },
   {
     quote:
-      "Collaborating with Adrian was an absolute pleasure. His professionalism, promptness, and dedication to delivering exceptional results were evident throughout our project. Adrian's enthusiasm for every facet of development truly stands out. If you're seeking to elevate your website and elevate your brand, Adrian is the ideal partner.",
-    name: "Michael Johnson",
-    title: "Director of AlphaStream Technologies",
-  },
-  {
-    quote:
-      "Collaborating with Adrian was an absolute pleasure. His professionalism, promptness, and dedication to delivering exceptional results were evident throughout our project. Adrian's enthusiasm for every facet of development truly stands out. If you're seeking to elevate your website and elevate your brand, Adrian is the ideal partner.",
-    name: "Michael Johnson",
-    title: "Director of AlphaStream Technologies",
-  },
-  {
-    quote:
-      "Collaborating with Adrian was an absolute pleasure. His professionalism, promptness, and dedication to delivering exceptional results were evident throughout our project. Adrian's enthusiasm for every facet of development truly stands out. If you're seeking to elevate your website and elevate your brand, Adrian is the ideal partner.",
-    name: "Michael Johnson",
-    title: "Director of AlphaStream Technologies",
+      "Working with Chirag on our web platform was seamless. He has a great command over the MERN stack and Next.js, and his ability to turn Figma designs into responsive, high-performance web pages is outstanding.",
+    name: "Priya Patel",
+    title: "Founder of TechVibe Solutions",
   },
 ];
 
@@ -174,32 +162,67 @@ export const workExperience = [
   {
     id: 1,
     title: "Web Developer Intern",
+    company: "Internship",
     duration: "May 2021 - July 2021",
     desc: "Assisted in the development of a web-based platform using MERN stack, enhancing interactivity.",
+    bullets: [
+      "Assisted in the development of a web-based platform using the MERN stack, enhancing interactive capabilities.",
+      "Collaborated closely with senior developers to construct reusable React components and client-side form validations.",
+      "Implemented REST APIs and optimized database queries using MongoDB for faster data loading and rendering."
+    ],
+    tech: ["React", "Node.js", "Express", "MongoDB", "Redux"],
     className: "md:col-span-2",
     thumbnail: "/exp1.svg",
   },
   {
     id: 2,
-    title: "Application Developer at Mastek",
-    duration: "Jan 2022 - October 2022",
-    desc: "Designed and developed ERP software modules, enhancing user experience and performance using Oracle ADF at Mastek.",
-    className: "md:col-span-2", // change to md:col-span-2
+    title: "Associate Consultant (Technical)",
+    company: "Mastek (Evosys)",
+    duration: "January 2022 - October 2022",
+    desc: "Developed & deployed secure and scalable systems tailored to client needs using Node.js, Express, and SQL databases.",
+    bullets: [
+      "Developed and deployed secure, scalable systems tailored to specific client business requirements.",
+      "Engineered backend APIs with Node.js and Express, improving data handling efficiency by 35%.",
+      "Integrated third-party services to streamline workflows and enhance UI responsiveness.",
+      "Designed and implemented stored procedures and functions in MySQL/PostgreSQL for automated reporting, batch processing, and business logic encapsulation.",
+      "Actively collaborated in Agile teams and mentored junior developers during onboarding."
+    ],
+    tech: ["Node.js", "Express.js", "MySQL", "PostgreSQL", "APIs", "Agile", "SQL Stored Procedures"],
+    className: "md:col-span-2",
     thumbnail: "/exp2.svg",
   },
   {
     id: 3,
     title: "Freelance Full Stack Developer",
-    duration: "Jan 2023 - July 2025",
-    desc: "Led the dev of a website for a client, from initial concept to deployment on web.",
-    className: "md:col-span-2", // change to md:col-span-2
+    company: "Freelance",
+    duration: "February 2023 - July 2025",
+    desc: "Built and deployed full-stack web applications using MERN & Next.js frameworks.",
+    bullets: [
+      "Built and deployed full-stack web applications using MongoDB, Express.js, React, Node.js, and Next.js.",
+      "Developed Promptpedia (AI prompt-sharing app) and QuillQuest (bookstore platform), implementing user authentication, CRUD functionality, and responsive UI.",
+      "Created a Gemini AI clone with conversational UI and OpenAI API integration using Next.js and Tailwind CSS.",
+      "Deployed projects on Vercel/Render, followed mobile-first design patterns, and used GitHub for version control."
+    ],
+    tech: ["React", "Next.js", "MongoDB", "Express.js", "Node.js", "Tailwind CSS", "OpenAI API", "GitHub"],
+    className: "md:col-span-2",
     thumbnail: "/exp3.svg",
   },
   {
     id: 4,
-    title: "Full Stack Developer at Inventam Tech Solutions",
-    duration: "Aug 2025 - Present",
-    desc: "Developed and maintained ERP products using modern full stack technologies.",
+    title: "Full Stack Developer",
+    company: "Inventam Tech Solutions",
+    duration: "August 2025 - Present",
+    desc: "Built production-grade automation workflows, LLM engines, Gmail automation platforms, and full stack applications.",
+    bullets: [
+      "Built production-grade automation workflows using n8n and Make to streamline business processes and improve operational efficiency.",
+      "Developed an AI-powered SEO Recommendation Engine that analyzed content and generated actionable SEO insights using LLM-driven pipelines.",
+      "Engineered an SEO-Optimized Content Generator leveraging Large Language Models (LLMs) to create structured, scalable, and search-friendly content.",
+      "Created web scraping pipelines and custom data extraction frontends for automated client-side data collection and processing.",
+      "Designed and managed a Gmail Inbox Management Platform with advanced capabilities beyond native Gmail functionality; led backend architecture and served as module lead for the project.",
+      "Managed backend operations and lightweight data analytics for a Netherlands-based client, including data pipeline management, reporting, and operational backend support.",
+      "Delivered ongoing support, optimization, and maintenance for multiple live production applications and automation systems."
+    ],
+    tech: ["Next.js", "Node.js", "TypeScript", "n8n", "Make.com", "LLMs", "OpenAI", "Web Scraping", "React"],
     className: "md:col-span-2",
     thumbnail: "/exp4.svg",
   },

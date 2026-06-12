@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 import { BackgroundGradientAnimation } from "./GradientBg";
-import GridGlobe from "./GridGlobe";
+const GridGlobe = dynamic(() => import("./GridGlobe"), { ssr: false });
 import animationData from "@/data/confetti.json";
 import MagicButton from "../MagicButton";
 

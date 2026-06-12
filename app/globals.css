@@ -72,6 +72,8 @@
   }
   body {
     @apply bg-background text-foreground font-outfit;
+    background: linear-gradient(135deg, #030310 0%, #080820 50%, #030310 100%);
+    background-attachment: fixed;
   }
   button {
     @apply active:outline-none;
@@ -98,5 +100,19 @@
 
   .font-outfit {
     font-family: var(--font-outfit);
+  }
+
+  .glassmorphism {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .text-gradient {
+    background: linear-gradient(to right, #CBACF9, #00D4FF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }

@@ -8,7 +8,7 @@ import { PinContainer } from "./ui/Pin";
 
 const RecentProjects = () => {
   return (
-    <div className="py-20">
+    <div className="py-32 scroll-mt-28" id="projects">
       <h1 className="heading">
         A small selection of{" "}
         <span className="text-purple">recent projects</span>
@@ -23,7 +23,7 @@ const RecentProjects = () => {
               title="/ui.aceternity.com"
               href="https://twitter.com/mannupaaji"
             >
-              <div className="relative flex items-center justify-center sm:w-96 w-[80vw] overflow-hidden h-[20vh] lg:h-[30vh] mb-10">
+              <div className="relative flex items-center justify-center sm:w-96 w-[80vw] overflow-hidden h-[20vh] lg:h-[30vh] mb-10 group/project-card">
                 <div
                   className="relative w-full h-full overflow-hidden lg:rounded-3xl"
                   style={{ backgroundColor: "#13162D" }}
@@ -38,10 +38,15 @@ const RecentProjects = () => {
                 <Image
                   src={item.img}
                   alt="cover"
-                  className="z-10 absolute bottom-0"
+                  className="z-10 absolute bottom-0 transition-transform duration-500 group-hover/pin:scale-105"
                   fill
                   style={{ objectFit: "contain", objectPosition: "bottom" }}
                 />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/pin:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center">
+                  <div className="px-5 py-2.5 glassmorphism rounded-full text-xs font-semibold text-white tracking-wider uppercase shadow-lg">
+                    Explore Details
+                  </div>
+                </div>
               </div>
 
               <h1 className="font-bold lg:text-2xl md:text-xl text-base line-clamp-1">
