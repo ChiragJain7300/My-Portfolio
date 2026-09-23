@@ -1,155 +1,127 @@
-import React from "react";
-import { AnimatePresence, motion } from "framer-motion";
+"use client";
 
-import { CanvasRevealEffect } from "./ui/CanvasRevealEffect";
+import React from "react";
+import {
+  IconCpu,
+  IconCode,
+  IconRocket,
+  IconCheck,
+  IconLayersLinked,
+} from "@tabler/icons-react";
+
+const steps = [
+  {
+    phase: "01 / ARCHITECTURE",
+    title: "System Modeling & Schema Design",
+    description:
+      "Transforming complex product requirements into resilient data schemas, type-safe API contracts, and modular component hierarchies before writing code.",
+    bullets: [
+      "Database schema & relationship modeling",
+      "API contract definition & validation",
+      "Performance & scale considerations",
+    ],
+    icon: <IconLayersLinked className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />,
+    badgeColor: "bg-cyan-50 dark:bg-cyan-950/40 text-cyan-800 dark:text-cyan-300 border-cyan-200 dark:border-cyan-800/40",
+  },
+  {
+    phase: "02 / FULL-STACK",
+    title: "Modular Full-Stack Development",
+    description:
+      "Writing clean, maintainable TypeScript code with strict component isolation, responsive layouts, and robust client/server data flows.",
+    bullets: [
+      "Atomic, reusable component library",
+      "Robust state management & caching",
+      "Continuous linting & strict type checks",
+    ],
+    icon: <IconCode className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />,
+    badgeColor: "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-800 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800/40",
+  },
+  {
+    phase: "03 / TELEMETRY",
+    title: "Edge Deployment & Observability",
+    description:
+      "Deploying to modern edge platforms with CI/CD automation, sub-second LCP audit, and proactive telemetry monitoring via Sentry.",
+    bullets: [
+      "Sub-second LCP & Web Vitals audit",
+      "Automated CI/CD deployment pipelines",
+      "Live error monitoring & telemetry",
+    ],
+    icon: <IconRocket className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />,
+    badgeColor: "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/40",
+  },
+];
 
 const Approach = () => {
   return (
-    <section className="w-full py-32">
-      <h1 className="heading">
-        My <span className="text-purple">approach</span>
-      </h1>
-      <div className="my-20 flex flex-col lg:flex-row items-center justify-center w-full gap-4">
-        <Card
-          title="Planning & Strategy"
-          icon={<AceternityIcon order="Phase 1" />}
-          des="I identify the core objectives, target audience, and architecture requirements to map out the structure and scope of the project."
-        >
-          <CanvasRevealEffect
-            animationSpeed={5.1}
-            containerClassName="bg-emerald-900 rounded-3xl overflow-hidden"
-          />
-        </Card>
-        <Card
-          title="Development & Progress Update"
-          icon={<AceternityIcon order="Phase 2" />}
-          des="Once the blueprint is set, I cue my lofi playlist and dive into development. I prioritize clean, modular code and keep updates transparent."
-        >
-          <CanvasRevealEffect
-            animationSpeed={3}
-            containerClassName="bg-pink-900 rounded-3xl overflow-hidden"
-            colors={[
-              [255, 166, 158],
-              [221, 255, 247],
-            ]}
-            dotSize={2}
-          />
-        </Card>
-        <Card
-          title="Deployment & Beyond"
-          icon={<AceternityIcon order="Phase 3" />}
-          des="The stage where the code goes live! I configure deployment pipelines, set up monitoring/analytics, and optimize for production performance."
-        >
-          <CanvasRevealEffect
-            animationSpeed={3}
-            containerClassName="bg-sky-600 rounded-3xl overflow-hidden"
-            colors={[[125, 211, 252]]}
-          />
-        </Card>
+    <section className="py-28 w-full scroll-mt-28 relative">
+      {/* Laser Gradient Divider Top */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 via-indigo-500/20 to-transparent" />
+
+      {/* Editorial Corner Stamp */}
+      <div className="absolute top-28 right-6 text-zinc-400 dark:text-zinc-600 font-mono text-xs select-none pointer-events-none hidden md:block">
+        + 04 / METHODOLOGY
+      </div>
+
+      {/* Section Header */}
+      <div className="flex flex-col items-center text-center mb-16 space-y-3">
+        <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 text-xs font-mono text-cyan-700 dark:text-cyan-400 shadow-sm">
+          <IconCpu className="w-3.5 h-3.5" />
+          <span>Engineering Discipline</span>
+        </div>
+        <h2 className="heading">
+          Lifecycle & <span className="text-gradient-cyan">Standards</span>
+        </h2>
+        <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-base max-w-2xl font-sans font-light">
+          A disciplined, production-tested methodology from initial architectural blueprint to live deployment.
+        </p>
+      </div>
+
+      {/* 3-Column Editorial Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {steps.map((step, idx) => (
+          <div
+            key={idx}
+            className="glass-card glass-card-hover rounded-3xl p-6 sm:p-8 flex flex-col justify-between border border-black/[0.08] dark:border-white/10 bg-white/90 dark:bg-[#0d0e17]/90 relative overflow-hidden group shadow-sm"
+          >
+            <div className="space-y-4">
+              {/* Header Badge */}
+              <div className="flex items-center justify-between">
+                <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 shadow-sm">
+                  {step.icon}
+                </div>
+                <span className={`px-2.5 py-1 rounded-full text-[10.5px] font-mono tracking-wider border ${step.badgeColor} font-medium`}>
+                  {step.phase}
+                </span>
+              </div>
+
+              {/* Title & Description */}
+              <h3 className="text-xl font-bold text-zinc-950 dark:text-white tracking-tight pt-2 group-hover:text-cyan-700 dark:group-hover:text-cyan-400 transition-colors">
+                {step.title}
+              </h3>
+              <p className="text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm leading-relaxed font-sans font-light">
+                {step.description}
+              </p>
+
+              {/* Bullets */}
+              <div className="pt-3 border-t border-zinc-100 dark:border-white/10 space-y-2">
+                {step.bullets.map((b, bIdx) => (
+                  <div key={bIdx} className="flex items-start space-x-2 text-xs text-zinc-700 dark:text-zinc-300 font-sans font-light">
+                    <IconCheck className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
+                    <span>{b}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-6 pt-3 border-t border-zinc-100 dark:border-white/10 flex items-center justify-between text-[10.5px] text-zinc-500 dark:text-zinc-400 font-mono">
+              <span>Standard: Production</span>
+              <span className="text-zinc-600 dark:text-zinc-400">Step 0{idx + 1} / 03</span>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
 };
 
 export default Approach;
-
-const Card = ({
-  title,
-  icon,
-  children,
-  des,
-}: {
-  title: string;
-  icon: React.ReactNode;
-  children?: React.ReactNode;
-  des: string;
-}) => {
-  const [hovered, setHovered] = React.useState(false);
-  return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="border border-black/[0.2] group/canvas-card flex items-center justify-center
-       dark:border-white/[0.2]  max-w-sm w-full mx-auto p-4 relative lg:h-[35rem] rounded-3xl "
-      style={{
-        background: "rgb(4,7,29)",
-        backgroundColor:
-          "linear-gradient(90deg, rgba(4,7,29,1) 0%, rgba(12,14,35,1) 100%)",
-      }}
-    >
-      <Icon className="absolute h-10 w-10 -top-3 -left-3 dark:text-white text-black opacity-30" />
-      <Icon className="absolute h-10 w-10 -bottom-3 -left-3 dark:text-white text-black opacity-30" />
-      <Icon className="absolute h-10 w-10 -top-3 -right-3 dark:text-white text-black opacity-30" />
-      <Icon className="absolute h-10 w-10 -bottom-3 -right-3 dark:text-white text-black opacity-30" />
-
-      <AnimatePresence>
-        {hovered && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="h-full w-full absolute inset-0"
-          >
-            {children}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <div className="relative z-20 px-10">
-        <div className="text-center group-hover/canvas-card:-translate-y-4 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] 
-        group-hover/canvas-card:opacity-0 transition duration-200 min-w-40 mx-auto flex items-center justify-center"
-        >
-          {icon}
-        </div>
-        <h2 className="dark:text-white text-center text-3xl opacity-0 group-hover/canvas-card:opacity-100
-         relative z-10 text-black mt-4  font-bold group-hover/canvas-card:text-white 
-         group-hover/canvas-card:-translate-y-2 transition duration-200"
-        >
-          {title}
-        </h2>
-        <p
-          className="text-sm opacity-0 group-hover/canvas-card:opacity-100
-         relative z-10 mt-4 group-hover/canvas-card:text-white text-center
-         group-hover/canvas-card:-translate-y-2 transition duration-200"
-          style={{ color: "#E4ECFF" }}
-        >
-          {des}
-        </p>
-      </div>
-    </div>
-  );
-};
-
-const AceternityIcon = ({ order }: { order: string }) => {
-  return (
-    <div>
-      <button className="relative inline-flex overflow-hidden rounded-full p-[1px] ">
-        <span
-          className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite]
-         bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]"
-        />
-        <span
-          className="inline-flex h-full w-full cursor-pointer items-center 
-        justify-center rounded-full bg-slate-950 px-5 py-2 text-purple backdrop-blur-3xl font-bold text-2xl"
-        >
-          {order}
-        </span>
-      </button>
-    </div>
-  );
-};
-
-export const Icon = ({ className, ...rest }: any) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth="1.5"
-      stroke="currentColor"
-      className={className}
-      {...rest}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
-    </svg>
-  );
-};

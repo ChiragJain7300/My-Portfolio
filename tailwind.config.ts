@@ -1,8 +1,6 @@
 import type { Config } from "tailwindcss";
 
 const svgToDataUri = require("mini-svg-data-uri");
-
-const colors = require("tailwindcss/colors");
 const {
   default: flattenColorPalette,
 } = require("tailwindcss/lib/util/flattenColorPalette");
@@ -29,25 +27,35 @@ const config = {
       fontFamily: {
         poppins: ["var(--font-poppins)", "sans-serif"],
         outfit: ["var(--font-outfit)", "sans-serif"],
+        mono: ["var(--font-mono)", "monospace"],
       },
       colors: {
+        dark: {
+          bg: "#050508",
+          surface: "#0c0d14",
+          card: "#12131c",
+          border: "#1e202e",
+        },
+        brand: {
+          cyan: "#38bdf8",
+          indigo: "#6366f1",
+          violet: "#8b5cf6",
+          emerald: "#10b981",
+        },
         black: {
           DEFAULT: "#000",
-          100: "#000319",
-          200: "rgba(17, 25, 40, 0.75)",
-          300: "rgba(255, 255, 255, 0.125)",
+          100: "#050508",
+          200: "rgba(18, 19, 28, 0.75)",
+          300: "rgba(255, 255, 255, 0.1)",
         },
         white: {
           DEFAULT: "#FFF",
-          100: "#BEC1DD",
-          200: "#C1C2D3",
+          100: "#A1A1AA",
+          200: "#E4E4E7",
         },
-        blue: {
-          "100": "#E4ECFF",
-        },
-        purple: "#CBACF9",
-        cyanAccent: "#00D4FF",
-        amberAccent: "#FFB800",
+        purple: "#818CF8",
+        cyanAccent: "#38BDF8",
+        amberAccent: "#F59E0B",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -114,56 +122,14 @@ const config = {
             backgroundPosition: "-200% 0",
           },
         },
-        moveHorizontal: {
-          "0%": {
-            transform: "translateX(-50%) translateY(-10%)",
+        pulseGlow: {
+          "0%, 100%": {
+            opacity: "0.4",
+            transform: "scale(1)",
           },
           "50%": {
-            transform: "translateX(50%) translateY(10%)",
-          },
-          "100%": {
-            transform: "translateX(-50%) translateY(-10%)",
-          },
-        },
-        moveInCircle: {
-          "0%": {
-            transform: "rotate(0deg)",
-          },
-          "50%": {
-            transform: "rotate(180deg)",
-          },
-          "100%": {
-            transform: "rotate(360deg)",
-          },
-        },
-        moveVertical: {
-          "0%": {
-            transform: "translateY(-50%)",
-          },
-          "50%": {
-            transform: "translateY(50%)",
-          },
-          "100%": {
-            transform: "translateY(-50%)",
-          },
-        },
-        scroll: {
-          to: {
-            transform: "translate(calc(-50% - 0.5rem))",
-          },
-        },
-        aurora: {
-          "0%": {
-            transform: "translate(0px, 0px) scale(1)",
-          },
-          "33%": {
-            transform: "translate(50px, -70px) scale(1.15)",
-          },
-          "66%": {
-            transform: "translate(-30px, 40px) scale(0.9)",
-          },
-          "100%": {
-            transform: "translate(0px, 0px) scale(1)",
+            opacity: "0.8",
+            transform: "scale(1.05)",
           },
         },
       },
@@ -172,16 +138,7 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         spotlight: "spotlight 2s ease .75s 1 forwards",
         shimmer: "shimmer 2s linear infinite",
-        first: "moveVertical 30s ease infinite",
-        second: "moveInCircle 20s reverse infinite",
-        third: "moveInCircle 40s linear infinite",
-        fourth: "moveHorizontal 40s ease infinite",
-        fifth: "moveInCircle 20s ease infinite",
-        scroll:
-          "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
-        "aurora-slow": "aurora 25s infinite alternate ease-in-out",
-        "aurora-medium": "aurora 20s infinite alternate-reverse ease-in-out",
-        "aurora-fast": "aurora 15s infinite alternate ease-in-out",
+        "pulse-glow": "pulseGlow 4s ease-in-out infinite",
       },
     },
   },
@@ -193,17 +150,17 @@ const config = {
         {
           "bg-grid": (value: any) => ({
             backgroundImage: `url("${svgToDataUri(
-              `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="100" height="100" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`,
+              `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="64" height="64" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`,
             )}")`,
           }),
           "bg-grid-small": (value: any) => ({
             backgroundImage: `url("${svgToDataUri(
-              `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="8" height="8" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`,
+              `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`,
             )}")`,
           }),
           "bg-dot": (value: any) => ({
             backgroundImage: `url("${svgToDataUri(
-              `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none"><circle fill="${value}" id="pattern-circle" cx="10" cy="10" r="1.6257413380501518"></circle></svg>`,
+              `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24" fill="none"><circle fill="${value}" id="pattern-circle" cx="12" cy="12" r="1.2"></circle></svg>`,
             )}")`,
           }),
         },
