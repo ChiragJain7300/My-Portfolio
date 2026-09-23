@@ -8,6 +8,7 @@ export default withSentryConfig(nextConfig, {
 
 // Suppresses source map uploading logs during build
 silent: true,
+dryRun: !process.env.SENTRY_AUTH_TOKEN,
 org: "javascript-mastery",
 project: "javascript-nextjs",
 }, {
@@ -31,6 +32,10 @@ hideSourceMaps: true,
 
 // Automatically tree-shake Sentry logger statements to reduce bundle size
 disableLogger: true,
+
+// Disable Sentry webpack plugin when no auth token is provided (e.g. during Vercel builds without Sentry)
+disableServerWebpackPlugin: !process.env.SENTRY_AUTH_TOKEN,
+disableClientWebpackPlugin: !process.env.SENTRY_AUTH_TOKEN,
 
 // Enables automatic instrumentation of Vercel Cron Monitors.
 // See the following for more information:
