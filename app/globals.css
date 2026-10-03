@@ -1,26 +1,179 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #09090b;
+    --foreground: #fafafa;
+    --accent: #e8e4dc;
+    --card-bg: #111114;
+    --card-border: rgba(255, 255, 255, 0.08);
+  }
+
+  * {
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: #09090b;
+    color: #fafafa;
+  }
+
+  body {
+    background-color: #09090b;
+    color: #fafafa;
+    font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* Impeccable Craft Floor: Tuned browser surfaces */
+  ::selection {
+    background: rgba(232, 228, 220, 0.22);
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgba(232, 228, 220, 0.7);
+    outline-offset: 2px;
+  }
+
+  /* Editorial Restrained Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #09090b;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #27272a;
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3f3f46;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Monospace details styling helper */
+.font-mono-data {
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.92); }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ── Film Grain Overlay ─────────────────────────────────────────────────── */
+@keyframes grain {
+  0%   { transform: translate(0, 0); }
+  10%  { transform: translate(-2%, -3%); }
+  20%  { transform: translate(3%, 2%); }
+  30%  { transform: translate(-1%, 4%); }
+  40%  { transform: translate(4%, -1%); }
+  50%  { transform: translate(-3%, 3%); }
+  60%  { transform: translate(2%, -4%); }
+  70%  { transform: translate(-4%, 1%); }
+  80%  { transform: translate(1%, -2%); }
+  90%  { transform: translate(-2%, 4%); }
+  100% { transform: translate(0, 0); }
+}
+
+.grain-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: -200%;
+  width: 400%;
+  height: 400%;
+  z-index: 9998;
+  opacity: 0.032;
+  animation: grain 0.45s steps(1) infinite;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ── Cursor Glow ────────────────────────────────────────────────────────── */
+.cursor-glow {
+  pointer-events: none;
+  position: fixed;
+  width: 560px;
+  height: 560px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba(232, 228, 220, 0.055) 0%,
+    rgba(232, 228, 220, 0.018) 40%,
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+  z-index: 9997;
+  transition: opacity 0.4s ease;
+  will-change: transform;
+}
+
+/* ── 3-D Card Flip ──────────────────────────────────────────────────────── */
+.card-flip-wrapper {
+  perspective: 900px;
+  position: relative;
+}
+
+.card-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-flip-wrapper:hover .card-flip-inner {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: inherit;
+}
+
+.card-face-back {
+  transform: rotateY(180deg);
+}
+
+/* ── Scramble text cursor blink ─────────────────────────────────────────── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.scramble-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: currentColor;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  animation: blink 0.7s step-end infinite;
+}
+
+/* ── Project card sticky — desktop only via CSS custom property ─────────── */
+@media (min-width: 768px) {
+  .project-card {
+    top: calc(4.5rem + 0.75rem + (var(--card-index) * 1rem));
+  }
 }
