@@ -16,7 +16,7 @@ export const Loader = () => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-5xl md:text-7xl font-extrabold tracking-widest mb-6 bg-gradient-to-r from-purple via-[#CBACF9] to-cyanAccent bg-clip-text text-transparent text-center select-none"
+          className="text-5xl md:text-7xl font-extrabold tracking-widest mb-6 text-white text-center select-none"
         >
           CHIRAG JAIN
         </motion.div>

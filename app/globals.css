@@ -74,6 +74,8 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
@@ -162,31 +164,19 @@
   }
 
   .text-gradient {
-    background: linear-gradient(135deg, #09090b 0%, #334155 60%, #0284c7 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #09090b;
   }
 
   .dark .text-gradient {
-    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 60%, #38bdf8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #ffffff;
   }
 
   .text-gradient-cyan {
-    background: linear-gradient(135deg, #0284c7 0%, #4f46e5 60%, #9333ea 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #0284c7;
   }
 
   .dark .text-gradient-cyan {
-    background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #38bdf8;
   }
 
   .bg-noise {
@@ -201,6 +191,14 @@
   .glow-line {
     height: 1px;
     background: linear-gradient(90deg, transparent 0%, rgba(2, 132, 199, 0.3) 50%, transparent 100%);
+  }
+
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
   }
 }
 

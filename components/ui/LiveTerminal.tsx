@@ -149,19 +149,20 @@ export const LiveTerminal = () => {
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent" />
 
       {/* Terminal Title Bar & Interactive Tabs */}
-      <div className="flex items-center justify-between px-3 sm:px-3.5 py-2 sm:py-2.5 bg-[#11121c] border-b border-white/10 gap-1.5 sm:gap-2 select-none">
+      <div className="flex items-center justify-between px-2.5 sm:px-3.5 py-2 sm:py-2.5 bg-[#11121c] border-b border-white/10 gap-1 sm:gap-2 select-none">
         <div className="flex items-center space-x-1.5 sm:space-x-2 min-w-0">
-          <div className="flex items-center space-x-1.5 shrink-0">
+          {/* Traffic lights: visible on tablet/desktop, hidden on small mobile to give tabs full room */}
+          <div className="hidden sm:flex items-center space-x-1.5 shrink-0">
             <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
             <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
             <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
           </div>
           
           {/* Tab Switchers */}
-          <div className="flex items-center space-x-0.5 sm:space-x-1 pl-1.5 sm:pl-2 border-l border-white/10">
+          <div className="flex items-center space-x-1 sm:pl-2 sm:border-l border-white/10 overflow-x-auto scrollbar-none">
             <button
               onClick={() => setActiveTab("terminal")}
-              className={`flex items-center space-x-1 px-2 sm:px-2.5 py-1 rounded-md text-[10.5px] sm:text-[11px] transition-colors cursor-pointer ${
+              className={`flex items-center space-x-1 px-2 sm:px-2.5 py-1 rounded-md text-[10.5px] sm:text-[11px] transition-colors cursor-pointer shrink-0 ${
                 activeTab === "terminal"
                   ? "bg-white/10 text-cyan-300 font-semibold"
                   : "text-zinc-400 hover:text-white"
@@ -172,7 +173,7 @@ export const LiveTerminal = () => {
             </button>
             <button
               onClick={() => setActiveTab("architecture")}
-              className={`flex items-center space-x-1 px-2 sm:px-2.5 py-1 rounded-md text-[10.5px] sm:text-[11px] transition-colors cursor-pointer ${
+              className={`flex items-center space-x-1 px-2 sm:px-2.5 py-1 rounded-md text-[10.5px] sm:text-[11px] transition-colors cursor-pointer shrink-0 ${
                 activeTab === "architecture"
                   ? "bg-white/10 text-indigo-300 font-semibold"
                   : "text-zinc-400 hover:text-white"
@@ -183,7 +184,7 @@ export const LiveTerminal = () => {
             </button>
             <button
               onClick={() => setActiveTab("telemetry")}
-              className={`flex items-center space-x-1 px-2 sm:px-2.5 py-1 rounded-md text-[10.5px] sm:text-[11px] transition-colors cursor-pointer ${
+              className={`flex items-center space-x-1 px-2 sm:px-2.5 py-1 rounded-md text-[10.5px] sm:text-[11px] transition-colors cursor-pointer shrink-0 ${
                 activeTab === "telemetry"
                   ? "bg-white/10 text-emerald-300 font-semibold"
                   : "text-zinc-400 hover:text-white"
@@ -195,12 +196,12 @@ export const LiveTerminal = () => {
           </div>
         </div>
 
-        {/* Icon-Only Copy Button with Tooltip */}
+        {/* Icon-Only Copy Button */}
         <button
           onClick={copyEmail}
           title={copied ? "Email copied to clipboard!" : "Copy email (chiragjain7300@gmail.com)"}
           aria-label="Copy email address"
-          className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-cyan-300 transition-all active:scale-95 border border-white/10 shrink-0 cursor-pointer flex items-center justify-center"
+          className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-cyan-300 transition-all active:scale-95 border border-white/10 shrink-0 cursor-pointer flex items-center justify-center ml-1"
         >
           {copied ? (
             <IconCheck className="w-3.5 h-3.5 text-emerald-400" />
@@ -236,13 +237,13 @@ export const LiveTerminal = () => {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Type 'help', 'stack', 'contact'..."
-                className="flex-1 bg-transparent text-white placeholder-zinc-500 focus:outline-none text-xs font-mono"
+                placeholder="Type 'help' or 'stack'..."
+                className="flex-1 bg-transparent text-white placeholder-zinc-500 focus:outline-none text-xs font-mono min-w-0"
               />
               <button
                 type="submit"
                 aria-label="Execute command"
-                className="text-zinc-500 hover:text-cyan-400 transition-colors p-1"
+                className="text-zinc-500 hover:text-cyan-400 transition-colors p-1 cursor-pointer touch-manipulation"
               >
                 <IconCornerDownLeft className="w-3.5 h-3.5" />
               </button>
@@ -250,18 +251,18 @@ export const LiveTerminal = () => {
           </div>
 
           {/* Suggested Quick Commands */}
-          <div className="px-4 py-2 bg-black/40 border-t border-white/5 flex items-center justify-between overflow-x-auto gap-2">
+          <div className="px-3 sm:px-4 py-2 bg-black/40 border-t border-white/5 flex items-center justify-between overflow-x-auto gap-2">
             <div className="flex items-center space-x-1.5 shrink-0 text-[11px] text-zinc-500">
               <IconSparkles className="w-3.5 h-3.5 text-cyan-400" />
               <span>Quick:</span>
             </div>
-            <div className="flex items-center space-x-1.5 overflow-x-auto scrollbar-none">
+            <div className="flex items-center space-x-1.5 overflow-x-auto scrollbar-none py-0.5">
               {["stack", "experience", "contact"].map((cmd) => (
                 <button
                   key={cmd}
                   type="button"
                   onClick={() => handleCommand(cmd)}
-                  className="px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-cyan-300 text-[10.5px] transition-colors border border-white/5"
+                  className="px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-cyan-300 text-[10.5px] transition-colors border border-white/5 cursor-pointer touch-manipulation shrink-0"
                 >
                   {cmd}
                 </button>
@@ -273,54 +274,54 @@ export const LiveTerminal = () => {
 
       {/* Tab 2: Interactive Architecture Pipeline */}
       {activeTab === "architecture" && (
-        <div className="p-4 space-y-4 min-h-[260px] flex flex-col justify-between">
+        <div className="p-3.5 sm:p-4 space-y-3.5 sm:space-y-4 min-h-[260px] flex flex-col justify-between">
           <div className="text-[11px] text-zinc-400 flex items-center justify-between border-b border-white/5 pb-2">
             <span className="text-cyan-400 font-semibold">PRODUCTION LLM PIPELINE</span>
-            <span className="text-emerald-400">● Live Flow</span>
+            <span className="text-emerald-400 text-[10px] sm:text-[11px]">● Live Flow</span>
           </div>
 
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
             {[
               {
                 id: "ingest",
-                label: "1. Ingestion",
-                sub: "Webhooks / APIs",
-                icon: <IconServer className="w-4 h-4 text-cyan-400" />,
+                label: "1. Ingest",
+                sub: "Webhooks",
+                icon: <IconServer className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400" />,
                 details: "Automated trigger points handling structured payloads and web-scraped documents.",
               },
               {
                 id: "llm",
-                label: "2. LLM Engine",
-                sub: "OpenAI + n8n",
-                icon: <IconCpu className="w-4 h-4 text-indigo-400" />,
+                label: "2. Engine",
+                sub: "OpenAI+n8n",
+                icon: <IconCpu className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400" />,
                 details: "Prompt-engineered pipelines with schema validation and fallback retry mechanisms.",
               },
               {
                 id: "sink",
                 label: "3. Delivery",
-                sub: "PostgreSQL / UI",
-                icon: <IconDatabase className="w-4 h-4 text-emerald-400" />,
+                sub: "Postgres/UI",
+                icon: <IconDatabase className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400" />,
                 details: "Persisted structured insights and sub-second client state hydration.",
               },
             ].map((node) => (
               <button
                 key={node.id}
                 onClick={() => setSelectedNode(node.id)}
-                className={`p-2.5 rounded-xl text-left border transition-all cursor-pointer ${
+                className={`p-2 sm:p-2.5 rounded-xl text-left border transition-all cursor-pointer touch-manipulation min-w-0 ${
                   selectedNode === node.id
                     ? "bg-white/10 border-cyan-400/50 shadow-md shadow-cyan-500/10"
                     : "bg-white/5 border-white/5 hover:border-white/15"
                 }`}
               >
-                <div className="mb-1.5">{node.icon}</div>
-                <div className="text-xs font-semibold text-white truncate">{node.label}</div>
-                <div className="text-[10px] text-zinc-500 truncate">{node.sub}</div>
+                <div className="mb-1">{node.icon}</div>
+                <div className="text-[11px] sm:text-xs font-semibold text-white truncate">{node.label}</div>
+                <div className="text-[9.5px] sm:text-[10px] text-zinc-500 truncate">{node.sub}</div>
               </button>
             ))}
           </div>
 
-          <div className="p-3 rounded-xl bg-black/40 border border-white/10 text-[11px] text-zinc-300 font-sans">
-            <span className="font-semibold text-cyan-300 font-mono block mb-1">Architecture Node Details:</span>
+          <div className="p-2.5 sm:p-3 rounded-xl bg-black/40 border border-white/10 text-[10.5px] sm:text-[11px] text-zinc-300 font-sans">
+            <span className="font-semibold text-cyan-300 font-mono block mb-1 text-[11px]">Architecture Node Details:</span>
             {selectedNode === "ingest" && (
               <p>Triggers via n8n webhook and custom scraping workers with input sanitization and queue buffering.</p>
             )}
@@ -336,36 +337,36 @@ export const LiveTerminal = () => {
 
       {/* Tab 3: System Telemetry Benchmarks */}
       {activeTab === "telemetry" && (
-        <div className="p-4 space-y-4 min-h-[260px] flex flex-col justify-between">
+        <div className="p-3.5 sm:p-4 space-y-3.5 sm:space-y-4 min-h-[260px] flex flex-col justify-between">
           <div className="text-[11px] text-zinc-400 flex items-center justify-between border-b border-white/5 pb-2">
             <span className="text-emerald-400 font-semibold">PRODUCTION BENCHMARKS</span>
-            <span className="text-zinc-500">Verified Metrics</span>
+            <span className="text-zinc-500 text-[10px] sm:text-[11px]">Verified Metrics</span>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 font-mono">
-            <div className="p-3 rounded-xl bg-white/5 border border-white/5">
-              <span className="text-[10px] text-zinc-500 block">API OPTIMIZATION</span>
-              <span className="text-lg font-bold text-cyan-400">+35%</span>
-              <span className="text-[10px] text-zinc-400 block mt-0.5">Latency Reduction (Mastek)</span>
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-3 font-mono">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/5">
+              <span className="text-[9.5px] sm:text-[10px] text-zinc-500 block truncate">API OPTIMIZATION</span>
+              <span className="text-base sm:text-lg font-bold text-cyan-400">+35%</span>
+              <span className="text-[9.5px] sm:text-[10px] text-zinc-400 block mt-0.5 truncate">Latency Reduction</span>
             </div>
-            <div className="p-3 rounded-xl bg-white/5 border border-white/5">
-              <span className="text-[10px] text-zinc-500 block">LIGHTHOUSE PERFORMANCE</span>
-              <span className="text-lg font-bold text-emerald-400">98/100</span>
-              <span className="text-[10px] text-zinc-400 block mt-0.5">Core Web Vitals</span>
+            <div className="p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/5">
+              <span className="text-[9.5px] sm:text-[10px] text-zinc-500 block truncate">PERFORMANCE</span>
+              <span className="text-base sm:text-lg font-bold text-emerald-400">98/100</span>
+              <span className="text-[9.5px] sm:text-[10px] text-zinc-400 block mt-0.5 truncate">Core Web Vitals</span>
             </div>
-            <div className="p-3 rounded-xl bg-white/5 border border-white/5">
-              <span className="text-[10px] text-zinc-500 block">AUTOMATION UPTIME</span>
-              <span className="text-lg font-bold text-indigo-400">99.9%</span>
-              <span className="text-[10px] text-zinc-400 block mt-0.5">n8n Execution Reliability</span>
+            <div className="p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/5">
+              <span className="text-[9.5px] sm:text-[10px] text-zinc-500 block truncate">AUTOMATION UPTIME</span>
+              <span className="text-base sm:text-lg font-bold text-indigo-400">99.9%</span>
+              <span className="text-[9.5px] sm:text-[10px] text-zinc-400 block mt-0.5 truncate">Execution Reliability</span>
             </div>
-            <div className="p-3 rounded-xl bg-white/5 border border-white/5">
-              <span className="text-[10px] text-zinc-500 block">TYPE SAFETY</span>
-              <span className="text-lg font-bold text-amber-400">100%</span>
-              <span className="text-[10px] text-zinc-400 block mt-0.5">Strict TypeScript Mode</span>
+            <div className="p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/5">
+              <span className="text-[9.5px] sm:text-[10px] text-zinc-500 block truncate">TYPE SAFETY</span>
+              <span className="text-base sm:text-lg font-bold text-amber-400">100%</span>
+              <span className="text-[9.5px] sm:text-[10px] text-zinc-400 block mt-0.5 truncate">Strict TypeScript</span>
             </div>
           </div>
 
-          <div className="text-[10.5px] text-zinc-500 text-center font-mono">
+          <div className="text-[10px] sm:text-[10.5px] text-zinc-500 text-center font-mono">
             Telemetry actively monitored with Sentry & Vercel Edge
           </div>
         </div>

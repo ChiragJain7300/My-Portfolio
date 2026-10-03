@@ -213,7 +213,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[9999] flex items-start justify-center pt-20 sm:pt-28 px-4">
+      <div className="fixed inset-0 z-[9999] flex items-start justify-center pt-14 sm:pt-28 px-3 sm:px-4">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -233,20 +233,20 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
           className="relative w-full max-w-xl bg-white dark:bg-[#0d0e17] border border-zinc-200 dark:border-white/10 rounded-2xl shadow-2xl shadow-black/20 overflow-hidden z-10"
         >
           {/* Search Header */}
-          <div className="flex items-center px-4 py-3.5 border-b border-zinc-100 dark:border-white/10">
-            <IconSearch className="w-5 h-5 text-zinc-400 dark:text-zinc-500 shrink-0 mr-3" />
+          <div className="flex items-center px-3.5 sm:px-4 py-3 sm:py-3.5 border-b border-zinc-100 dark:border-white/10">
+            <IconSearch className="w-5 h-5 text-zinc-400 dark:text-zinc-500 shrink-0 mr-2.5 sm:mr-3" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Type a command or search..."
               autoFocus
-              className="w-full bg-transparent text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none font-sans"
+              className="w-full bg-transparent text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none font-sans"
             />
             {query && (
               <button
                 onClick={() => setQuery("")}
-                className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 p-1 mr-1 cursor-pointer"
+                className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 p-1 mr-1 cursor-pointer touch-manipulation"
               >
                 <IconX className="w-4 h-4" />
               </button>
@@ -257,9 +257,9 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
           </div>
 
           {/* List of Results */}
-          <div className="max-h-[340px] overflow-y-auto p-2 space-y-1">
+          <div className="max-h-[320px] sm:max-h-[340px] overflow-y-auto p-1.5 sm:p-2 space-y-1">
             {filteredItems.length === 0 ? (
-              <div className="py-8 text-center text-sm text-zinc-500 dark:text-zinc-400 font-sans">
+              <div className="py-8 text-center text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-sans">
                 No matching actions found.
               </div>
             ) : (
@@ -270,7 +270,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                     key={item.id}
                     onClick={() => item.perform()}
                     onMouseEnter={() => setSelectedIndex(index)}
-                    className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-left transition-colors duration-150 cursor-pointer ${
+                    className={`w-full flex items-center justify-between px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl text-left transition-colors duration-150 cursor-pointer touch-manipulation ${
                       isSelected
                         ? "bg-zinc-100 dark:bg-white/10 text-zinc-950 dark:text-white"
                         : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-white/5"

@@ -1,0 +1,24 @@
+{
+  "project": {
+    "name": "Chirag Jain Portfolio",
+    "description": "High-craft developer portfolio showcasing full-stack engineering, performance, and modern web applications.",
+    "theme": "dark-dominant-modern"
+  },
+  "designSystem": {
+    "typography": {
+      "sans": "Inter, system-ui, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "colors": {
+      "primary": "#38bdf8",
+      "accent": "#818cf8",
+      "darkBackground": "#090d16",
+      "surface": "#121723"
+    },
+    "guidelines": [
+      "Avoid heavy decorative gradient-text on primary headings; prefer solid high-contrast typography.",
+      "Avoid single-sided thick accent borders (side-tabs) on rounded cards; use clean inset highlights or subtle borders.",
+      "Keep glassmorphism subtle with clear readability."
+    ]
+  }
+}

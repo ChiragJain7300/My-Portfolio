@@ -53,7 +53,7 @@ const steps = [
 
 const Approach = () => {
   return (
-    <section className="py-28 w-full scroll-mt-28 relative">
+    <section className="py-20 sm:py-28 w-full scroll-mt-28 relative">
       {/* Laser Gradient Divider Top */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 via-indigo-500/20 to-transparent" />
 
@@ -63,39 +63,39 @@ const Approach = () => {
       </div>
 
       {/* Section Header */}
-      <div className="flex flex-col items-center text-center mb-16 space-y-3">
+      <div className="flex flex-col items-center text-center mb-10 sm:mb-16 space-y-3">
         <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 text-xs font-mono text-cyan-700 dark:text-cyan-400 shadow-sm">
           <IconCpu className="w-3.5 h-3.5" />
           <span>Engineering Discipline</span>
         </div>
         <h2 className="heading">
-          Lifecycle & <span className="text-gradient-cyan">Standards</span>
+          Lifecycle &amp; <span className="font-medium text-cyan-600 dark:text-cyan-400">Standards</span>
         </h2>
-        <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-base max-w-2xl font-sans font-light">
+        <p className="text-zinc-600 dark:text-zinc-400 text-xs sm:text-base max-w-2xl font-sans font-light px-2 sm:px-0">
           A disciplined, production-tested methodology from initial architectural blueprint to live deployment.
         </p>
       </div>
 
       {/* 3-Column Editorial Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-6xl mx-auto">
         {steps.map((step, idx) => (
           <div
             key={idx}
-            className="glass-card glass-card-hover rounded-3xl p-6 sm:p-8 flex flex-col justify-between border border-black/[0.08] dark:border-white/10 bg-white/90 dark:bg-[#0d0e17]/90 relative overflow-hidden group shadow-sm"
+            className="glass-card glass-card-hover rounded-3xl p-5 sm:p-8 flex flex-col justify-between border border-black/[0.08] dark:border-white/10 bg-white/90 dark:bg-[#0d0e17]/90 relative overflow-hidden group shadow-sm"
           >
-            <div className="space-y-4">
+            <div className="space-y-3.5 sm:space-y-4">
               {/* Header Badge */}
               <div className="flex items-center justify-between">
-                <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 shadow-sm">
+                <div className="p-2.5 sm:p-3 rounded-2xl bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 shadow-sm">
                   {step.icon}
                 </div>
-                <span className={`px-2.5 py-1 rounded-full text-[10.5px] font-mono tracking-wider border ${step.badgeColor} font-medium`}>
+                <span className={`px-2.5 py-1 rounded-full text-[10px] sm:text-[10.5px] font-mono tracking-wider border ${step.badgeColor} font-medium`}>
                   {step.phase}
                 </span>
               </div>
 
               {/* Title & Description */}
-              <h3 className="text-xl font-bold text-zinc-950 dark:text-white tracking-tight pt-2 group-hover:text-cyan-700 dark:group-hover:text-cyan-400 transition-colors">
+              <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight pt-1 sm:pt-2 group-hover:text-cyan-700 dark:group-hover:text-cyan-400 transition-colors">
                 {step.title}
               </h3>
               <p className="text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm leading-relaxed font-sans font-light">

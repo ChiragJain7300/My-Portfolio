@@ -87,39 +87,39 @@ const Grid = () => {
       : skills.filter((s) => s.category === activeCategory);
 
   return (
-    <section id="about" className="py-28 scroll-mt-28 relative">
+    <section id="about" className="py-20 sm:py-28 scroll-mt-28 relative">
       {/* Laser Gradient Divider Top */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 via-indigo-500/20 to-transparent" />
 
       {/* Section Header */}
-      <div className="flex flex-col items-center text-center mb-16 space-y-3">
+      <div className="flex flex-col items-center text-center mb-10 sm:mb-16 space-y-3">
         <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 text-xs font-mono text-cyan-700 dark:text-cyan-400 shadow-sm">
           <IconCpu className="w-3.5 h-3.5" />
           <span>Core Competencies & Architecture</span>
         </div>
         <h2 className="heading">
           Engineering Matrix &{" "}
-          <span className="text-gradient-cyan">System Highlights</span>
+          <span className="font-medium text-cyan-600 dark:text-cyan-400">System Highlights</span>
         </h2>
-        <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-base max-w-2xl font-sans font-light">
+        <p className="text-zinc-600 dark:text-zinc-400 text-xs sm:text-base max-w-2xl font-sans font-light px-2 sm:px-0">
           A breakdown of technical domains, production automation pipelines, and core software engineering standards.
         </p>
       </div>
 
       {/* Bento Grid 2.0 */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
         {/* Card 1: AI & Automation Architecture (7 cols on desktop) */}
-        <div className="lg:col-span-7 glass-card glass-card-hover rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group">
+        <div className="lg:col-span-7 glass-card glass-card-hover rounded-3xl p-5 sm:p-8 flex flex-col justify-between relative overflow-hidden group">
           <div>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2.5 mb-4">
               <div className="inline-flex items-center space-x-2 px-2.5 py-1 rounded-lg bg-cyan-50 dark:bg-cyan-950/50 border border-cyan-200 dark:border-cyan-800/50 text-xs font-mono text-cyan-800 dark:text-cyan-300 font-medium">
-                <IconRobot className="w-3.5 h-3.5" />
+                <IconRobot className="w-3.5 h-3.5 shrink-0" />
                 <span>Production AI & Workflows</span>
               </div>
               <button
                 onClick={handleSimulatePipeline}
                 disabled={simulating}
-                className="flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-cyan-50 dark:bg-cyan-950/60 hover:bg-cyan-100 dark:hover:bg-cyan-900/60 border border-cyan-200 dark:border-cyan-800/60 text-xs font-mono text-cyan-800 dark:text-cyan-300 transition-all cursor-pointer disabled:opacity-50 active:scale-95 shadow-sm"
+                className="flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-cyan-50 dark:bg-cyan-950/60 hover:bg-cyan-100 dark:hover:bg-cyan-900/60 border border-cyan-200 dark:border-cyan-800/60 text-xs font-mono text-cyan-800 dark:text-cyan-300 transition-all cursor-pointer disabled:opacity-50 active:scale-95 shadow-sm touch-manipulation"
               >
                 {simulating ? (
                   <>
