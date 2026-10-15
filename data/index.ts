@@ -1,5 +1,6 @@
 export interface Project {
   id: number;
+  slug: string;
   title: string;
   category: "fullstack" | "ai" | "backend";
   categoryLabel: string;
@@ -45,6 +46,7 @@ export const developerProfile = {
 export const projects: Project[] = [
   {
     id: 1,
+    slug: "promptpedia",
     title: "PromptPedia",
     category: "fullstack",
     categoryLabel: "Full Stack / AI",
@@ -62,6 +64,7 @@ export const projects: Project[] = [
   },
   {
     id: 2,
+    slug: "seo-engine",
     title: "SEO Recommendation & Content AI Engine",
     category: "ai",
     categoryLabel: "AI / Automation",
@@ -80,6 +83,7 @@ export const projects: Project[] = [
   },
   {
     id: 3,
+    slug: "wdm-platform",
     title: "WDM Platform — Logistics & Integration Engine",
     category: "backend",
     categoryLabel: "Backend / Logistics API",
@@ -99,6 +103,7 @@ export const projects: Project[] = [
   },
   {
     id: 4,
+    slug: "just-walk-india",
     title: "Just Walk India — Sports Ticketing Platform",
     category: "fullstack",
     categoryLabel: "Full Stack / SSR App",
@@ -117,6 +122,10 @@ export const projects: Project[] = [
     ],
   },
 ];
+
+export function getProjectBySlug(slug: string): Project | undefined {
+  return projects.find((p) => p.slug === slug);
+}
 
 export const workExperience: WorkExperience[] = [
   {

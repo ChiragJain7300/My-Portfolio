@@ -1,179 +1,201 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --background: #09090b;
-    --foreground: #fafafa;
-    --accent: #e8e4dc;
-    --card-bg: #111114;
-    --card-border: rgba(255, 255, 255, 0.08);
-  }
-
-  * {
-    border-color: rgba(255, 255, 255, 0.08);
-  }
-
-  html {
-    scroll-behavior: smooth;
-    background-color: #09090b;
-    color: #fafafa;
-  }
-
-  body {
-    background-color: #09090b;
-    color: #fafafa;
-    font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    overflow-x: hidden;
-    min-height: 100vh;
-  }
-
-  /* Impeccable Craft Floor: Tuned browser surfaces */
-  ::selection {
-    background: rgba(232, 228, 220, 0.22);
-    color: #ffffff;
-  }
-
-  :focus-visible {
-    outline: 2px solid rgba(232, 228, 220, 0.7);
-    outline-offset: 2px;
-  }
-
-  /* Editorial Restrained Scrollbar */
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: #09090b;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #27272a;
-    border-radius: 9999px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #3f3f46;
-  }
+/* ── Reset ──────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
 }
 
-.tabular-nums {
-  font-variant-numeric: tabular-nums;
+img, picture, video, canvas, svg {
+  max-width: 100%;
+  display: block;
 }
 
-/* Monospace details styling helper */
-.font-mono-data {
-  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+ul, ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-@keyframes pulse-subtle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.92); }
+a, button {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  font: inherit;
 }
 
-.animate-pulse-subtle {
-  animation: pulse-subtle 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+/* ── Single Source of Truth: CSS Custom Properties on :root ──────── */
+:root {
+  --sidebar-width: 16rem;
+  --line-numbers-width: 3.5rem;
+  --line-height: 1.375rem; /* ~19.25px at 14px base */
+  --pad-xs: 0.167rem;
+  --pad-sm: 0.333rem;
+  --pad-md: 0.667rem;
+
+  /* Surfaces & Base */
+  --color-base: #1c2225;
+  --color-surface0: #232a2e;
+  --color-surface1: #2b3337;
+  --color-surface2: #374145;
+  --color-overlay0: #4a585c;
+  --color-overlay1: #58686d;
+  --color-overlay2: #6f8788;
+  --color-subtext0: #839e9a;
+  --color-subtext1: #96b4aa;
+  --color-subtext2: #adc9bc;
+  --color-text: #f8f9e8;
+
+  /* Accent palette */
+  --color-green: #cbe3b3;
+  --color-purple: #d2bdf3;
+  --color-blue: #b2caed;
+  --color-red: #f57f82;
+  --color-orange: #f7a182;
+  --color-yellow: #f5d098;
+  --color-pink: #f3c0e5;
+  --color-aqua: #b3e3ca;
 }
 
-/* ── Film Grain Overlay ─────────────────────────────────────────────────── */
-@keyframes grain {
-  0%   { transform: translate(0, 0); }
-  10%  { transform: translate(-2%, -3%); }
-  20%  { transform: translate(3%, 2%); }
-  30%  { transform: translate(-1%, 4%); }
-  40%  { transform: translate(4%, -1%); }
-  50%  { transform: translate(-3%, 3%); }
-  60%  { transform: translate(2%, -4%); }
-  70%  { transform: translate(-4%, 1%); }
-  80%  { transform: translate(1%, -2%); }
-  90%  { transform: translate(-2%, 4%); }
-  100% { transform: translate(0, 0); }
+/* ── Base ───────────────────────────────────────────────────────── */
+html {
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+  overflow-x: hidden;
+  background-color: var(--color-base);
+  scroll-behavior: smooth;
 }
 
-.grain-overlay {
-  pointer-events: none;
-  position: fixed;
-  inset: -200%;
-  width: 400%;
-  height: 400%;
-  z-index: 9998;
-  opacity: 0.032;
-  animation: grain 0.45s steps(1) infinite;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 256px 256px;
+body {
+  font-family: var(--font-ui), monospace;
+  font-size: 1rem;
+  line-height: var(--line-height);
+  background-color: var(--color-base);
+  color: var(--color-subtext0);
+  min-height: 100vh;
 }
 
-/* ── Cursor Glow ────────────────────────────────────────────────────────── */
-.cursor-glow {
-  pointer-events: none;
-  position: fixed;
-  width: 560px;
-  height: 560px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(
-    circle,
-    rgba(232, 228, 220, 0.055) 0%,
-    rgba(232, 228, 220, 0.018) 40%,
-    transparent 70%
-  );
-  mix-blend-mode: screen;
-  z-index: 9997;
-  transition: opacity 0.4s ease;
-  will-change: transform;
+::selection {
+  background: var(--color-green);
+  color: var(--color-base);
 }
 
-/* ── 3-D Card Flip ──────────────────────────────────────────────────────── */
-.card-flip-wrapper {
-  perspective: 900px;
-  position: relative;
+:focus-visible {
+  outline: 1px solid var(--color-green);
+  outline-offset: -1px;
 }
 
-.card-flip-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+/* Invisible scrollbars */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+* {
+  scrollbar-width: none;
 }
 
-.card-flip-wrapper:hover .card-flip-inner {
-  transform: rotateY(180deg);
+/* ── Headings ───────────────────────────────────────────────────── */
+h1 {
+  color: var(--color-text);
+  font-weight: 700;
+  line-height: var(--line-height);
 }
 
-.card-face {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  border-radius: inherit;
+h2 {
+  color: var(--color-subtext2);
+  font-weight: 600;
+  line-height: var(--line-height);
 }
 
-.card-face-back {
-  transform: rotateY(180deg);
+h3, h4 {
+  color: var(--color-subtext1);
+  font-weight: 500;
+  line-height: var(--line-height);
 }
 
-/* ── Scramble text cursor blink ─────────────────────────────────────────── */
-@keyframes blink {
+/* ── Global Utility Classes for Design Tokens ───────────────────── */
+.text-text { color: var(--color-text); }
+.text-green { color: var(--color-green); }
+.text-purple { color: var(--color-purple); }
+.text-blue { color: var(--color-blue); }
+.text-red { color: var(--color-red); }
+.text-orange { color: var(--color-orange); }
+.text-yellow { color: var(--color-yellow); }
+.text-pink { color: var(--color-pink); }
+.text-aqua { color: var(--color-aqua); }
+.text-subtext0 { color: var(--color-subtext0); }
+.text-subtext1 { color: var(--color-subtext1); }
+.text-subtext2 { color: var(--color-subtext2); }
+.text-overlay0 { color: var(--color-overlay0); }
+.text-overlay1 { color: var(--color-overlay1); }
+.text-overlay2 { color: var(--color-overlay2); }
+
+.bg-base { background-color: var(--color-base); }
+.bg-surface0 { background-color: var(--color-surface0); }
+.bg-surface1 { background-color: var(--color-surface1); }
+.bg-surface2 { background-color: var(--color-surface2); }
+.bg-green { background-color: var(--color-green); }
+
+.border-overlay0 { border-color: var(--color-overlay0); }
+.border-overlay1 { border-color: var(--color-overlay1); }
+.border-overlay2 { border-color: var(--color-overlay2); }
+.border-green { border-color: var(--color-green); }
+
+/* ── IDE Button (inline chip links) ────────────────────────────── */
+.ide-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5ch;
+  color: var(--btn-color, var(--color-green));
+  background: var(--color-surface1);
+  padding: 0 0.5ch;
+  line-height: var(--line-height);
+  border: 1px solid transparent;
+  transition: background 0.1s ease, transform 0.1s ease, border-color 0.1s ease;
+  font-family: var(--font-ui), monospace;
+}
+
+.ide-btn:hover {
+  background: var(--color-surface2);
+  border-color: var(--color-overlay0);
+  transform: translateY(-1px);
+}
+
+.ide-btn:active {
+  transform: translateY(0);
+}
+
+/* ── Animations ─────────────────────────────────────────────────── */
+@keyframes blink-cursor {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
-.scramble-cursor {
-  display: inline-block;
-  width: 2px;
-  height: 1em;
-  background: currentColor;
-  margin-left: 1px;
-  vertical-align: text-bottom;
-  animation: blink 0.7s step-end infinite;
+
+.cursor-blink {
+  animation: blink-cursor 1s step-end infinite;
 }
 
-/* ── Project card sticky — desktop only via CSS custom property ─────────── */
-@media (min-width: 768px) {
-  .project-card {
-    top: calc(4.5rem + 0.75rem + (var(--card-index) * 1rem));
+/* ── Film Grain Overlay ────────────────────────────────────────── */
+.grain-overlay {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  opacity: 0.03;
+  z-index: 999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* ── Responsive & Accessibility ────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

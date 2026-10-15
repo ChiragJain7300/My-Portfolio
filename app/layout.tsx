@@ -1,26 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { LenisProvider } from "@/components/providers/LenisProvider";
-import { RecruiterModeProvider } from "@/components/providers/RecruiterModeContext";
-import { GlobalEffects } from "@/components/ui/GlobalEffects";
+import { ShellLayout } from "@/components/layout/ShellLayout";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-ui",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#09090b",
+  themeColor: "#1c2225",
   colorScheme: "dark",
 };
 
@@ -56,17 +49,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
-    >
-      <body className="min-h-full flex flex-col bg-[#09090b] text-zinc-100 selection:bg-[#e8e4dc]/20 selection:text-white antialiased">
-        <GlobalEffects />
-        <LenisProvider>
-          <RecruiterModeProvider>
-            {children}
-          </RecruiterModeProvider>
-        </LenisProvider>
+    <html lang="en" className={jetbrainsMono.variable}>
+      <body className="antialiased selection:bg-[#cbe3b3] selection:text-[#1c2225]">
+        <div className="grain-overlay" aria-hidden="true" />
+        <ShellLayout>{children}</ShellLayout>
       </body>
     </html>
   );
