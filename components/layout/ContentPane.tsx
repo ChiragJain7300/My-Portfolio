@@ -1,58 +1,70 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useCallback } from "react";
 import { usePathname } from "next/navigation";
-import { LineNumbers } from "./LineNumbers";
 
-export function ContentPane({ children }: { children: React.ReactNode }) {
-  const contentContainerRef = useRef<HTMLDivElement>(null);
+interface ContentPaneProps {
+  children: React.ReactNode;
+}
+
+export function ContentPane({ children }: ContentPaneProps) {
   const pathname = usePathname();
 
-  const getBreadcrumb = () => {
+  const getBreadcrumb = useCallback(() => {
     if (pathname === "/") return "README.md";
-    const clean = pathname.replace(/^\//, "");
+
+    const clean = pathname.replace(/^\/+|\/+$/g, "");
+
+    if (clean === "projects") return "projects / index.md";
+
     if (clean.startsWith("projects/")) {
-      const slug = clean.replace("projects/", "");
+      const slug = clean.slice("projects/".length);
       return `projects / ${slug}.md`;
     }
-    if (clean === "projects") return "projects / index.md";
-    if (clean === "experience") return "experience / timeline.md";
-    if (clean === "lab") return "lab / architecture.tsx";
-    if (clean === "contact") return "contact / contact-me.md";
-    return `${clean}.md`;
-  };
+
+    const routeMap: Record<string, string> = {
+      experience: "experience / timeline.md",
+      lab: "lab / architecture.tsx",
+      contact: "contact / contact-me.md",
+    };
+
+    return routeMap[clean] ?? `${clean}.md`;
+  }, [pathname]);
 
   return (
-    <div className="flex min-h-screen bg-[var(--color-surface0)] text-[var(--color-subtext0)] font-mono w-full">
-      {/* Line Numbers Gutter (Desktop only) */}
-      <div className="hidden md:block pt-4 pl-2 shrink-0">
-        <LineNumbers containerRef={contentContainerRef} />
-      </div>
+    <div className="flex min-h-screen w-full flex-col bg-[var(--color-surface0)] font-mono text-[var(--color-subtext0)]">
+      {/* Editor file tab header */}
+      <header className="sticky top-0 z-20 flex items-center justify-between gap-4 border-b border-[var(--color-overlay0)]/40 bg-[var(--color-surface0)] pb-2 pt-3 text-xs text-[var(--color-subtext1)] select-none px-4 sm:px-6 md:px-10">
+        <div className="flex min-w-0 items-center gap-2">
+          <span className="shrink-0 text-[var(--color-purple)]">
+            ~/chirag-jain
+          </span>
 
-      {/* Main Document Content */}
-      <div
-        ref={contentContainerRef}
-        className="flex-1 min-w-0 max-w-[100ch] pt-4 pb-24 px-4 sm:px-6 md:px-8"
-        style={{ lineHeight: "var(--line-height, 1.375rem)" }}
-      >
-        {/* Editor File Tab Header */}
-        <div className="mb-6 pb-2 border-b border-[var(--color-overlay0)]/40 flex items-center justify-between text-xs text-[var(--color-subtext1)] select-none">
-          <div className="flex items-center gap-2">
-            <span className="text-[var(--color-purple)]">~/chirag-jain</span>
-            <span className="text-[var(--color-overlay2)]">/</span>
-            <span className="text-[var(--color-green)] font-semibold truncate">
-              {getBreadcrumb()}
-            </span>
-          </div>
-          <div className="text-[10px] text-[var(--color-overlay2)] hidden sm:flex items-center gap-3">
-            <span>UTF-8</span>
-            <span>LF</span>
-            <span>TypeScript / Markdown</span>
-          </div>
+          <span className="text-[var(--color-overlay2)]">/</span>
+
+          <span className="truncate font-semibold text-[var(--color-green)]">
+            {getBreadcrumb()}
+          </span>
         </div>
 
-        {children}
-      </div>
+        <div className="hidden shrink-0 items-center gap-3 text-[10px] text-[var(--color-overlay2)] sm:flex">
+          <span>UTF-8</span>
+          <span>LF</span>
+          <span>TypeScript / Markdown</span>
+        </div>
+      </header>
+
+      {/* Main Document Content */}
+      <main className="relative flex w-full flex-1 pb-24 pt-4">
+        <div
+          className="min-w-0 w-full max-w-[95ch] px-4 sm:px-6 md:px-10"
+          style={{
+            lineHeight: "var(--line-height, 1.375rem)",
+          }}
+        >
+          {children}
+        </div>
+      </main>
     </div>
   );
 }

@@ -27,8 +27,8 @@ export function ExperienceSection() {
   };
 
   return (
-    <section id="experience" className="pt-8 pb-10 border-b border-[var(--color-overlay0)]/60 space-y-6">
-      <div className="flex items-center justify-between">
+    <section id="experience" className="pt-1 pb-10 space-y-6">
+      <div data-line-block className="flex items-center justify-between">
         <h2 className="text-xl sm:text-2xl font-bold text-[var(--color-subtext2)]">
           ## experience/
         </h2>
@@ -37,7 +37,7 @@ export function ExperienceSection() {
         </span>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 pt-1">
         {/* Render in reverse order so latest role is on top */}
         {[...workExperience].reverse().map((exp) => {
           const isOpen = !!openMap[exp.id];
@@ -48,6 +48,7 @@ export function ExperienceSection() {
             <div
               key={exp.id}
               id={anchorId}
+              data-line-block
               className="border border-[var(--color-overlay0)] bg-[var(--color-surface1)]/30 transition-all scroll-mt-14"
             >
               {/* Header */}

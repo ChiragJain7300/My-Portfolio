@@ -44,7 +44,7 @@ export function ControlPanel() {
   }, []);
 
   return (
-    <div className="hidden md:block fixed top-2 right-4 z-40 font-mono text-xs select-none">
+    <div className="hidden md:block fixed top-13 right-4 z-40 font-mono text-xs select-none">
       <div className="bg-[var(--color-surface1)]/90 backdrop-blur-xs border border-[var(--color-overlay0)] shadow-md">
         <button
           onClick={() => setOpen(!open)}

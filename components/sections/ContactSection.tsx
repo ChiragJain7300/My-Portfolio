@@ -13,8 +13,8 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="pt-8 pb-16 space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-2">
+    <section id="contact" className="pt-1 pb-16 space-y-6">
+      <div data-line-block className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-subtext2)]">
           ## contact-me
         </h2>
@@ -23,12 +23,12 @@ export function ContactSection() {
         </span>
       </div>
 
-      <p className="text-sm sm:text-base text-[var(--color-subtext0)] leading-relaxed max-w-[70ch]">
+      <p data-line-block className="text-sm sm:text-base text-[var(--color-subtext0)] leading-relaxed max-w-[70ch]">
         Currently open to senior engineering roles, high-impact contracts, autonomous AI architecture, and technical advisory.
       </p>
 
       {/* Contact Action Block */}
-      <div className="p-4 sm:p-6 border border-[var(--color-overlay0)] bg-[var(--color-surface1)]/30 space-y-5 max-w-xl text-sm sm:text-base">
+      <div data-line-block className="p-4 sm:p-6 border border-[var(--color-overlay0)] bg-[var(--color-surface1)]/30 space-y-5 max-w-xl text-sm sm:text-base">
         {/* Email Direct */}
         <div className="space-y-2">
           <div className="text-xs uppercase font-semibold tracking-wider text-[var(--color-overlay2)]">

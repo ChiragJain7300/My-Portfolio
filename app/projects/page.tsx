@@ -22,8 +22,8 @@ export default function ProjectsPage() {
   };
 
   return (
-    <article className="space-y-6 pt-2 pb-12">
-      <div className="flex items-center justify-between">
+    <article className="space-y-6 pt-1 pb-12">
+      <div data-line-block className="flex items-center justify-between">
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-text)]">
           ## projects/
         </h1>
@@ -32,18 +32,19 @@ export default function ProjectsPage() {
         </span>
       </div>
 
-      <p className="text-xs sm:text-sm text-[var(--color-subtext0)] leading-relaxed">
+      <p data-line-block className="text-xs sm:text-sm text-[var(--color-subtext0)] leading-relaxed">
         Production-grade full stack applications, high-throughput backend integration engines, and autonomous LLM/agentic automation pipelines.
       </p>
 
       {/* Projects List */}
-      <div className="space-y-4 pt-2">
+      <div className="space-y-4 pt-1">
         {projects.map((proj) => {
           const catColor = getCategoryColor(proj.category);
 
           return (
             <div
               key={proj.slug}
+              data-line-block
               className="border border-[var(--color-overlay0)] bg-[var(--color-surface1)]/30 p-4 space-y-3 transition-colors hover:border-[var(--color-overlay2)]"
             >
               <div className="flex flex-wrap items-center justify-between gap-2">

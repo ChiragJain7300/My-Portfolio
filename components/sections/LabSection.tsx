@@ -27,8 +27,8 @@ export function LabSection() {
   ];
 
   return (
-    <section id="lab" className="pt-8 pb-10 border-b border-[var(--color-overlay0)]/60 space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-2">
+    <section id="lab" className="pt-1 pb-10 space-y-6">
+      <div data-line-block className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-subtext2)]">
           ## lab
         </h2>
@@ -37,12 +37,12 @@ export function LabSection() {
         </span>
       </div>
 
-      <p className="text-sm sm:text-base text-[var(--color-subtext0)] leading-relaxed">
+      <p data-line-block className="text-sm sm:text-base text-[var(--color-subtext0)] leading-relaxed">
         Live interactive simulations of production concurrency patterns, deterministic recovery runners, and runtime environment resolution.
       </p>
 
       {/* Frame / Box */}
-      <div className="border border-[var(--color-overlay0)] bg-[var(--color-surface1)]/20">
+      <div data-line-block className="border border-[var(--color-overlay0)] bg-[var(--color-surface1)]/20">
         {/* Tab Header */}
         <div className="bg-[var(--color-surface1)] px-2 py-2 border-b border-[var(--color-overlay0)] flex flex-wrap items-center gap-2">
           {modes.map((m) => {

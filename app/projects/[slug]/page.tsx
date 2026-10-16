@@ -44,9 +44,9 @@ export default async function ProjectPage({
     currentIndex < projects.length - 1 ? projects[currentIndex + 1] : null;
 
   return (
-    <article className="space-y-6 pt-2 pb-16 font-mono">
+    <article className="space-y-6 pt-1 pb-16 font-mono">
       {/* Top Breadcrumb & Back Link */}
-      <div className="flex items-center justify-between text-xs text-[var(--color-subtext1)] pb-2 border-b border-[var(--color-overlay0)]/40">
+      <div data-line-block className="flex items-center justify-between text-xs text-[var(--color-subtext1)] pb-2 border-b border-[var(--color-overlay0)]/40">
         <Link
           href="/projects"
           className="ide-btn"
@@ -61,7 +61,7 @@ export default async function ProjectPage({
       </div>
 
       {/* Main Title & Metadata */}
-      <div>
+      <div data-line-block>
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-text)]">
           # {project.title}
         </h1>
@@ -71,7 +71,7 @@ export default async function ProjectPage({
       </div>
 
       {/* Description */}
-      <div className="border-l-2 border-[var(--color-green)] pl-3 py-1 bg-[var(--color-surface1)]/40 text-xs sm:text-sm text-[var(--color-subtext2)] leading-relaxed">
+      <div data-line-block className="border-l-2 border-[var(--color-green)] pl-3 py-1 bg-[var(--color-surface1)]/40 text-xs sm:text-sm text-[var(--color-subtext2)] leading-relaxed">
         {project.des}
       </div>
 

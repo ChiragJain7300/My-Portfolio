@@ -15,12 +15,12 @@ export function IDEShell({
   isTableView,
 }: IDEShellProps) {
   return (
-    <div className="flex flex-col md:grid md:grid-cols-[var(--sidebar-width)_1fr] min-h-screen bg-[var(--color-base)] text-[var(--color-subtext0)] w-full overflow-x-hidden">
+    <div className="flex flex-col md:grid md:grid-cols-[var(--sidebar-width)_1fr] h-screen bg-[var(--color-base)] text-[var(--color-subtext0)] w-full overflow-hidden">
       <Sidebar
         onToggleTableView={onToggleTableView}
         isTableView={isTableView}
       />
-      <main id="main-content" className="bg-[var(--color-surface0)] min-h-screen min-w-0 w-full overflow-x-hidden">
+      <main id="main-content" className="bg-[var(--color-surface0)] h-screen min-w-0 w-full overflow-y-auto overflow-x-hidden">
         {children}
       </main>
     </div>

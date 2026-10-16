@@ -53,7 +53,7 @@ export function Sidebar({
   const navItemClass = (path: string) => {
     const active = isCurrent(path);
     if (active) {
-      return "bg-[var(--color-green)] text-[var(--color-base)] font-medium shadow-xs";
+      return "bg-[var(--color-green)] !text-[#171c1f] [&_*]:!text-[#171c1f] font-semibold shadow-xs";
     }
     return "text-[var(--color-subtext2)] hover:bg-[var(--color-surface2)] hover:text-[var(--color-text)]";
   };
