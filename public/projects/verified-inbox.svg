@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="screen-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14191c"/>
+      <stop offset="50%" stop-color="#1b2428"/>
+      <stop offset="100%" stop-color="#161e22"/>
+    </linearGradient>
+    <pattern id="screen-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#25353d" stroke-width="0.75" stroke-opacity="0.6"/>
+    </pattern>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#screen-bg)"/>
+  <rect width="800" height="500" fill="url(#screen-grid)"/>
+
+  <!-- Top Accent Line -->
+  <line x1="40" y1="36" x2="760" y2="36" stroke="#0ea5e9" stroke-width="2" stroke-opacity="0.8"/>
+
+  <!-- Header -->
+  <rect x="40" y="48" width="720" height="42" rx="8" fill="#1f2b31" stroke="#2c3e47" stroke-width="1"/>
+  <circle cx="62" cy="69" r="5" fill="#ef4444"/>
+  <circle cx="78" cy="69" r="5" fill="#f59e0b"/>
+  <circle cx="94" cy="69" r="5" fill="#10b981"/>
+  <text x="120" y="73" font-family="monospace" font-size="12" fill="#8da9b5" font-weight="600">SYS_PREVIEW // VERIFIED INBOX (GMAIL INTELLIGENCE &amp; SENDER SECURITY)</text>
+  <rect x="635" y="58" width="108" height="22" rx="11" fill="#0ea5e9" fill-opacity="0.2" stroke="#0ea5e9" stroke-opacity="0.4"/>
+  <text x="689" y="73" font-family="monospace" font-size="10" fill="#38bdf8" text-anchor="middle" font-weight="700">● 500 EMAILS &lt;6.5s</text>
+
+  <!-- Left: Gmail API Dual-Sync -->
+  <rect x="60" y="115" width="200" height="135" rx="10" fill="#172227" stroke="#0ea5e9" stroke-width="1.5"/>
+  <text x="76" y="142" font-family="sans-serif" font-size="12" font-weight="800" fill="#ffffff">GMAIL DUAL-SYNC</text>
+  <text x="76" y="162" font-family="monospace" font-size="10" fill="#38bdf8">NestJS 11 + Google API</text>
+  <text x="76" y="180" font-family="monospace" font-size="9" fill="#93c5fd">• Parallel Batches (50x Concurrency)</text>
+  <text x="76" y="196" font-family="monospace" font-size="9" fill="#93c5fd">• Delta History Heartbeat</text>
+  <text x="76" y="212" font-family="monospace" font-size="9" fill="#93c5fd">• 7-Day History Expiry Reset</text>
+  <rect x="76" y="222" width="168" height="16" rx="4" fill="#0ea5e9" fill-opacity="0.2"/>
+  <text x="160" y="233" font-family="monospace" font-size="8.5" fill="#7dd3fc" text-anchor="middle">PROMISE.ALLSETTLED BATCHING</text>
+
+  <!-- Middle: Auth & Concurrency Lock -->
+  <rect x="300" y="115" width="200" height="135" rx="10" fill="#1b282f" stroke="#38bdf8" stroke-width="2"/>
+  <text x="316" y="142" font-family="sans-serif" font-size="12" font-weight="800" fill="#ffffff">TOKEN MUTEX &amp; LOCK</text>
+  <text x="316" y="162" font-family="monospace" font-size="10" fill="#cbe3b3">Coalescing Lock Map</text>
+  <text x="316" y="180" font-family="monospace" font-size="9" fill="#93c5fd">• Zero invalid_grant Errors</text>
+  <text x="316" y="196" font-family="monospace" font-size="9" fill="#93c5fd">• Atomic UUID Exchange Token</text>
+  <text x="316" y="212" font-family="monospace" font-size="9" fill="#93c5fd">• DELETE ... RETURNING User</text>
+  <rect x="316" y="222" width="168" height="16" rx="4" fill="#0284c7" fill-opacity="0.3"/>
+  <text x="400" y="233" font-family="monospace" font-size="8.5" fill="#bae6fd" text-anchor="middle">NO SAMESITE COOKIE DROPS</text>
+
+  <!-- Right: Trust Scoring & Frontend -->
+  <rect x="540" y="115" width="200" height="135" rx="10" fill="#172227" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="556" y="142" font-family="sans-serif" font-size="12" font-weight="800" fill="#ffffff">TRUST SCORING &amp; TIPTAP</text>
+  <text x="556" y="162" font-family="monospace" font-size="10" fill="#38bdf8">React 19 + TanStack Query</text>
+  <text x="556" y="180" font-family="monospace" font-size="9" fill="#93c5fd">• 0-100 Sender Legitimacy</text>
+  <text x="556" y="196" font-family="monospace" font-size="9" fill="#93c5fd">• Headless Tiptap v3 Composer</text>
+  <text x="556" y="212" font-family="monospace" font-size="9" fill="#93c5fd">• Phishing &amp; Noise Isolation</text>
+  <rect x="556" y="222" width="168" height="16" rx="4" fill="#0369a1" fill-opacity="0.3"/>
+  <text x="640" y="233" font-family="monospace" font-size="8.5" fill="#7dd3fc" text-anchor="middle">SENDER GATING PIPELINE</text>
+
+  <!-- Connectors -->
+  <line x1="260" y1="180" x2="300" y2="180" stroke="#0ea5e9" stroke-width="2"/>
+  <line x1="500" y1="180" x2="540" y2="180" stroke="#0ea5e9" stroke-width="2"/>
+
+  <!-- Terminal Output -->
+  <rect x="60" y="280" width="680" height="175" rx="10" fill="#13191c" stroke="#23323a" stroke-width="1"/>
+  <rect x="60" y="280" width="680" height="26" rx="10" fill="#1a252a"/>
+  <text x="76" y="297" font-family="monospace" font-size="10.5" fill="#7694a1">TERMINAL // GMAIL PARALLEL BATCH INGESTION &amp; TOKEN MUTEX TRACE</text>
+
+  <text x="76" y="328" font-family="monospace" font-size="10" fill="#38bdf8">[09:14:02] GMAIL_BATCH_SYNC:</text>
+  <text x="270" y="328" font-family="monospace" font-size="10" fill="#e2e8f0">Dispatched 10 concurrent chunks (50 messages each). Ingested 500 emails in 6.1s.</text>
+
+  <text x="76" y="348" font-family="monospace" font-size="10" fill="#7dd3fc">[09:14:02] TOKEN_COALESCING:</text>
+  <text x="270" y="348" font-family="monospace" font-size="10" fill="#e2e8f0">5 parallel 401s coalesced into 1 Google refresh request. 0 invalid_grant errors.</text>
+
+  <text x="76" y="368" font-family="monospace" font-size="10" fill="#bae6fd">[09:15:10] OAUTH_AUTH_CODE:</text>
+  <text x="270" y="368" font-family="monospace" font-size="10" fill="#e2e8f0">DELETE ... WHERE code = :code RETURNING user_id. Atomic single-use code validated.</text>
+
+  <text x="76" y="388" font-family="monospace" font-size="10" fill="#38bdf8">[09:16:44] SENDER_GATING:</text>
+  <text x="270" y="388" font-family="monospace" font-size="10" fill="#e2e8f0">Evaluated 42 incoming senders. Isolated 9 unverified senders into Challenge Queue.</text>
+
+  <rect x="76" y="410" width="220" height="26" rx="6" fill="#1b292f" stroke="#2c444f" stroke-width="1"/>
+  <text x="186" y="427" font-family="monospace" font-size="9.5" fill="#7dd3fc" text-anchor="middle" font-weight="700">✓ EMAIL INTELLIGENCE ENGINE ACTIVE</text>
+</svg>

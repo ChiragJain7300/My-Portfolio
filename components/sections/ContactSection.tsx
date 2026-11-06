@@ -30,37 +30,37 @@ export function ContactSection() {
   };
 
   return (
-    <footer id="contact" className="relative min-h-screen flex flex-col justify-between py-14 sm:py-20 md:py-24 px-4 md:px-8 lg:px-12 bg-[#09090b] border-t border-white/8">
+    <footer id="contact" className="relative min-h-screen flex flex-col justify-between py-14 sm:py-20 md:py-24 px-4 md:px-8 lg:px-12 bg-[#1c2225] border-t border-[var(--color-overlay0)]/30">
       <div className="max-w-5xl mx-auto space-y-16">
         {/* Section Header */}
         <div className="space-y-4">
           <div className="flex items-center gap-3 text-xs font-mono">
-            <span className="text-[#e8e4dc] font-bold">[04]</span>
-            <span className="tracking-wide uppercase text-zinc-300 font-semibold">
+            <span className="text-[var(--color-green)] font-bold">[04]</span>
+            <span className="tracking-wide uppercase text-[var(--color-subtext2)] font-semibold">
               DIRECT INITIATION · CONTACT
             </span>
           </div>
 
-          <h2 className="text-[clamp(2.2rem,8vw,7rem)] font-sans font-black tracking-tight text-white uppercase leading-[0.95]"
+          <h2 className="text-[clamp(2.2rem,8vw,7rem)] font-sans font-black tracking-tight text-[var(--color-text)] uppercase leading-[0.95]"
           >
             Ready to ship<br />production systems.
           </h2>
 
-          <p className="text-sm md:text-base text-zinc-300 leading-relaxed" style={{ maxWidth: "440px" }}>
+          <p className="text-sm md:text-base text-[var(--color-subtext2)] leading-relaxed" style={{ maxWidth: "440px" }}>
             Currently open to senior engineering roles, high-impact contract systems, and technical advisory.
           </p>
         </div>
 
         {/* Editorial Flat Contact Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-8 border-t border-white/8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-8 border-t border-[var(--color-overlay0)]/30">
           {/* Primary Email Column */}
           <div className="space-y-6">
             <div>
-              <div className="flex items-center gap-2 font-mono text-xs text-zinc-400 mb-2">
-                <Mail className="w-3.5 h-3.5" />
+              <div className="flex items-center gap-2 font-mono text-xs text-[var(--color-overlay2)] mb-2">
+                <Mail className="w-3.5 h-3.5 text-[var(--color-green)]" />
                 <span>PRIMARY INBOX</span>
               </div>
-              <div className="text-2xl md:text-3xl font-bold font-sans text-white break-all">
+              <div className="text-2xl md:text-3xl font-bold font-sans text-[var(--color-text)] break-all">
                 {developerProfile.email}
               </div>
             </div>
@@ -68,17 +68,17 @@ export function ContactSection() {
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <a
                 href={`mailto:${developerProfile.email}`}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#e8e4dc] text-zinc-950 font-mono text-xs font-bold hover:bg-white transition-all active:scale-95"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[var(--color-green)] text-[#1c2225] font-mono text-xs font-bold hover:bg-[#d8eed0] shadow-[0_0_20px_rgba(203,227,179,0.25)] transition-all active:scale-95"
               >
                 <span>WRITE AN EMAIL</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
+                <ArrowUpRight className="w-3.5 h-3.5 text-[#1c2225]" />
               </a>
 
               <button
                 onClick={handleCopyEmail}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-zinc-200 font-mono text-xs transition-colors"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[var(--color-surface0)] border border-[var(--color-overlay0)]/40 hover:border-[var(--color-green)]/40 text-[var(--color-subtext2)] hover:text-white font-mono text-xs transition-colors"
               >
-                {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                {copied ? <Check className="w-3.5 h-3.5 text-[var(--color-green)]" /> : <Copy className="w-3.5 h-3.5 text-[var(--color-green)]" />}
                 <span>{copied ? "COPIED TO CLIPBOARD" : "COPY EMAIL"}</span>
               </button>
             </div>
@@ -86,20 +86,20 @@ export function ContactSection() {
 
           {/* Social and Networks Column */}
           <div className="space-y-6">
-            <div className="font-mono text-xs text-zinc-400">NETWORKS &amp; REPOSITORIES</div>
+            <div className="font-mono text-xs text-[var(--color-overlay2)]">NETWORKS &amp; REPOSITORIES</div>
 
-            <div className="divide-y divide-white/8 font-mono text-xs">
+            <div className="divide-y divide-[var(--color-overlay0)]/30 font-mono text-xs">
               <a
                 href={developerProfile.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-between py-3.5 hover:text-white transition-colors group"
               >
-                <span className="flex items-center gap-2.5 text-zinc-200 group-hover:text-white">
-                  <GithubIcon className="w-4 h-4 text-zinc-400" />
+                <span className="flex items-center gap-2.5 text-[var(--color-subtext2)] group-hover:text-white">
+                  <GithubIcon className="w-4 h-4 text-[var(--color-overlay2)]" />
                   <span>GITHUB / ChiragJain7300</span>
                 </span>
-                <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight className="w-3.5 h-3.5 text-[var(--color-green)] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
 
               <a
@@ -108,27 +108,29 @@ export function ContactSection() {
                 rel="noopener noreferrer"
                 className="flex items-center justify-between py-3.5 hover:text-white transition-colors group"
               >
-                <span className="flex items-center gap-2.5 text-zinc-200 group-hover:text-white">
-                  <LinkedinIcon className="w-4 h-4 text-zinc-400" />
+                <span className="flex items-center gap-2.5 text-[var(--color-subtext2)] group-hover:text-white">
+                  <LinkedinIcon className="w-4 h-4 text-[var(--color-overlay2)]" />
                   <span>LINKEDIN / in/chirag-jain-7300</span>
                 </span>
-                <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight className="w-3.5 h-3.5 text-[var(--color-green)] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </div>
 
-            <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 pt-2">
-              <Globe className="w-3.5 h-3.5 text-zinc-400" />
+            <div className="flex items-center gap-2 text-xs font-mono text-[var(--color-overlay2)] pt-2">
+              <Globe className="w-3.5 h-3.5 text-[var(--color-green)]" />
               <span>India · Available for remote positions globally</span>
             </div>
           </div>
         </div>
 
         {/* Footer Base Note */}
-        <div className="pt-12 border-t border-white/8 flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-zinc-400">
+        <div className="pt-12 border-t border-[var(--color-overlay0)]/30 flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-[var(--color-overlay2)]">
           <div>
             <span>© 2026 CHIRAG JAIN · ASSEMBLED WITH EDITORIAL CRAFT</span>
           </div>
           <div className="flex items-center gap-4">
+            <span className="text-[var(--color-green)]">EVERFOREST THEME</span>
+            <span>·</span>
             <span>NEXT.JS 16 APP ROUTER</span>
             <span>·</span>
             <span>LENIS &amp; FRAMER MOTION</span>

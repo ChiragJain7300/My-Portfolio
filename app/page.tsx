@@ -17,7 +17,7 @@ export default function Home() {
   const { recruiterMode, toggleRecruiterMode } = useRecruiterMode();
 
   return (
-    <div className="relative min-h-screen bg-[#09090b] text-zinc-100">
+    <div className="relative min-h-screen bg-[#1c2225] text-[#adc9bc]">
       <ScrollProgress />
       {/* Floating Global Nav Bar */}
       <NavBar />
@@ -54,20 +54,20 @@ export default function Home() {
       <aside aria-label="View mode toggle" className="fixed bottom-5 right-4 sm:bottom-6 sm:right-6 z-40">
         <button
           onClick={toggleRecruiterMode}
-          className="group flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full bg-zinc-900/90 backdrop-blur-xl border border-white/10 hover:border-white/20 text-xs font-mono text-zinc-300 hover:text-white shadow-[0_8px_30px_rgba(0,0,0,0.5)] transition-all active:scale-95"
+          className="group flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full bg-[#232a2e]/90 backdrop-blur-xl border border-[var(--color-green)]/20 hover:border-[var(--color-green)]/40 text-xs font-mono text-[#adc9bc] hover:text-[#f8f9e8] shadow-[0_8px_30px_rgba(0,0,0,0.5)] transition-all active:scale-95"
           title={recruiterMode ? "Switch back to interactive studio view" : "Switch to dense ATS/Recruiter evaluation table"}
         >
           {recruiterMode ? (
             <>
-              <Sparkles className="w-3.5 h-3.5 text-[#e8e4dc] shrink-0" />
+              <Sparkles className="w-3.5 h-3.5 text-[var(--color-green)] shrink-0" />
               <span className="font-semibold tracking-wider hidden xs:inline sm:inline">STUDIO VIEW</span>
-              <span className="text-zinc-500 text-xs hidden md:inline">[ESC / R]</span>
+              <span className="text-[var(--color-overlay2)] text-xs hidden md:inline">[ESC / R]</span>
             </>
           ) : (
             <>
-              <Table className="w-3.5 h-3.5 text-[#e8e4dc] shrink-0" />
+              <Table className="w-3.5 h-3.5 text-[var(--color-green)] shrink-0" />
               <span className="font-semibold tracking-wider">RECRUITER TABLE</span>
-              <span className="text-zinc-500 text-xs hidden sm:inline">[KEY: R]</span>
+              <span className="text-[var(--color-overlay2)] text-xs hidden sm:inline">[KEY: R]</span>
             </>
           )}
         </button>

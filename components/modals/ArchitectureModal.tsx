@@ -21,7 +21,7 @@ export function ArchitectureModal({ project, onClose }: ArchitectureModalProps) 
   const [activeTab, setActiveTab] = useState<"blueprint" | "json">("blueprint");
   const [copied, setCopied] = useState(false);
 
-  // Close on Escape key
+  // Close on Escape key and prevent background scroll
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -45,37 +45,47 @@ export function ArchitectureModal({ project, onClose }: ArchitectureModalProps) 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-end bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="architecture-modal-title"
+      className="fixed inset-0 z-50 flex items-center justify-end bg-black/75 backdrop-blur-sm animate-in fade-in duration-200"
+    >
       {/* Backdrop click area */}
-      <div className="absolute inset-0" onClick={onClose} />
+      <div className="absolute inset-0" onClick={onClose} aria-hidden="true" />
 
       {/* Slide-over Drawer Panel */}
-      <div className="relative w-full max-w-2xl h-full bg-[#0d0d11] border-l border-white/10 shadow-2xl flex flex-col z-10 overflow-hidden text-zinc-100 animate-in slide-in-from-right duration-300">
+      <div className="relative w-full max-w-2xl h-full bg-[#1c2225] border-l border-[var(--color-overlay0)]/30 shadow-2xl flex flex-col z-10 overflow-hidden text-[var(--color-subtext2)] animate-in slide-in-from-right duration-300">
         {/* Header */}
-        <div className="p-6 md:p-8 border-b border-white/8 flex items-start justify-between bg-zinc-950/60">
+        <div className="p-6 md:p-8 border-b border-[var(--color-overlay0)]/30 flex items-start justify-between bg-[#232a2e]/90">
           <div>
-            <div className="flex items-center gap-3 font-mono text-xs text-zinc-400 mb-2">
-              <span className="text-[#e8e4dc]">PROJ_{String(project.id).padStart(2, "0")}</span>
+            <div className="flex items-center gap-3 font-mono text-xs text-[var(--color-overlay2)] mb-2">
+              <span className="text-[var(--color-green)] font-bold">
+                PROJ_{String(project.id).padStart(2, "0")}
+              </span>
               <span>·</span>
               <span className="uppercase tracking-wider">{project.categoryLabel}</span>
               {project.isPrivate ? (
-                <span className="flex items-center gap-1 text-amber-400/80 bg-amber-400/10 px-2 py-0.5 rounded text-[10px]">
+                <span className="flex items-center gap-1 text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded text-[10px]">
                   <Lock className="w-2.5 h-2.5" /> PROPRIETARY
                 </span>
               ) : (
-                <span className="text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded text-[10px]">
+                <span className="text-[var(--color-green)] bg-[var(--color-green)]/15 border border-[var(--color-green)]/30 px-2 py-0.5 rounded text-[10px]">
                   PUBLIC
                 </span>
               )}
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold font-sans tracking-tight text-white">
+            <h2
+              id="architecture-modal-title"
+              className="text-2xl md:text-3xl font-bold font-sans tracking-tight text-[var(--color-text)]"
+            >
               {project.title}
             </h2>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors"
+            className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors cursor-pointer"
             aria-label="Close dialog"
           >
             <X className="w-5 h-5" />
@@ -83,23 +93,23 @@ export function ArchitectureModal({ project, onClose }: ArchitectureModalProps) 
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex items-center px-6 md:px-8 border-b border-white/8 bg-zinc-950/40 text-xs font-mono">
+        <div className="flex items-center px-6 md:px-8 border-b border-[var(--color-overlay0)]/30 bg-[#232a2e]/50 text-xs font-mono">
           <button
             onClick={() => setActiveTab("blueprint")}
-            className={`py-3 px-4 border-b-2 font-medium transition-colors ${
+            className={`py-3 px-4 border-b-2 font-medium transition-colors cursor-pointer ${
               activeTab === "blueprint"
-                ? "border-[#e8e4dc] text-white"
-                : "border-transparent text-zinc-400 hover:text-zinc-200"
+                ? "border-[var(--color-green)] text-[var(--color-green)] font-semibold"
+                : "border-transparent text-[var(--color-overlay2)] hover:text-white"
             }`}
           >
             SYSTEM BLUEPRINT
           </button>
           <button
             onClick={() => setActiveTab("json")}
-            className={`py-3 px-4 border-b-2 font-medium transition-colors ${
+            className={`py-3 px-4 border-b-2 font-medium transition-colors cursor-pointer ${
               activeTab === "json"
-                ? "border-[#e8e4dc] text-white"
-                : "border-transparent text-zinc-400 hover:text-zinc-200"
+                ? "border-[var(--color-green)] text-[var(--color-green)] font-semibold"
+                : "border-transparent text-[var(--color-overlay2)] hover:text-white"
             }`}
           >
             RAW DATA / SCHEMA
@@ -112,27 +122,27 @@ export function ArchitectureModal({ project, onClose }: ArchitectureModalProps) 
             <>
               {/* Executive Overview */}
               <div>
-                <h3 className="text-xs font-mono uppercase tracking-wider text-zinc-400 mb-2">
+                <h3 className="text-xs font-mono uppercase tracking-wider text-[var(--color-overlay2)] mb-2 font-semibold">
                   System Overview
                 </h3>
-                <p className="text-sm md:text-base leading-relaxed text-zinc-300">
+                <p className="text-sm md:text-base leading-relaxed text-[var(--color-text)] font-sans">
                   {project.des}
                 </p>
               </div>
 
               {/* Architectural Highlights */}
               <div>
-                <h3 className="text-xs font-mono uppercase tracking-wider text-zinc-400 mb-3">
+                <h3 className="text-xs font-mono uppercase tracking-wider text-[var(--color-overlay2)] mb-3 font-semibold">
                   Production Engineering Deliverables
                 </h3>
                 <div className="space-y-2.5">
                   {project.highlights.map((item, idx) => (
                     <div
                       key={idx}
-                      className="flex items-start gap-3 p-3 rounded-lg bg-white/[0.03] border border-white/6"
+                      className="flex items-start gap-3 p-3.5 rounded-xl bg-[#232a2e]/60 border border-[var(--color-overlay0)]/30 font-sans"
                     >
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                      <span className="text-xs md:text-sm text-zinc-200">{item}</span>
+                      <CheckCircle2 className="w-4 h-4 text-[var(--color-green)] mt-0.5 shrink-0" />
+                      <span className="text-xs md:text-sm text-[var(--color-subtext2)] leading-relaxed">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -140,14 +150,14 @@ export function ArchitectureModal({ project, onClose }: ArchitectureModalProps) 
 
               {/* Technology Stack Matrix */}
               <div>
-                <h3 className="text-xs font-mono uppercase tracking-wider text-zinc-400 mb-3">
+                <h3 className="text-xs font-mono uppercase tracking-wider text-[var(--color-overlay2)] mb-3 font-semibold">
                   Architecture &amp; Dependencies
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {project.tags.map((tag, idx) => (
                     <span
                       key={idx}
-                      className="px-2.5 py-1 rounded bg-white/[0.04] border border-white/10 font-mono text-xs text-zinc-300"
+                      className="px-2.5 py-1 rounded-md bg-[#232a2e] border border-[var(--color-overlay0)]/40 font-mono text-xs text-[var(--color-subtext1)]"
                     >
                       {tag}
                     </span>
@@ -158,16 +168,16 @@ export function ArchitectureModal({ project, onClose }: ArchitectureModalProps) 
           ) : (
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="font-mono text-xs text-zinc-400">JSON REPRESENTATION</span>
+                <span className="font-mono text-xs text-[var(--color-overlay2)] font-semibold">JSON REPRESENTATION</span>
                 <button
                   onClick={handleCopyJson}
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-white/5 border border-white/10 font-mono text-xs text-zinc-300 hover:text-white hover:bg-white/10 transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-surface1)] border border-[var(--color-overlay0)]/40 font-mono text-xs text-[var(--color-subtext2)] hover:text-white hover:border-[var(--color-green)]/40 transition-colors cursor-pointer"
                 >
-                  {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                  {copied ? <Check className="w-3.5 h-3.5 text-[var(--color-green)]" /> : <Copy className="w-3.5 h-3.5" />}
                   <span>{copied ? "COPIED" : "COPY"}</span>
                 </button>
               </div>
-              <pre className="p-4 rounded-xl bg-black/80 border border-white/10 font-mono text-xs text-zinc-300 overflow-x-auto leading-relaxed">
+              <pre className="p-4 rounded-xl bg-[#121618] border border-[var(--color-overlay0)]/30 font-mono text-xs text-[var(--color-subtext2)] overflow-x-auto leading-relaxed">
                 {JSON.stringify(project, null, 2)}
               </pre>
             </div>
@@ -175,14 +185,14 @@ export function ArchitectureModal({ project, onClose }: ArchitectureModalProps) 
         </div>
 
         {/* Action Footer */}
-        <div className="p-6 md:p-8 border-t border-white/8 bg-zinc-950/80 flex items-center justify-between">
+        <div className="p-6 md:p-8 border-t border-[var(--color-overlay0)]/30 bg-[#232a2e]/90 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {project.link && project.link.startsWith("http") && (
               <a
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#e8e4dc] text-zinc-950 font-mono text-xs font-bold hover:bg-white transition-colors"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--color-green)] text-[#1c2225] font-mono text-xs font-bold hover:bg-[#d8eed0] transition-colors shadow-sm"
               >
                 <span>OPEN LIVE SYSTEM</span>
                 <ExternalLink className="w-3.5 h-3.5" />
@@ -193,22 +203,22 @@ export function ArchitectureModal({ project, onClose }: ArchitectureModalProps) 
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white font-mono text-xs hover:bg-white/10 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--color-surface1)] border border-[var(--color-overlay0)]/40 text-[var(--color-subtext2)] hover:text-white font-mono text-xs transition-colors"
               >
                 <GithubIcon className="w-3.5 h-3.5" />
                 <span>SOURCE REPO</span>
               </a>
             )}
             {project.isPrivate && (
-              <span className="font-mono text-xs text-zinc-400 flex items-center gap-1.5">
-                <Lock className="w-3 h-3 text-zinc-500" /> Source code protected under NDA
+              <span className="font-mono text-xs text-[var(--color-overlay2)] flex items-center gap-1.5">
+                <Lock className="w-3 h-3 text-amber-400/80" /> Source code protected under client NDA
               </span>
             )}
           </div>
 
           <button
             onClick={onClose}
-            className="text-xs font-mono text-zinc-400 hover:text-white transition-colors"
+            className="text-xs font-mono text-[var(--color-overlay2)] hover:text-white transition-colors cursor-pointer"
           >
             ESC TO CLOSE
           </button>
@@ -217,3 +227,4 @@ export function ArchitectureModal({ project, onClose }: ArchitectureModalProps) 
     </div>
   );
 }
+export default ArchitectureModal;

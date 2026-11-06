@@ -60,7 +60,7 @@ export function ScrollProgress() {
       <div className="fixed top-0 left-0 right-0 h-[2px] bg-transparent z-[9999] pointer-events-none">
         <div
           ref={barRef}
-          className="h-full bg-[#e8e4dc] transition-none"
+          className="h-full bg-[var(--color-green)] transition-none shadow-[0_0_8px_rgba(203,227,179,0.4)]"
           style={{ width: "0%" }}
         />
       </div>
@@ -86,8 +86,8 @@ export function ScrollProgress() {
               <span
                 className={`absolute right-5 font-mono text-[9px] tracking-widest uppercase whitespace-nowrap transition-all duration-200 ${
                   isActive
-                    ? "opacity-70 text-[#e8e4dc]"
-                    : "opacity-0 group-hover:opacity-50 text-zinc-400"
+                    ? "opacity-90 text-[var(--color-green)] font-semibold"
+                    : "opacity-0 group-hover:opacity-60 text-zinc-400"
                 }`}
               >
                 {s.label}
@@ -96,7 +96,7 @@ export function ScrollProgress() {
               <span
                 className={`block rounded-full transition-all duration-300 ${
                   isActive
-                    ? "w-2 h-2 bg-[#e8e4dc] shadow-[0_0_6px_rgba(232,228,220,0.6)]"
+                    ? "w-2 h-2 bg-[var(--color-green)] shadow-[0_0_8px_rgba(203,227,179,0.7)]"
                     : "w-1.5 h-1.5 bg-zinc-600 group-hover:bg-zinc-400"
                 }`}
               />

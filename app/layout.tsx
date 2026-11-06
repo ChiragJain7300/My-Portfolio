@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Bebas_Neue, Cinzel } from "next/font/google";
 import "./globals.css";
 import { LenisProvider } from "@/components/providers/LenisProvider";
 import { RecruiterModeProvider } from "@/components/providers/RecruiterModeContext";
@@ -17,10 +17,23 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
+const bebasNeue = Bebas_Neue({
+  weight: "400",
+  variable: "--font-bebas",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
+  subsets: ["latin"],
+  display: "swap",
+});
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#09090b",
+  themeColor: "#1c2225",
   colorScheme: "dark",
 };
 
@@ -58,9 +71,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
+      className={`${geistSans.variable} ${geistMono.variable} ${bebasNeue.variable} ${cinzel.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col bg-[#09090b] text-zinc-100 selection:bg-[#e8e4dc]/20 selection:text-white antialiased">
+      <body className="min-h-full flex flex-col bg-[#1c2225] text-[#adc9bc] selection:bg-[#cbe3b3]/25 selection:text-white antialiased">
         <GlobalEffects />
         <LenisProvider>
           <RecruiterModeProvider>

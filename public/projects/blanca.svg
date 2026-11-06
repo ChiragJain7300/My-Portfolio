@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="blanca-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#121816"/>
+      <stop offset="50%" stop-color="#1c2421"/>
+      <stop offset="100%" stop-color="#161f1c"/>
+    </linearGradient>
+    <pattern id="blanca-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#25352e" stroke-width="0.75" stroke-opacity="0.6"/>
+    </pattern>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#blanca-bg)"/>
+  <rect width="800" height="500" fill="url(#blanca-grid)"/>
+
+  <!-- Top Accent Line -->
+  <line x1="40" y1="36" x2="760" y2="36" stroke="#10b981" stroke-width="2" stroke-opacity="0.8"/>
+
+  <!-- Header -->
+  <rect x="40" y="48" width="720" height="42" rx="8" fill="#1e2924" stroke="#2c3e37" stroke-width="1"/>
+  <circle cx="62" cy="69" r="5" fill="#ef4444"/>
+  <circle cx="78" cy="69" r="5" fill="#f59e0b"/>
+  <circle cx="94" cy="69" r="5" fill="#10b981"/>
+  <text x="120" y="73" font-family="monospace" font-size="12" fill="#8da399" font-weight="600">SYS_PREVIEW // BLANCA (MULTI-PLATFORM PROPERTY DISCOVERY &amp; CRM)</text>
+  <rect x="635" y="58" width="108" height="22" rx="11" fill="#10b981" fill-opacity="0.15" stroke="#10b981" stroke-opacity="0.4"/>
+  <text x="689" y="73" font-family="monospace" font-size="10" fill="#34d399" text-anchor="middle" font-weight="700">● 100% LEAD CAPTURE</text>
+
+  <!-- Left: Public Portal -->
+  <rect x="60" y="115" width="200" height="135" rx="10" fill="#1b2520" stroke="#10b981" stroke-width="1.5"/>
+  <text x="76" y="142" font-family="sans-serif" font-size="12" font-weight="800" fill="#ffffff">PUBLIC PORTAL (SSR)</text>
+  <text x="76" y="162" font-family="monospace" font-size="10" fill="#34d399">Next.js 16 + React 19</text>
+  <text x="76" y="180" font-family="monospace" font-size="9" fill="#a8c2b5">• TanStack Query Caching</text>
+  <text x="76" y="196" font-family="monospace" font-size="9" fill="#a8c2b5">• Sub-200ms Transitions</text>
+  <text x="76" y="212" font-family="monospace" font-size="9" fill="#a8c2b5">• Framer Motion &amp; GSAP</text>
+  <rect x="76" y="222" width="168" height="16" rx="4" fill="#10b981" fill-opacity="0.2"/>
+  <text x="160" y="233" font-family="monospace" font-size="8.5" fill="#6ee7b7" text-anchor="middle">500+ PROPERTY LISTINGS</text>
+
+  <!-- Middle: NestJS API -->
+  <rect x="300" y="115" width="200" height="135" rx="10" fill="#202d27" stroke="#34d399" stroke-width="2"/>
+  <text x="316" y="142" font-family="sans-serif" font-size="12" font-weight="800" fill="#ffffff">NESTJS 11 BACKEND</text>
+  <text x="316" y="162" font-family="monospace" font-size="10" fill="#cbe3b3">Modular REST Architecture</text>
+  <text x="316" y="180" font-family="monospace" font-size="9" fill="#a8c2b5">• Global JwtAuthGuard</text>
+  <text x="316" y="196" font-family="monospace" font-size="9" fill="#a8c2b5">• Two-Phase Ingestion</text>
+  <text x="316" y="212" font-family="monospace" font-size="9" fill="#a8c2b5">• Single-Flight Token Mutex</text>
+  <rect x="316" y="222" width="168" height="16" rx="4" fill="#059669" fill-opacity="0.2"/>
+  <text x="400" y="233" font-family="monospace" font-size="8.5" fill="#a7f3d0" text-anchor="middle">TYPEORM + POSTGRESQL</text>
+
+  <!-- Right: Admin + CRM -->
+  <rect x="540" y="115" width="200" height="135" rx="10" fill="#1b2520" stroke="#059669" stroke-width="1.5"/>
+  <text x="556" y="142" font-family="sans-serif" font-size="12" font-weight="800" fill="#ffffff">ADMIN &amp; BUILDESK CRM</text>
+  <text x="556" y="162" font-family="monospace" font-size="10" fill="#34d399">React 18 SPA + dnd-kit</text>
+  <text x="556" y="180" font-family="monospace" font-size="9" fill="#a8c2b5">• Material React Table</text>
+  <text x="556" y="196" font-family="monospace" font-size="9" fill="#a8c2b5">• 90% Fewer DB Writes</text>
+  <text x="556" y="212" font-family="monospace" font-size="9" fill="#a8c2b5">• Async CRM Lead Queue</text>
+  <rect x="556" y="222" width="168" height="16" rx="4" fill="#047857" fill-opacity="0.2"/>
+  <text x="640" y="233" font-family="monospace" font-size="8.5" fill="#6ee7b7" text-anchor="middle">ZERO LEAD LOSS GUARANTEE</text>
+
+  <!-- Connectors -->
+  <line x1="260" y1="180" x2="300" y2="180" stroke="#10b981" stroke-width="2"/>
+  <line x1="500" y1="180" x2="540" y2="180" stroke="#10b981" stroke-width="2"/>
+
+  <!-- Terminal Output -->
+  <rect x="60" y="280" width="680" height="175" rx="10" fill="#141a17" stroke="#25352d" stroke-width="1"/>
+  <rect x="60" y="280" width="680" height="26" rx="10" fill="#1b2420"/>
+  <text x="76" y="297" font-family="monospace" font-size="10.5" fill="#789689">TERMINAL // DECOUPLED LEAD DISPATCH &amp; REORDERING TELEMETRY</text>
+
+  <text x="76" y="328" font-family="monospace" font-size="10" fill="#34d399">[14:22:04] POST /enquire:</text>
+  <text x="260" y="328" font-family="monospace" font-size="10" fill="#e2e8f0">Lead committed to PostgreSQL (ID: e9a2-411). Return 201 Created</text>
+
+  <text x="76" y="348" font-family="monospace" font-size="10" fill="#a7f3d0">[14:22:04] ASYNC_TASK (CRM):</text>
+  <text x="260" y="348" font-family="monospace" font-size="10" fill="#e2e8f0">Dispatched payload to Buildesk CRM. Response 200 in 118ms</text>
+
+  <text x="76" y="368" font-family="monospace" font-size="10" fill="#6ee7b7">[14:25:12] PUT /admin/sequence:</text>
+  <text x="260" y="368" font-family="monospace" font-size="10" fill="#e2e8f0">Batched array [12 projects] updated in 1 transaction (90% write reduction)</text>
+
+  <text x="76" y="388" font-family="monospace" font-size="10" fill="#34d399">[14:28:40] AUTH_MUTEX (Axios):</text>
+  <text x="260" y="388" font-family="monospace" font-size="10" fill="#e2e8f0">Access token refreshed. Drained 4 queued subscribers with zero logout</text>
+
+  <rect x="76" y="410" width="220" height="26" rx="6" fill="#1f2c25" stroke="#2d4237" stroke-width="1"/>
+  <text x="186" y="427" font-family="monospace" font-size="9.5" fill="#a7f3d0" text-anchor="middle" font-weight="700">✓ DUAL-PLATFORM ARCHITECTURE ACTIVE</text>
+</svg>

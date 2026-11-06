@@ -1,0 +1,336 @@
+"use client";
+
+import React, { useEffect, useState, useCallback, useRef } from "react";
+
+export interface TOCItem {
+  id: string;
+  label: string;
+  num: string;
+  group?: "briefing" | "appendix";
+}
+
+export const CASE_STUDY_SECTIONS: TOCItem[] = [
+  // Part I: Executive Briefing (60-Second Scan)
+  { id: "overview", label: "Project Overview", num: "01", group: "briefing" },
+  { id: "problem", label: "Business Problem", num: "02", group: "briefing" },
+  { id: "impact", label: "Quantitative Impact", num: "03", group: "briefing" },
+  { id: "architecture", label: "System Architecture", num: "04", group: "briefing" },
+  { id: "decisions", label: "Pivotal Decisions (ADR)", num: "05", group: "briefing" },
+  { id: "challenges", label: "Incidents & Solutions", num: "06", group: "briefing" },
+
+  // Part II: Technical Appendix (Deep Architectural Blueprints)
+  { id: "pipeline-trace", label: "Pipeline & Execution Trace", num: "07", group: "appendix" },
+  { id: "database", label: "Database Design & ERD", num: "08", group: "appendix" },
+  { id: "api", label: "API & Integrations", num: "09", group: "appendix" },
+  { id: "code", label: "Code Implementation", num: "10", group: "appendix" },
+  { id: "resilience", label: "Subsystems & Resilience", num: "11", group: "appendix" },
+  { id: "interview-defense", label: "Interview Defense & V2", num: "12", group: "appendix" },
+];
+
+interface CaseStudyTOCProps {
+  sections?: TOCItem[];
+}
+
+export function CaseStudyTOC({ sections = CASE_STUDY_SECTIONS }: CaseStudyTOCProps) {
+  const [activeId, setActiveId] = useState<string>(sections[0]?.id || "overview");
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const isNavigatingRef = useRef<boolean>(false);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Smooth scroll with comfortable header clearance and flicker-free locking
+  const scrollTo = useCallback((id: string) => {
+    const el = document.getElementById(id);
+    const container = document.getElementById("main-content");
+    const isContainerScrollable = container && container.scrollHeight > container.clientHeight;
+
+    if (el && isContainerScrollable) {
+      isNavigatingRef.current = true;
+      setActiveId(id);
+      setMobileOpen(false);
+
+      const containerRect = container.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      const topOffset = 52; // generous clearance beneath sticky breadcrumbs header
+      const targetScrollTop = container.scrollTop + (elRect.top - containerRect.top) - topOffset;
+
+      container.scrollTo({ top: Math.max(0, targetScrollTop), behavior: "smooth" });
+
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = setTimeout(() => {
+        isNavigatingRef.current = false;
+      }, 750);
+    } else if (el) {
+      isNavigatingRef.current = true;
+      setActiveId(id);
+      setMobileOpen(false);
+
+      const elRect = el.getBoundingClientRect();
+      const targetScrollTop = window.scrollY + elRect.top - 80;
+      window.scrollTo({ top: Math.max(0, targetScrollTop), behavior: "smooth" });
+
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = setTimeout(() => {
+        isNavigatingRef.current = false;
+      }, 750);
+    }
+  }, []);
+
+  // Set up active section tracking on the scroll container (#main-content or window)
+  useEffect(() => {
+    const container = document.getElementById("main-content");
+    const isContainerScrollable = container && container.scrollHeight > container.clientHeight;
+    const targetElement = isContainerScrollable ? container : window;
+
+    const handleScroll = () => {
+      // Don't override activeId while a programmatic smooth scroll is animating
+      if (isNavigatingRef.current) return;
+
+      if (isContainerScrollable && container) {
+        // Check if user has scrolled to the bottom of the container
+        const isAtBottom =
+          container.scrollHeight - container.scrollTop - container.clientHeight < 80;
+        if (isAtBottom) {
+          setActiveId(sections[sections.length - 1].id);
+          return;
+        }
+
+        const containerTop = container.getBoundingClientRect().top;
+        const targetLine = containerTop + 100;
+
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const el = document.getElementById(sections[i].id);
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            if (rect.top <= targetLine) {
+              setActiveId(sections[i].id);
+              break;
+            }
+          }
+        }
+      } else {
+        // Window scroll tracking
+        const scrollPosition = window.scrollY + 140;
+        const isAtBottom =
+          window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80;
+
+        if (isAtBottom) {
+          setActiveId(sections[sections.length - 1].id);
+          return;
+        }
+
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const el = document.getElementById(sections[i].id);
+          if (el) {
+            const top = el.offsetTop;
+            if (top <= scrollPosition) {
+              setActiveId(sections[i].id);
+              break;
+            }
+          }
+        }
+      }
+    };
+
+    targetElement.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      targetElement.removeEventListener("scroll", handleScroll);
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+    };
+  }, [sections]);
+
+  const activeSection = sections.find((s) => s.id === activeId) || sections[0];
+
+  const briefingSections = sections.filter((s) => s.group === "briefing" || !s.group);
+  const appendixSections = sections.filter((s) => s.group === "appendix");
+
+  return (
+    <>
+      {/* Mobile Floating Sticky Header Bar */}
+      <div className="xl:hidden sticky top-12 z-30 mb-8 bg-[var(--color-surface0)]/95 backdrop-blur-md border border-[var(--color-overlay0)]/60 rounded-md p-2.5 font-sans shadow-lg">
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="w-full flex items-center justify-between text-left text-sm text-[var(--color-text)] cursor-pointer min-h-[44px]"
+          aria-expanded={mobileOpen}
+          aria-label="Toggle Table of Contents"
+        >
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="font-mono text-xs text-[var(--color-green)] font-semibold">
+              {activeSection?.num}
+            </span>
+            <span className="text-[var(--color-overlay2)]">/</span>
+            <span className="font-medium text-[var(--color-text)] truncate text-sm">
+              {activeSection?.label}
+            </span>
+          </div>
+          <span className="font-mono text-xs text-[var(--color-green)] shrink-0 ml-2 px-2.5 py-1 border border-[var(--color-overlay0)] rounded-xs">
+            {mobileOpen ? "close ▲" : "jump ▼"}
+          </span>
+        </button>
+
+        {mobileOpen && (
+          <nav
+            aria-label="Mobile Table of Contents"
+            className="mt-2.5 pt-2.5 border-t border-[var(--color-overlay0)]/40 space-y-3 max-h-80 overflow-y-auto"
+          >
+            {/* Briefing Group */}
+            <div>
+              <div className="px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--color-green)] font-bold">
+                Executive Briefing (60s)
+              </div>
+              <div className="space-y-0.5 mt-1">
+                {briefingSections.map((sec) => {
+                  const isActive = activeId === sec.id;
+                  return (
+                    <button
+                      key={sec.id}
+                      onClick={() => scrollTo(sec.id)}
+                      className={`w-full text-left px-3 py-2 text-sm rounded-xs flex items-center gap-3 transition-colors cursor-pointer min-h-[40px] ${
+                        isActive
+                          ? "bg-[var(--color-surface2)] text-[var(--color-green)] font-semibold"
+                          : "text-[var(--color-subtext2)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface1)]"
+                      }`}
+                    >
+                      <span className="font-mono text-xs text-[var(--color-overlay2)] w-5">
+                        {sec.num}
+                      </span>
+                      <span>{sec.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Appendix Group */}
+            {appendixSections.length > 0 && (
+              <div className="pt-2 border-t border-[var(--color-overlay0)]/30">
+                <div className="px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--color-purple)] font-bold">
+                  Technical Appendix
+                </div>
+                <div className="space-y-0.5 mt-1">
+                  {appendixSections.map((sec) => {
+                    const isActive = activeId === sec.id;
+                    return (
+                      <button
+                        key={sec.id}
+                        onClick={() => scrollTo(sec.id)}
+                        className={`w-full text-left px-3 py-2 text-sm rounded-xs flex items-center gap-3 transition-colors cursor-pointer min-h-[40px] ${
+                          isActive
+                            ? "bg-[var(--color-surface2)] text-[var(--color-green)] font-semibold"
+                            : "text-[var(--color-subtext2)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface1)]"
+                        }`}
+                      >
+                        <span className="font-mono text-xs text-[var(--color-overlay2)] w-5">
+                          {sec.num}
+                        </span>
+                        <span>{sec.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </nav>
+        )}
+      </div>
+
+      {/* Desktop Sticky Sidebar TOC: STRICTLY LOCKED TO 240px */}
+      <aside
+        aria-label="Table of Contents"
+        className="hidden xl:block sticky top-8 w-[240px] min-w-[240px] max-w-[240px] shrink-0 font-sans text-sm select-none"
+      >
+        <div className="text-[11px] font-mono uppercase tracking-wider text-[var(--color-overlay2)] font-semibold pb-2.5 mb-3 border-b border-[var(--color-overlay0)]/40 flex items-center justify-between">
+          <span>Table of Contents</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-green)] animate-pulse" />
+        </div>
+
+        {/* Group 1: Executive Briefing */}
+        <div className="mb-4">
+          <div className="px-3 py-1 mb-1 font-mono text-[10px] uppercase tracking-wider text-[var(--color-green)] font-semibold flex items-center justify-between">
+            <span>Executive Briefing</span>
+            <span className="text-[9px] px-1 py-0.2 bg-[var(--color-green)]/15 border border-[var(--color-green)]/30 rounded-2xs">
+              60s
+            </span>
+          </div>
+
+          <ul className="space-y-1 list-none pl-0 w-[240px]">
+            {briefingSections.map((sec) => {
+              const isActive = activeId === sec.id;
+
+              return (
+                <li key={sec.id} className="w-[240px]">
+                  <button
+                    onClick={() => scrollTo(sec.id)}
+                    className={`w-[240px] text-left py-2 px-3 rounded-md transition-all flex items-baseline gap-2.5 group cursor-pointer border ${
+                      isActive
+                        ? "bg-[var(--color-surface1)] text-[var(--color-text)] font-semibold border-[var(--color-green)]/35 shadow-xs"
+                        : "text-[var(--color-subtext1)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface1)]/40 border-transparent"
+                    }`}
+                  >
+                    <span
+                      className={`font-mono text-xs tabular-nums shrink-0 ${
+                        isActive
+                          ? "text-[var(--color-green)] font-bold"
+                          : "text-[var(--color-overlay2)] group-hover:text-[var(--color-subtext2)]"
+                      }`}
+                    >
+                      {sec.num}
+                    </span>
+                    <span className="text-[13px] leading-tight truncate">
+                      {sec.label}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        {/* Group 2: Technical Appendix */}
+        {appendixSections.length > 0 && (
+          <div className="pt-3 border-t border-[var(--color-overlay0)]/30">
+            <div className="px-3 py-1 mb-1 font-mono text-[10px] uppercase tracking-wider text-[var(--color-purple)] font-semibold flex items-center justify-between">
+              <span>Technical Appendix</span>
+              <span className="text-[9px] px-1 py-0.2 bg-[var(--color-purple)]/15 border border-[var(--color-purple)]/30 rounded-2xs">
+                Deep Dive
+              </span>
+            </div>
+
+            <ul className="space-y-1 list-none pl-0 w-[240px]">
+              {appendixSections.map((sec) => {
+                const isActive = activeId === sec.id;
+
+                return (
+                  <li key={sec.id} className="w-[240px]">
+                    <button
+                      onClick={() => scrollTo(sec.id)}
+                      className={`w-[240px] text-left py-2 px-3 rounded-md transition-all flex items-baseline gap-2.5 group cursor-pointer border ${
+                        isActive
+                          ? "bg-[var(--color-surface1)] text-[var(--color-text)] font-semibold border-[var(--color-green)]/35 shadow-xs"
+                          : "text-[var(--color-subtext1)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface1)]/40 border-transparent"
+                      }`}
+                    >
+                      <span
+                        className={`font-mono text-xs tabular-nums shrink-0 ${
+                          isActive
+                            ? "text-[var(--color-green)] font-bold"
+                            : "text-[var(--color-overlay2)] group-hover:text-[var(--color-subtext2)]"
+                        }`}
+                      >
+                        {sec.num}
+                      </span>
+                      <span className="text-[13px] leading-tight truncate">
+                        {sec.label}
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
+      </aside>
+    </>
+  );
+}

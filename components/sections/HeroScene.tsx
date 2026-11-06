@@ -1,34 +1,122 @@
 "use client";
 
 import React, { useRef, useMemo, useEffect } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Text } from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-// ─── Skill nodes for the neural network ────────────────────────────────────
-const SKILL_NODES = [
-  { label: "Next.js",    x: -3.5,  y:  2.2,  z: -2 },
-  { label: "TypeScript", x:  3.0,  y:  2.7,  z: -3 },
-  { label: "Node.js",   x: -4.0,  y:  0.8,  z: -1 },
-  { label: "LLMs",      x:  4.2,  y:  1.2,  z: -2 },
-  { label: "React",     x: -1.5,  y:  3.5,  z: -4 },
-  { label: "MongoDB",   x:  1.5,  y:  0.5,  z: -2 },
-  { label: "n8n",       x:  3.5,  y:  2.0,  z: -1 },
-  { label: "Express",   x: -2.5,  y: -0.5,  z: -3 },
-  { label: "GraphQL",   x:  0.5,  y:  3.8,  z: -3 },
-  { label: "Docker",    x: -4.5,  y:  1.8,  z: -4 },
-  { label: "Redis",     x:  2.0,  y:  1.2,  z: -1 },
-  { label: "OpenAI",   x: -0.5,  y: -0.5,  z: -2 },
-];
+// ─── Colors ──────────────────────────────────────────────────────────────────
+const ACCENT_LIME = "#9ef01a"; // Luminous neon lime matching the Behance reference
+const MESH_TINT = "#9cb296";   // Elegant muted mineral/everforest sage
 
-const MAX_EDGE_DIST = 4.5;
-const ACCENT_HEX = "#e8e4dc";
+// ─── Generate Organic Vertical Spire Lattice with Vertex Brightness ──────────
+function generateSpireData() {
+  const points: [number, number, number][] = [];
+  const rings = 30; // Vertical levels
+  const ptsPerRing = 10;
+  const heightSpan = 6.6;
+  const minY = -3.3;
 
-// ─── Neural Network (background layer) ─────────────────────────────────────
-function NeuralNetwork() {
+  for (let r = 0; r < rings; r++) {
+    const t = r / (rings - 1); // 0 to 1
+    const y = minY + t * heightSpan;
+
+    // Organic envelope: tapered at ends, expanding above and below the headline
+    const envelope = Math.sin(t * Math.PI) * 1.5;
+    const twist = y * 0.45;
+
+    for (let p = 0; p < ptsPerRing; p++) {
+      const angle = (p / ptsPerRing) * Math.PI * 2 + twist;
+      const radiusPerturb =
+        1.0 +
+        0.24 * Math.sin(angle * 3 + y * 1.5) +
+        0.14 * Math.cos(angle * 2 - y * 1.1);
+      const rad = Math.max(0.16, envelope * radiusPerturb);
+
+      const px = Math.cos(angle) * rad;
+      const pz = Math.sin(angle) * rad;
+      points.push([px, y, pz]);
+    }
+
+    // Core depth points on selective rings
+    if (r % 2 === 0 && t > 0.16 && t < 0.84) {
+      points.push([
+        Math.sin(y * 1.8) * 0.22,
+        y,
+        Math.cos(y * 1.8) * 0.22,
+      ]);
+    }
+  }
+
+  // Build edge lines with per-vertex brightness:
+  // - High clarity above (y > 1.1) and below (y < -1.1)
+  // - Very soft / transparent directly behind the headline (|y| <= 1.1) for 100% typographic contrast
+  const edgePositions: number[] = [];
+  const edgeColors: number[] = [];
+  const maxConnDist = 1.16;
+
+  for (let i = 0; i < points.length; i++) {
+    const p1 = points[i];
+    for (let j = i + 1; j < points.length; j++) {
+      const p2 = points[j];
+      const dx = p1[0] - p2[0];
+      const dy = p1[1] - p2[1];
+      const dz = p1[2] - p2[2];
+      const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+      if (dist < maxConnDist) {
+        edgePositions.push(p1[0], p1[1], p1[2]);
+        edgePositions.push(p2[0], p2[1], p2[2]);
+
+        [p1, p2].forEach((p) => {
+          const absY = Math.abs(p[1]);
+          const intensity = absY > 1.1 ? 0.62 : 0.16;
+          edgeColors.push(intensity * 0.65, intensity * 0.78, intensity * 0.68);
+        });
+      }
+    }
+  }
+
+  // Focal Node Placement matching Behance reference:
+  // 1) An apex electric-lime node near top (y ~ 1.9, visible above the headline)
+  // 2) A subtle faint node on the right perimeter
+  let apexNode: [number, number, number] = [0, 1.9, 0.2];
+  let sideNode: [number, number, number] = [1.2, -0.6, 0.3];
+
+  // Find actual vertices closest to target coordinates
+  let minApexDist = Infinity;
+  let minSideDist = Infinity;
+  for (const p of points) {
+    if (p[1] > 1.6 && p[1] < 2.3) {
+      const d = Math.hypot(p[0], p[2]);
+      if (d < minApexDist) {
+        minApexDist = d;
+        apexNode = p;
+      }
+    }
+    if (p[1] < -0.3 && p[1] > -1.2 && p[0] > 0.8) {
+      const d = Math.hypot(p[0] - 1.2, p[1] + 0.6);
+      if (d < minSideDist) {
+        minSideDist = d;
+        sideNode = p;
+      }
+    }
+  }
+
+  return { points, edgePositions, edgeColors, focalNodes: [apexNode, sideNode] };
+}
+
+// ─── 3D Organic Spire Component ──────────────────────────────────────────────
+function OrganicSpire() {
   const groupRef = useRef<THREE.Group>(null!);
   const mouseNorm = useRef(new THREE.Vector2(0, 0));
+  const currentRot = useRef({ x: 0, y: 0 });
 
+  const { edgePositions, edgeColors, focalNodes } = useMemo(
+    () => generateSpireData(),
+    []
+  );
+
+  // Mouse move listener with restrained coordinates
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       mouseNorm.current.set(
@@ -40,253 +128,172 @@ function NeuralNetwork() {
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
-  // Build edge line geometry once
-  const edgeGeo = useMemo(() => {
-    const positions: number[] = [];
-    for (let i = 0; i < SKILL_NODES.length; i++) {
-      for (let j = i + 1; j < SKILL_NODES.length; j++) {
-        const a = SKILL_NODES[i];
-        const b = SKILL_NODES[j];
-        const dist = Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z);
-        if (dist < MAX_EDGE_DIST) {
-          positions.push(a.x, a.y, a.z, b.x, b.y, b.z);
-        }
-      }
-    }
+  // BufferGeometry for lines with per-vertex colors
+  const lineGeo = useMemo(() => {
     const geo = new THREE.BufferGeometry();
-    geo.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+    geo.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(edgePositions, 3)
+    );
+    geo.setAttribute(
+      "color",
+      new THREE.Float32BufferAttribute(edgeColors, 3)
+    );
     return geo;
-  }, []);
+  }, [edgePositions, edgeColors]);
 
-  const edgeMat = useMemo(
+  const lineMat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color: new THREE.Color(ACCENT_HEX),
+        vertexColors: true,
         transparent: true,
-        opacity: 0.05,
+        opacity: 0.28,
         depthWrite: false,
+        blending: THREE.AdditiveBlending,
       }),
     []
   );
 
   const lines = useMemo(
-    () => new THREE.LineSegments(edgeGeo, edgeMat),
-    [edgeGeo, edgeMat]
+    () => new THREE.LineSegments(lineGeo, lineMat),
+    [lineGeo, lineMat]
   );
 
-  useFrame((_, delta) => {
+  // Floating ambient luminous dust particles (minimal, subtle, clear of text)
+  const dustParticles = useMemo(() => {
+    const count = 30;
+    const pos = new Float32Array(count * 3);
+    let placed = 0;
+
+    for (let i = 0; i < count * 3 && placed < count; i++) {
+      const x = (Math.random() - 0.5) * 7.0;
+      const y = (Math.random() - 0.5) * 6.0;
+      let z = (Math.random() - 0.5) * 3.0;
+
+      // Keep particles well away from central text bounds
+      if (Math.abs(x) < 3.6 && Math.abs(y) < 1.4) {
+        continue;
+      }
+
+      pos[placed * 3] = x;
+      pos[placed * 3 + 1] = y;
+      pos[placed * 3 + 2] = z;
+      placed++;
+    }
+
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(pos.slice(0, placed * 3), 3));
+    return geo;
+  }, []);
+
+  const dustMat = useMemo(
+    () =>
+      new THREE.PointsMaterial({
+        color: new THREE.Color(ACCENT_LIME),
+        size: 0.024,
+        transparent: true,
+        opacity: 0.32,
+        blending: THREE.AdditiveBlending,
+      }),
+    []
+  );
+
+  useFrame((state, delta) => {
     const g = groupRef.current;
     if (!g) return;
-    g.rotation.y += delta * 0.025 + mouseNorm.current.x * delta * 0.012;
-    g.rotation.x += delta * 0.010 + mouseNorm.current.y * delta * 0.005;
+
+    // Subtle, restrained cursor interaction with gentle damping
+    const targetY = mouseNorm.current.x * 0.10 + state.clock.elapsedTime * 0.022;
+    const targetX = -mouseNorm.current.y * 0.05;
+
+    currentRot.current.y +=
+      (targetY - currentRot.current.y) * Math.min(delta * 1.6, 0.05);
+    currentRot.current.x +=
+      (targetX - currentRot.current.x) * Math.min(delta * 1.6, 0.05);
+
+    g.rotation.y = currentRot.current.y;
+    g.rotation.x = currentRot.current.x;
+
+    // Gentle vertical breathing float
+    g.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.04;
   });
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} position={[0, 0, -0.4]}>
+      {/* Intricate Geometric Spire Mesh */}
       <primitive object={lines} />
-      {SKILL_NODES.map((node) => (
-        <group key={node.label} position={[node.x, node.y, node.z]}>
+
+      {/* Floating Ambient Luminous Dust */}
+      <points geometry={dustParticles} material={dustMat} />
+
+      {/* Apex Luminous Green Focal Node (matching Behance reference top apex) */}
+      {focalNodes[0] && (
+        <group position={[focalNodes[0][0], focalNodes[0][1], focalNodes[0][2]]}>
           <mesh>
-            <sphereGeometry args={[0.05, 8, 8]} />
+            <sphereGeometry args={[0.042, 16, 16]} />
+            <meshBasicMaterial color={ACCENT_LIME} />
+          </mesh>
+          <mesh>
+            <sphereGeometry args={[0.12, 16, 16]} />
             <meshBasicMaterial
-              color={ACCENT_HEX}
+              color={ACCENT_LIME}
               transparent
-              opacity={0.35}
+              opacity={0.25}
+              blending={THREE.AdditiveBlending}
+              depthWrite={false}
             />
           </mesh>
-          <Text
-            position={[0, 0.18, 0]}
-            fontSize={0.15}
-            color={ACCENT_HEX}
-            anchorX="center"
-            anchorY="middle"
-            fillOpacity={0.28}
-          >
-            {node.label}
-          </Text>
         </group>
-      ))}
+      )}
+
+      {/* Subtle Side Perimeter Node */}
+      {focalNodes[1] && (
+        <group position={[focalNodes[1][0], focalNodes[1][1], focalNodes[1][2]]}>
+          <mesh>
+            <sphereGeometry args={[0.028, 12, 12]} />
+            <meshBasicMaterial color={ACCENT_LIME} />
+          </mesh>
+          <mesh>
+            <sphereGeometry args={[0.07, 12, 12]} />
+            <meshBasicMaterial
+              color={ACCENT_LIME}
+              transparent
+              opacity={0.16}
+              blending={THREE.AdditiveBlending}
+              depthWrite={false}
+            />
+          </mesh>
+        </group>
+      )}
     </group>
   );
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-const PARTICLE_COUNT = 2800;
-const TEXT_TARGET = "CHIRAG JAIN";
-
-function buildScatterPositions(vpW: number, vpH: number): Float32Array {
-  const arr = new Float32Array(PARTICLE_COUNT * 3);
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    arr[i * 3]     = (Math.random() - 0.5) * vpW * 1.5;
-    arr[i * 3 + 1] = (Math.random() - 0.5) * vpH * 1.5;
-    arr[i * 3 + 2] = (Math.random() - 0.5) * 2.5;
-  }
-  return arr;
-}
-
-function buildTextTargetPositions(vpW: number, vpH: number): Float32Array {
-  const cw = 512, ch = 128;
-  const offscreen = document.createElement("canvas");
-  offscreen.width  = cw;
-  offscreen.height = ch;
-  const ctx = offscreen.getContext("2d")!;
-  ctx.clearRect(0, 0, cw, ch);
-  ctx.fillStyle    = "#fff";
-  ctx.font         = "bold 68px monospace";
-  ctx.textAlign    = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(TEXT_TARGET, cw / 2, ch / 2);
-
-  const { data } = ctx.getImageData(0, 0, cw, ch);
-  const pts: [number, number][] = [];
-  for (let y = 0; y < ch; y++)
-    for (let x = 0; x < cw; x++)
-      if (data[(y * cw + x) * 4 + 3] > 120) pts.push([x, y]);
-
-  const scaleX = (vpW * 0.72) / cw;
-  const scaleY = (vpH * 0.16) / ch;
-
-  const arr = new Float32Array(PARTICLE_COUNT * 3);
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    if (!pts.length) { arr[i * 3] = arr[i * 3 + 1] = arr[i * 3 + 2] = 0; continue; }
-    const [px, py] = pts[Math.floor(Math.random() * pts.length)];
-    arr[i * 3]     = (px - cw / 2) * scaleX;
-    arr[i * 3 + 1] = -(py - ch / 2) * scaleY;
-    arr[i * 3 + 2] = (Math.random() - 0.5) * 0.2;
-  }
-  return arr;
-}
-
-// ─── Particle Text (foreground layer) ────────────────────────────────────────
-function ParticleText() {
-  const { viewport } = useThree();
-  const geoRef  = useRef<THREE.BufferGeometry>(null!);
-  const mouseWS = useRef(new THREE.Vector2(-1000, -1000)); // world-space coords
-  const phase   = useRef<"scatter" | "morph" | "settled">("scatter");
-
-  // Build positions once, store in refs so useFrame can mutate
-  const scatterPos = useMemo(() => buildScatterPositions(viewport.width, viewport.height), [viewport]);
-  const targetPos  = useMemo(() => buildTextTargetPositions(viewport.width, viewport.height), [viewport]);
-  const curPos     = useMemo(() => scatterPos.slice() as Float32Array, [scatterPos]);
-
-  // Per-particle colours
-  const colorsArr = useMemo(() => {
-    const arr = new Float32Array(PARTICLE_COUNT * 3);
-    const base = new THREE.Color(ACCENT_HEX);
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const v = 0.75 + Math.random() * 0.25;
-      arr[i * 3]     = base.r * v;
-      arr[i * 3 + 1] = base.g * v;
-      arr[i * 3 + 2] = base.b * v;
-    }
-    return arr;
-  }, []);
-
-  // Set up geometry attributes imperatively (works in R3F v9)
-  useEffect(() => {
-    const geo = geoRef.current;
-    if (!geo) return;
-    geo.setAttribute("position", new THREE.Float32BufferAttribute(curPos, 3));
-    geo.setAttribute("color",    new THREE.Float32BufferAttribute(colorsArr, 3));
-  }, [curPos, colorsArr]);
-
-  // Mouse tracking in world space
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      mouseWS.current.set(
-        ((e.clientX / window.innerWidth)  * 2 - 1) * (viewport.width  / 2),
-        (-(e.clientY / window.innerHeight) * 2 + 1) * (viewport.height / 2)
-      );
-    };
-    window.addEventListener("mousemove", onMove, { passive: true });
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [viewport]);
-
-  // Phase sequencing
-  useEffect(() => {
-    const t1 = setTimeout(() => { phase.current = "morph";    }, 700);
-    const t2 = setTimeout(() => { phase.current = "settled";  }, 4000);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
-  }, []);
-
-  useFrame((_, delta) => {
-    const geo = geoRef.current;
-    if (!geo || !geo.attributes?.position) return;
-    const attr = geo.attributes.position as THREE.BufferAttribute;
-    if (!attr || !attr.array) return;
-    const arr  = attr.array as Float32Array;
-    const ph   = phase.current;
-
-    const lerpSpd  = ph === "morph" ? Math.min(delta * 2.8, 0.14) : 0.018;
-    const repelR   = 1.4;
-    const repelStr = 0.55;
-
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const ix = i * 3, iy = ix + 1, iz = ix + 2;
-      const tx = ph !== "scatter" ? targetPos[ix]  : scatterPos[ix];
-      const ty = ph !== "scatter" ? targetPos[iy]  : scatterPos[iy];
-      const tz = ph !== "scatter" ? targetPos[iz]  : scatterPos[iz];
-
-      arr[ix] += (tx - arr[ix]) * lerpSpd;
-      arr[iy] += (ty - arr[iy]) * lerpSpd;
-      arr[iz] += (tz - arr[iz]) * lerpSpd * 0.5;
-
-      // Subtle organic float + cursor repulsion after text has settled
-      if (ph === "settled") {
-        const drift = Math.sin(delta * 1.5 + i * 0.1) * 0.0003;
-        arr[iy] += drift;
-
-        const dx   = arr[ix] - mouseWS.current.x;
-        const dy   = arr[iy] - mouseWS.current.y;
-        const dist = Math.hypot(dx, dy);
-        if (dist < repelR && dist > 0) {
-          const f = ((repelR - dist) / repelR) * repelStr;
-          arr[ix] += (dx / dist) * f * delta * 5;
-          arr[iy] += (dy / dist) * f * delta * 5;
-        }
-      }
-    }
-    attr.needsUpdate = true;
-  });
-
-  return (
-    <points>
-      <bufferGeometry ref={geoRef} />
-      <pointsMaterial
-        size={0.024}
-        vertexColors
-        transparent
-        opacity={0.88}
-        sizeAttenuation
-        depthWrite={false}
-      />
-    </points>
-  );
-}
-
-// ─── Scene ───────────────────────────────────────────────────────────────────
-function Scene() {
-  return (
-    <>
-      <NeuralNetwork />
-      <group position={[0, 0.85, 0]}>
-        <ParticleText />
-      </group>
-    </>
-  );
-}
-
-// ─── Canvas wrapper — exported and dynamically imported by Hero.tsx ──────────
+// ─── Main Scene Export ───────────────────────────────────────────────────────
 export function HeroScene() {
   return (
-    <Canvas
-      camera={{ position: [0, 0, 7], fov: 60 }}
-      dpr={[1, 1.5]}
-      gl={{ antialias: false, alpha: true }}
-      style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
-      aria-hidden="true"
+    <div
+      className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden"
+      style={{
+        maskImage:
+          "linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%)",
+        WebkitMaskImage:
+          "linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%)",
+      }}
     >
-      <Scene />
-    </Canvas>
+      <Canvas
+        camera={{ position: [0, 0, 7.8], fov: 46 }}
+        dpr={[1, 1.75]}
+        gl={{
+          antialias: true,
+          alpha: true,
+          powerPreference: "high-performance",
+        }}
+      >
+        <ambientLight intensity={0.6} />
+        <OrganicSpire />
+      </Canvas>
+    </div>
   );
 }
+export default HeroScene;

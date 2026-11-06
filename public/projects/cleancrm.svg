@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="clean-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#191512"/>
+      <stop offset="50%" stop-color="#241e1a"/>
+      <stop offset="100%" stop-color="#1c1714"/>
+    </linearGradient>
+    <pattern id="clean-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#3d3027" stroke-width="0.75" stroke-opacity="0.5"/>
+    </pattern>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#clean-bg)"/>
+  <rect width="800" height="500" fill="url(#clean-grid)"/>
+
+  <!-- Top Accent Line -->
+  <line x1="40" y1="36" x2="760" y2="36" stroke="#f59e0b" stroke-width="2" stroke-opacity="0.8"/>
+
+  <!-- Header -->
+  <rect x="40" y="48" width="720" height="42" rx="8" fill="#2c231c" stroke="#45362a" stroke-width="1"/>
+  <circle cx="62" cy="69" r="5" fill="#ef4444"/>
+  <circle cx="78" cy="69" r="5" fill="#f59e0b"/>
+  <circle cx="94" cy="69" r="5" fill="#10b981"/>
+  <text x="120" y="73" font-family="monospace" font-size="12" fill="#c4ad9b" font-weight="600">SYS_PREVIEW // CLEANCRM (PROPERTY TURNOVER &amp; FIELD SERVICE PLATFORM)</text>
+  <rect x="635" y="58" width="108" height="22" rx="11" fill="#f59e0b" fill-opacity="0.2" stroke="#f59e0b" stroke-opacity="0.4"/>
+  <text x="689" y="73" font-family="monospace" font-size="10" fill="#fbbf24" text-anchor="middle" font-weight="700">● 64% FEWER MISSED</text>
+
+  <!-- Left: Multi-View Calendar -->
+  <rect x="60" y="115" width="200" height="135" rx="10" fill="#221a15" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="76" y="142" font-family="sans-serif" font-size="12" font-weight="800" fill="#ffffff">FULLCALENDAR ENGINE</text>
+  <text x="76" y="162" font-family="monospace" font-size="10" fill="#fbbf24">React + RTK (20+ Slices)</text>
+  <text x="76" y="180" font-family="monospace" font-size="9" fill="#fed7aa">• Booking: 4m &rarr; &lt;30s</text>
+  <text x="76" y="196" font-family="monospace" font-size="9" fill="#fed7aa">• Airbnb &amp; VRBO iCal Sync</text>
+  <text x="76" y="212" font-family="monospace" font-size="9" fill="#fed7aa">• Timezone Normalization</text>
+  <rect x="76" y="222" width="168" height="16" rx="4" fill="#f59e0b" fill-opacity="0.2"/>
+  <text x="160" y="233" font-family="monospace" font-size="8.5" fill="#fde68a" text-anchor="middle">MULTI-VIEW TURNOVER GRID</text>
+
+  <!-- Middle: Real-Time Telemetry -->
+  <rect x="300" y="115" width="200" height="135" rx="10" fill="#291f19" stroke="#fbbf24" stroke-width="2"/>
+  <text x="316" y="142" font-family="sans-serif" font-size="12" font-weight="800" fill="#ffffff">DISPATCH &amp; TELEMETRY</text>
+  <text x="316" y="162" font-family="monospace" font-size="10" fill="#cbe3b3">FCM Push + Socket.io</text>
+  <text x="316" y="180" font-family="monospace" font-size="9" fill="#fed7aa">• Dual-Channel Dispatch</text>
+  <text x="316" y="196" font-family="monospace" font-size="9" fill="#fed7aa">• Live Cleaner Check-In</text>
+  <text x="316" y="212" font-family="monospace" font-size="9" fill="#fed7aa">• Missed Drops Down 64%</text>
+  <rect x="316" y="222" width="168" height="16" rx="4" fill="#d97706" fill-opacity="0.3"/>
+  <text x="400" y="233" font-family="monospace" font-size="8.5" fill="#fef3c7" text-anchor="middle">REAL-TIME SUPERVISOR HUD</text>
+
+  <!-- Right: Client Grid & Billing -->
+  <rect x="540" y="115" width="200" height="135" rx="10" fill="#221a15" stroke="#d97706" stroke-width="1.5"/>
+  <text x="556" y="142" font-family="sans-serif" font-size="12" font-weight="800" fill="#ffffff">HIGH-DENSITY BILLING</text>
+  <text x="556" y="162" font-family="monospace" font-size="10" fill="#fbbf24">Server-Side Pagination</text>
+  <text x="556" y="180" font-family="monospace" font-size="9" fill="#fed7aa">• 25,000+ Records Handled</text>
+  <text x="556" y="196" font-family="monospace" font-size="9" fill="#fed7aa">• &lt;50 KB Payload Per Page</text>
+  <text x="556" y="212" font-family="monospace" font-size="9" fill="#fed7aa">• Multi-Status Invoice Cycle</text>
+  <rect x="556" y="222" width="168" height="16" rx="4" fill="#b45309" fill-opacity="0.3"/>
+  <text x="640" y="233" font-family="monospace" font-size="8.5" fill="#fde68a" text-anchor="middle">ROLE-BASED ACCESS CONTROL</text>
+
+  <!-- Connectors -->
+  <line x1="260" y1="180" x2="300" y2="180" stroke="#f59e0b" stroke-width="2"/>
+  <line x1="500" y1="180" x2="540" y2="180" stroke="#f59e0b" stroke-width="2"/>
+
+  <!-- Terminal Output -->
+  <rect x="60" y="280" width="680" height="175" rx="10" fill="#171310" stroke="#38291f" stroke-width="1"/>
+  <rect x="60" y="280" width="680" height="26" rx="10" fill="#221a15"/>
+  <text x="76" y="297" font-family="monospace" font-size="10.5" fill="#9c8475">TERMINAL // FIELD SERVICE DISPATCH &amp; SOCKET.IO TELEMETRY</text>
+
+  <text x="76" y="328" font-family="monospace" font-size="10" fill="#fbbf24">[10:01:20] BOOKING_TEMPLATE:</text>
+  <text x="270" y="328" font-family="monospace" font-size="10" fill="#e2e8f0">Turnover scheduled for 'Villa Azure' (Checkout 10 AM, Checkin 3 PM) in 22 seconds.</text>
+
+  <text x="76" y="348" font-family="monospace" font-size="10" fill="#fde68a">[10:01:21] FCM_BROADCAST:</text>
+  <text x="270" y="348" font-family="monospace" font-size="10" fill="#e2e8f0">High-priority device push sent to assigned cleaner device. Delivery confirmed (98ms).</text>
+
+  <text x="76" y="368" font-family="monospace" font-size="10" fill="#fed7aa">[10:45:00] SOCKET_CHECKIN:</text>
+  <text x="270" y="368" font-family="monospace" font-size="10" fill="#e2e8f0">Cleaner arrived on site. Emitted 'cleaner_checkin' event. Admin badge set to GREEN.</text>
+
+  <text x="76" y="388" font-family="monospace" font-size="10" fill="#fbbf24">[11:15:40] PAGINATION_QUERY:</text>
+  <text x="270" y="388" font-family="monospace" font-size="10" fill="#e2e8f0">Filtered 25,400 turnover records by city 'Amsterdam'. Transferred 38 KB (Page 1).</text>
+
+  <rect x="76" y="410" width="220" height="26" rx="6" fill="#2c1e15" stroke="#4d3221" stroke-width="1"/>
+  <text x="186" y="427" font-family="monospace" font-size="9.5" fill="#fde68a" text-anchor="middle" font-weight="700">✓ FIELD SERVICE CRM ACTIVE</text>
+</svg>

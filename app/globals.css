@@ -2,26 +2,48 @@
 
 @layer base {
   :root {
-    --background: #09090b;
-    --foreground: #fafafa;
-    --accent: #e8e4dc;
-    --card-bg: #111114;
-    --card-border: rgba(255, 255, 255, 0.08);
+    --background: #1c2225;
+    --foreground: #f8f9e8;
+    --accent: #cbe3b3;
+    --card-bg: #232a2e;
+    --card-border: rgba(203, 227, 179, 0.12);
+
+    /* ── Engineering Case Study & Global WCAG AA Palette ── */
+    --color-base: #1c2225;
+    --color-surface0: #232a2e;
+    --color-surface1: #2b3337;
+    --color-surface2: #374145;
+    --color-overlay0: #4a585c;
+    --color-overlay1: #687d84;
+    --color-overlay2: #9db5b7; /* WCAG AA: 6.85:1 contrast against #232a2e */
+    --color-subtext0: #a8c4c0; /* WCAG AA: 8.02:1 contrast against #232a2e */
+    --color-subtext1: #96b4aa;
+    --color-subtext2: #adc9bc;
+    --color-text: #f8f9e8;
+
+    --color-green: #cbe3b3;
+    --color-purple: #d2bdf3;
+    --color-blue: #b2caed;
+    --color-red: #f57f82;
+    --color-orange: #f7a182;
+    --color-yellow: #f5d098;
+    --color-pink: #f3c0e5;
+    --color-aqua: #b3e3ca;
   }
 
   * {
-    border-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(203, 227, 179, 0.12);
   }
 
   html {
     scroll-behavior: smooth;
-    background-color: #09090b;
-    color: #fafafa;
+    background-color: #1c2225;
+    color: #adc9bc;
   }
 
   body {
-    background-color: #09090b;
-    color: #fafafa;
+    background-color: #1c2225;
+    color: #adc9bc;
     font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     overflow-x: hidden;
@@ -30,12 +52,12 @@
 
   /* Impeccable Craft Floor: Tuned browser surfaces */
   ::selection {
-    background: rgba(232, 228, 220, 0.22);
+    background: rgba(203, 227, 179, 0.25);
     color: #ffffff;
   }
 
   :focus-visible {
-    outline: 2px solid rgba(232, 228, 220, 0.7);
+    outline: 2px solid rgba(203, 227, 179, 0.7);
     outline-offset: 2px;
   }
 
@@ -46,16 +68,16 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #09090b;
+    background: #1c2225;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #27272a;
+    background: #2b3337;
     border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #3f3f46;
+    background: #374145;
   }
 }
 
@@ -116,8 +138,8 @@
   transform: translate(-50%, -50%);
   background: radial-gradient(
     circle,
-    rgba(232, 228, 220, 0.055) 0%,
-    rgba(232, 228, 220, 0.018) 40%,
+    rgba(203, 227, 179, 0.055) 0%,
+    rgba(203, 227, 179, 0.018) 40%,
     transparent 70%
   );
   mix-blend-mode: screen;
@@ -177,3 +199,73 @@
     top: calc(4.5rem + 0.75rem + (var(--card-index) * 1rem));
   }
 }
+
+/* ── Case Study Animations & Utilities ────────────────────────────── */
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 4s ease infinite;
+}
+
+@keyframes node-glow {
+  0%, 100% {
+    box-shadow: 0 0 4px color-mix(in srgb, var(--glow-color, var(--color-green)) 25%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 16px color-mix(in srgb, var(--glow-color, var(--color-green)) 40%, transparent);
+  }
+}
+
+.node-glow-active {
+  animation: node-glow 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+}
+
+.flow-pulse-dot {
+  animation: pulse-dot 1.8s ease-in-out infinite;
+}
+
+.ide-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--btn-color, var(--color-overlay0));
+  color: var(--btn-color, var(--color-subtext1));
+  background: transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.ide-btn:hover {
+  background: color-mix(in srgb, var(--btn-color, var(--color-overlay0)) 15%, transparent);
+  color: var(--color-text);
+  border-color: var(--btn-color, var(--color-green));
+}
+

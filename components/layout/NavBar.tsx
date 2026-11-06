@@ -26,7 +26,7 @@ function ScrambleLink({
       onClick={onClick}
       onMouseEnter={scramble}
       onMouseLeave={reset}
-      className={`text-zinc-400 hover:text-white transition-colors tracking-wide text-[11px] md:text-xs font-mono ${className}`}
+      className={`text-[var(--color-subtext2)] hover:text-white transition-colors tracking-wider text-[11px] md:text-xs font-mono font-medium ${className}`}
     >
       {text}
     </a>
@@ -83,33 +83,36 @@ export function NavBar() {
 
   return (
     <header
-      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-        isVisible ? "translate-y-0 opacity-100" : "-translate-y-20 opacity-0 pointer-events-none"
-      } w-[94%] max-w-4xl`}
+      className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        isVisible
+          ? "translate-y-0 opacity-100"
+          : "-translate-y-full opacity-0 pointer-events-none"
+      } bg-[#16191b]/80 backdrop-blur-md border-b border-[var(--color-overlay0)]/20`}
     >
-      {/* ── Desktop pill nav ─────────────────────────────────────────────── */}
-      <nav className="flex items-center justify-between px-3.5 py-2 md:px-5 md:py-2.5 rounded-full bg-zinc-950/85 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+      {/* ── Full Width Container ─────────────────────────────────────────── */}
+      <nav className="max-w-7xl mx-auto px-4 sm:px-8 md:px-12 h-16 flex items-center justify-between">
         {/* Brand */}
         <a
           href="#top"
           onClick={(e) => handleNavClick(e, "#top")}
-          className="group flex items-center gap-1.5 text-xs font-mono font-semibold tracking-wider text-zinc-300 hover:text-white transition-colors shrink-0"
+          className="group flex items-center gap-2 text-xs font-mono font-semibold tracking-wider text-[var(--color-subtext2)] hover:text-white transition-colors shrink-0"
         >
-          <span className="text-white/40 group-hover:text-white/70 transition-colors">[</span>
-          <span className="text-white">CJ</span>
-          <span className="text-white/40 group-hover:text-white/70 transition-colors">]</span>
+          <span className="text-[var(--color-green)] font-bold text-sm tracking-tight">[ CJ ]</span>
+          <span className="text-zinc-400 font-sans font-medium text-xs hidden sm:inline">Chirag Jain</span>
         </a>
 
-        {/* Desktop centre: links (hidden on mobile) */}
-        <div className="hidden sm:flex items-center gap-3 md:gap-6 text-xs font-mono">
-          <div className="hidden md:flex items-center gap-2 text-xs text-zinc-300">
+        {/* Desktop centre: links */}
+        <div className="hidden sm:flex items-center gap-4 md:gap-7 text-xs font-mono">
+          <div className="hidden md:flex items-center gap-2 text-xs text-[var(--color-subtext2)]">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-green)] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-green)]" />
             </span>
-            <span className="tracking-wide text-[11px]">OPEN TO ROLES</span>
+            <span className="tracking-widest text-[10.5px] font-semibold text-[var(--color-green)]">OPEN TO ROLES</span>
           </div>
-          <span className="hidden md:inline text-white/15">|</span>
+
+          <span className="hidden md:inline text-[var(--color-overlay0)]/40 select-none">/</span>
+
           {navLinks.map((l) => (
             <ScrambleLink
               key={l.href}
@@ -121,8 +124,8 @@ export function NavBar() {
         </div>
 
         {/* Right: CTA (desktop) + hamburger (mobile) */}
-        <div className="flex items-center gap-2">
-          {/* ATS Resume button — hidden on very small screens, shown sm+ */}
+        <div className="flex items-center gap-3">
+          {/* ATS Resume button */}
           <div
             className="hidden sm:block"
             ref={resumeMagnetic.ref as React.RefObject<HTMLDivElement>}
@@ -134,17 +137,17 @@ export function NavBar() {
               href="mailto:chiragjain7300@gmail.com?subject=Resume%20Request%20%E2%80%94%20Chirag%20Jain"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#e8e4dc] text-zinc-950 font-mono text-[10px] md:text-[11px] font-bold hover:bg-white hover:shadow-[0_0_20px_rgba(232,228,220,0.3)] transition-all active:scale-95 whitespace-nowrap"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[var(--color-green)] text-[#16191b] font-mono text-[10.5px] md:text-xs font-bold hover:bg-[#d8eed0] hover:shadow-[0_0_20px_rgba(203,227,179,0.35)] transition-all active:scale-95 whitespace-nowrap"
             >
-              <FileText className="w-3 h-3 text-zinc-900 shrink-0" />
+              <FileText className="w-3.5 h-3.5 text-[#16191b] shrink-0" />
               <span>ATS RESUME</span>
-              <ArrowUpRight className="w-3 h-3 text-zinc-900 shrink-0" />
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#16191b] shrink-0" />
             </a>
           </div>
 
           {/* Hamburger — only on mobile */}
           <button
-            className="sm:hidden flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10 text-zinc-300 hover:text-white transition-colors"
+            className="sm:hidden flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 border border-white/10 text-zinc-300 hover:text-white transition-colors"
             onClick={() => setMobileOpen((prev) => !prev)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
           >
@@ -153,16 +156,16 @@ export function NavBar() {
         </div>
       </nav>
 
-      {/* ── Mobile drawer ────────────────────────────────────────────────── */}
+      {/* ── Mobile drawer (full width) ────────────────────────────────────── */}
       {mobileOpen && (
-        <div className="sm:hidden mt-2 rounded-2xl bg-zinc-950/95 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.6)] overflow-hidden">
-          <div className="p-4 space-y-1">
+        <div className="sm:hidden w-full bg-[#16191b]/95 backdrop-blur-xl border-b border-[var(--color-overlay0)]/30 overflow-hidden shadow-2xl">
+          <div className="px-4 py-3 space-y-1">
             {navLinks.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
                 onClick={(e) => handleNavClick(e, l.href)}
-                className="flex items-center justify-between px-3 py-3 rounded-xl font-mono text-sm text-zinc-300 hover:text-white hover:bg-white/5 transition-colors tracking-wider"
+                className="flex items-center justify-between px-3 py-3 rounded-lg font-mono text-sm text-[var(--color-subtext2)] hover:text-white hover:bg-white/5 transition-colors tracking-wider"
               >
                 <span>{l.label}</span>
                 <ArrowUpRight className="w-3.5 h-3.5 text-zinc-500" />
@@ -174,7 +177,7 @@ export function NavBar() {
               href="mailto:chiragjain7300@gmail.com?subject=Resume%20Request%20%E2%80%94%20Chirag%20Jain"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-[#e8e4dc] text-zinc-950 font-mono text-xs font-bold hover:bg-white transition-all"
+              className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg bg-[var(--color-green)] text-[#16191b] font-mono text-xs font-bold hover:bg-[#d8eed0] transition-all"
             >
               <FileText className="w-3.5 h-3.5" />
               <span>REQUEST ATS RESUME</span>
@@ -186,3 +189,4 @@ export function NavBar() {
     </header>
   );
 }
+export default NavBar;

@@ -2,226 +2,683 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useMotionTemplate,
+} from "framer-motion";
 import { projects, Project } from "@/data";
 import { ArchitectureModal } from "@/components/modals/ArchitectureModal";
-import { ExternalLink, Lock, ArrowUpRight, Cpu, Layers } from "lucide-react";
+import {
+  Lock,
+  ArrowUpRight,
+  Server,
+  Sparkles,
+  Check,
+  ChevronRight,
+  Code2,
+  FolderGit2,
+  Cpu,
+  Globe,
+  Bot,
+  Layers,
+  Building2,
+  Users,
+  MessageSquare,
+  ShieldCheck,
+  Calendar,
+  Utensils,
+} from "lucide-react";
 
-const metricMap: Record<number, string> = {
-  1: "NextAuth OAuth integration · Dynamic MongoDB search & tag indexing · Mobile-first responsive layout",
-  2: "LLM structured JSON extraction · n8n webhook pipeline · Real-time keyword GAP analysis",
-  3: "Race-free DB-cached OAuth2 token manager · Self-healing CronLog · 99.98% sync uptime",
-  4: "High-traffic registration spike coverage · Redux booking engine · Zero-downtime bundle versioning",
-};
+type ProjectCategory = "all" | "fullstack" | "ai" | "backend";
 
-interface ProjectCardProps {
-  project: Project;
-  index: number;
-  totalCards: number;
-  onInspect: (project: Project) => void;
+// ─────────────────────────────────────────────────────────────────────────────
+// Per-project accent color identity
+// ─────────────────────────────────────────────────────────────────────────────
+interface AccentTheme {
+  /** Tailwind color class prefix, e.g. "cyan" */
+  name: string;
+  /** Spotlight glow rgba — used in radial-gradient */
+  spotlightRgba: string;
+  /** Border color class */
+  border: string;
+  /** Text color class */
+  text: string;
+  /** Subtle bg class */
+  bg: string;
+  /** Ambient mesh gradient class — goes behind card bg */
+  mesh: string;
+  /** Category icon */
+  Icon: React.ElementType;
+  /** Label for the animated status chip */
+  statusLabel: string;
+  /** Status chip color classes */
+  statusColors: string;
+  /** Header hairline gradient */
+  hairline: string;
+  /** CTA button gradient classes */
+  cta: string;
+  /** CTA border class */
+  ctaBorder: string;
+  /** CTA text class */
+  ctaText: string;
+  /** Big decorative numeral color */
+  numeralColor: string;
 }
 
-function ProjectCard({ project, index, totalCards, onInspect }: ProjectCardProps) {
+const PROJECT_ACCENTS: Record<number, AccentTheme> = {
+  // PromptPedia — sky/teal (Knowledge / Discovery)
+  1: {
+    name: "sky",
+    spotlightRgba: "rgba(56, 189, 248, 0.10)",
+    border: "hover:border-sky-500/50",
+    text: "text-sky-400",
+    bg: "bg-sky-500/10",
+    mesh: "from-sky-950/30 via-transparent to-teal-950/20",
+    Icon: Globe,
+    statusLabel: "LIVE ON VERCEL",
+    statusColors:
+      "bg-sky-500/15 text-sky-300 border-sky-500/40",
+    hairline:
+      "from-transparent via-sky-500/50 via-teal-500/30 to-transparent",
+    cta: "from-sky-500/20 via-teal-500/20 to-emerald-500/20 hover:from-sky-500/35 hover:to-emerald-500/35",
+    ctaBorder: "border-sky-500/40 hover:border-sky-400",
+    ctaText: "text-sky-200 hover:text-white",
+    numeralColor: "text-sky-950/60",
+  },
+  // SEO Engine — amber/gold (AI automation)
+  2: {
+    name: "amber",
+    spotlightRgba: "rgba(245, 158, 11, 0.09)",
+    border: "hover:border-amber-500/50",
+    text: "text-amber-400",
+    bg: "bg-amber-500/10",
+    mesh: "from-amber-950/30 via-transparent to-orange-950/20",
+    Icon: Bot,
+    statusLabel: "AI ENGINE",
+    statusColors:
+      "bg-amber-500/15 text-amber-300 border-amber-500/40",
+    hairline:
+      "from-transparent via-amber-500/50 via-orange-500/30 to-transparent",
+    cta: "from-amber-500/20 via-orange-500/20 to-yellow-500/20 hover:from-amber-500/35 hover:to-yellow-500/35",
+    ctaBorder: "border-amber-500/40 hover:border-amber-400",
+    ctaText: "text-amber-200 hover:text-white",
+    numeralColor: "text-amber-900/40",
+  },
+  // WDM Platform — cyan/blue (backend/systems)
+  3: {
+    name: "cyan",
+    spotlightRgba: "rgba(6, 182, 212, 0.09)",
+    border: "hover:border-cyan-500/50",
+    text: "text-cyan-400",
+    bg: "bg-cyan-500/10",
+    mesh: "from-cyan-950/30 via-transparent to-indigo-950/20",
+    Icon: Server,
+    statusLabel: "CASE STUDY",
+    statusColors:
+      "bg-cyan-500/15 text-cyan-300 border-cyan-500/40",
+    hairline:
+      "from-transparent via-cyan-500/50 via-indigo-500/30 to-transparent",
+    cta: "from-cyan-500/20 via-indigo-500/20 to-purple-500/20 hover:from-cyan-500/35 hover:to-purple-500/35",
+    ctaBorder: "border-cyan-500/40 hover:border-cyan-400",
+    ctaText: "text-cyan-200 hover:text-white",
+    numeralColor: "text-cyan-900/40",
+  },
+  // Just Walk India — emerald (fullstack/production)
+  4: {
+    name: "emerald",
+    spotlightRgba: "rgba(16, 185, 129, 0.09)",
+    border: "hover:border-emerald-500/50",
+    text: "text-emerald-400",
+    bg: "bg-emerald-500/10",
+    mesh: "from-emerald-950/30 via-transparent to-teal-950/20",
+    Icon: Layers,
+    statusLabel: "CASE STUDY",
+    statusColors:
+      "bg-emerald-500/15 text-emerald-300 border-emerald-500/40",
+    hairline:
+      "from-transparent via-emerald-500/50 via-teal-500/30 to-transparent",
+    cta: "from-emerald-500/20 via-teal-500/20 to-cyan-500/20 hover:from-emerald-500/35 hover:to-cyan-500/35",
+    ctaBorder: "border-emerald-500/40 hover:border-emerald-400",
+    ctaText: "text-emerald-200 hover:text-white",
+    numeralColor: "text-emerald-900/40",
+  },
+  // Blanca Real Estate — teal/green (enterprise fullstack)
+  5: {
+    name: "teal",
+    spotlightRgba: "rgba(20, 184, 166, 0.09)",
+    border: "hover:border-teal-500/50",
+    text: "text-teal-400",
+    bg: "bg-teal-500/10",
+    mesh: "from-teal-950/30 via-transparent to-emerald-950/20",
+    Icon: Building2,
+    statusLabel: "CASE STUDY",
+    statusColors:
+      "bg-teal-500/15 text-teal-300 border-teal-500/40",
+    hairline:
+      "from-transparent via-teal-500/50 via-emerald-500/30 to-transparent",
+    cta: "from-teal-500/20 via-emerald-500/20 to-green-500/20 hover:from-teal-500/35 hover:to-green-500/35",
+    ctaBorder: "border-teal-500/40 hover:border-teal-400",
+    ctaText: "text-teal-200 hover:text-white",
+    numeralColor: "text-teal-900/40",
+  },
+  // Inventam HRMS — warm ochre / stone (enterprise telemetry & statutory payroll)
+  6: {
+    name: "stone",
+    spotlightRgba: "rgba(217, 119, 6, 0.09)",
+    border: "hover:border-amber-600/50",
+    text: "text-amber-300",
+    bg: "bg-amber-600/10",
+    mesh: "from-stone-900/40 via-transparent to-amber-950/20",
+    Icon: Users,
+    statusLabel: "CASE STUDY",
+    statusColors:
+      "bg-amber-600/15 text-amber-200 border-amber-600/40",
+    hairline:
+      "from-transparent via-amber-600/50 via-stone-500/30 to-transparent",
+    cta: "from-amber-600/20 via-stone-700/20 to-emerald-700/20 hover:from-amber-600/35 hover:to-emerald-700/35",
+    ctaBorder: "border-amber-600/40 hover:border-amber-500",
+    ctaText: "text-amber-100 hover:text-white",
+    numeralColor: "text-amber-950/40",
+  },
+  // VecTalk AI — blue/indigo (RAG platform)
+  7: {
+    name: "blue",
+    spotlightRgba: "rgba(59, 130, 246, 0.09)",
+    border: "hover:border-blue-500/50",
+    text: "text-blue-400",
+    bg: "bg-blue-500/10",
+    mesh: "from-blue-950/30 via-transparent to-indigo-950/20",
+    Icon: Bot,
+    statusLabel: "CASE STUDY",
+    statusColors:
+      "bg-blue-500/15 text-blue-300 border-blue-500/40",
+    hairline:
+      "from-transparent via-blue-500/50 via-indigo-500/30 to-transparent",
+    cta: "from-blue-500/20 via-indigo-500/20 to-sky-500/20 hover:from-blue-500/35 hover:to-sky-500/35",
+    ctaBorder: "border-blue-500/40 hover:border-blue-400",
+    ctaText: "text-blue-200 hover:text-white",
+    numeralColor: "text-blue-900/40",
+  },
+  // Verified Inbox — sky/cyan (email intelligence)
+  8: {
+    name: "sky",
+    spotlightRgba: "rgba(14, 165, 233, 0.09)",
+    border: "hover:border-sky-500/50",
+    text: "text-sky-400",
+    bg: "bg-sky-500/10",
+    mesh: "from-sky-950/30 via-transparent to-cyan-950/20",
+    Icon: ShieldCheck,
+    statusLabel: "CASE STUDY",
+    statusColors:
+      "bg-sky-500/15 text-sky-300 border-sky-500/40",
+    hairline:
+      "from-transparent via-sky-500/50 via-cyan-500/30 to-transparent",
+    cta: "from-sky-500/20 via-cyan-500/20 to-teal-500/20 hover:from-sky-500/35 hover:to-teal-500/35",
+    ctaBorder: "border-sky-500/40 hover:border-sky-400",
+    ctaText: "text-sky-200 hover:text-white",
+    numeralColor: "text-sky-900/40",
+  },
+  // CleanCRM — amber/orange (field operations)
+  9: {
+    name: "amber",
+    spotlightRgba: "rgba(245, 158, 11, 0.09)",
+    border: "hover:border-amber-500/50",
+    text: "text-amber-400",
+    bg: "bg-amber-500/10",
+    mesh: "from-amber-950/30 via-transparent to-orange-950/20",
+    Icon: Calendar,
+    statusLabel: "CASE STUDY",
+    statusColors:
+      "bg-amber-500/15 text-amber-300 border-amber-500/40",
+    hairline:
+      "from-transparent via-amber-500/50 via-orange-500/30 to-transparent",
+    cta: "from-amber-500/20 via-orange-500/20 to-yellow-500/20 hover:from-amber-500/35 hover:to-yellow-500/35",
+    ctaBorder: "border-amber-500/40 hover:border-amber-400",
+    ctaText: "text-amber-200 hover:text-white",
+    numeralColor: "text-amber-900/40",
+  },
+  // EventCRM — rose/coral (event catering)
+  10: {
+    name: "rose",
+    spotlightRgba: "rgba(244, 63, 94, 0.09)",
+    border: "hover:border-rose-500/50",
+    text: "text-rose-400",
+    bg: "bg-rose-500/10",
+    mesh: "from-rose-950/30 via-transparent to-pink-950/20",
+    Icon: Utensils,
+    statusLabel: "CASE STUDY",
+    statusColors:
+      "bg-rose-500/15 text-rose-300 border-rose-500/40",
+    hairline:
+      "from-transparent via-rose-500/50 via-pink-500/30 to-transparent",
+    cta: "from-rose-500/20 via-pink-500/20 to-red-500/20 hover:from-rose-500/35 hover:to-red-500/35",
+    ctaBorder: "border-rose-500/40 hover:border-rose-400",
+    ctaText: "text-rose-200 hover:text-white",
+    numeralColor: "text-rose-900/40",
+  },
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tech tag color-coding by domain keyword
+// ─────────────────────────────────────────────────────────────────────────────
+function getTagStyle(tag: string): string {
+  const t = tag.toLowerCase();
+  if (t.match(/next\.?js|react|tailwind|typescript|javascript|redux/))
+    return "bg-blue-500/10 text-blue-300 border-blue-500/20";
+  if (t.match(/mongo|postgres|mysql|sql|prisma|drizzle/))
+    return "bg-amber-500/10 text-amber-300 border-amber-500/20";
+  if (t.match(/openai|llm|ai|gpt|gemini|claude|n8n|automation|agentic/))
+    return "bg-purple-500/10 text-purple-300 border-purple-500/20";
+  if (t.match(/node|express|pm2|cron|api|graphql|rest|grpc/))
+    return "bg-emerald-500/10 text-emerald-300 border-emerald-500/20";
+  if (t.match(/docker|aws|gcp|vercel|railway|netlify|redis/))
+    return "bg-sky-500/10 text-sky-300 border-sky-500/20";
+  if (t.match(/bol\.com|monday\.com|mixpanel|sentry|meta|datafor/))
+    return "bg-zinc-500/10 text-zinc-300 border-zinc-500/20";
+  return "bg-white/5 text-zinc-400 border-white/8";
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// WDM Custom HUD Graphic
+// ─────────────────────────────────────────────────────────────────────────────
+function WdmHUD() {
   return (
-    <article
-      className="project-card relative md:sticky w-full max-w-5xl mx-auto rounded-2xl border border-white/10 bg-[#121217] p-4 sm:p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.7)] transition-all duration-300"
-      style={{
-        "--card-index": index,
-        zIndex: index + 1,
-      } as React.CSSProperties}
-    >
-      {/* Top Monospace Metadata Bar */}
-      <div className="flex items-center justify-between pb-4 border-b border-white/8 text-xs font-mono text-zinc-400">
-        <div className="flex items-center gap-2">
-          <span className="text-white/40">[</span>
-          <span className="text-[#e8e4dc] font-bold">0{index + 1}</span>
-          <span className="text-white/40">]</span>
-          <span className="text-zinc-500">/</span>
-          <span className="text-zinc-400">0{totalCards}</span>
-        </div>
+    <div className="w-full h-full p-4 sm:p-5 flex flex-col justify-between bg-[#07080e] text-zinc-200 font-mono text-xs relative select-none">
+      <div className="absolute inset-0 bg-gradient-to-br from-cyan-950/30 via-transparent to-indigo-950/25 pointer-events-none" />
 
-        <div className="flex items-center gap-2">
-          <span className="uppercase tracking-wide text-xs text-zinc-300">
-            {project.categoryLabel}
-          </span>
-          {project.isPrivate ? (
-            <span className="hidden sm:flex items-center gap-1 text-xs text-amber-300/80 px-2 py-0.5">
-              <Lock className="w-3 h-3" /> PROPRIETARY
-            </span>
-          ) : (
-            <span className="hidden sm:inline text-xs text-emerald-300 px-2 py-0.5">
-              PRODUCTION
-            </span>
-          )}
+      <div className="flex items-center justify-between border-b border-white/10 pb-2 z-10">
+        <div className="flex items-center space-x-1.5 text-cyan-400">
+          <Server className="w-3.5 h-3.5 shrink-0" />
+          <span className="font-semibold text-[11px] tracking-wide">WDM_CATALOG_PIPELINE</span>
+        </div>
+        <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+          ● 04:00 AM Cron Active
+        </span>
+      </div>
+
+      <div className="grid grid-cols-2 gap-2 z-10 my-auto">
+        <div className="p-2 sm:p-2.5 rounded-lg bg-white/5 border border-white/8">
+          <span className="text-[9px] text-zinc-500 block">OAUTH2 BUFFER</span>
+          <span className="text-cyan-300 font-semibold text-[11px] block">30s Pre-Refresh</span>
+        </div>
+        <div className="p-2 sm:p-2.5 rounded-lg bg-white/5 border border-white/8">
+          <span className="text-[9px] text-zinc-500 block">PARSER STREAM</span>
+          <span className="text-indigo-300 font-semibold text-[11px] block">Set Diff (A ∖ B)</span>
+        </div>
+        <div className="p-2 sm:p-2.5 rounded-lg bg-white/5 border border-white/8">
+          <span className="text-[9px] text-zinc-500 block">HEAP USAGE</span>
+          <span className="text-emerald-300 font-semibold text-[11px] block">&lt;95 MB RAM</span>
+        </div>
+        <div className="p-2 sm:p-2.5 rounded-lg bg-white/5 border border-white/8">
+          <span className="text-[9px] text-zinc-500 block">INTEGRATION</span>
+          <span className="text-amber-300 font-semibold text-[11px] block">4 Systems Unified</span>
         </div>
       </div>
 
-      {/* Main Card Content Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6 my-5 items-center">
-        {/* Left Column: Details — reordered below image on single-column */}
-        <div className="order-last md:order-first md:col-span-7 space-y-3">
-          <h3 className="text-lg md:text-xl lg:text-2xl font-sans font-bold tracking-tight text-white">
-            {project.title}
-          </h3>
-
-          <p className="text-sm text-zinc-300 leading-relaxed max-w-xl">
-            {project.des}
-          </p>
-
-          {/* Business Metric Callout Box: Flat Typographical Divider */}
-          <div className="py-2.5 my-2 border-y border-white/8">
-            <div className="text-xs font-mono uppercase tracking-wide text-zinc-400 mb-1 flex items-center gap-1.5">
-              <Cpu className="w-3 h-3 text-[#e8e4dc]" />
-              <span>Core Architectural Metric</span>
-            </div>
-            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-1.5 sm:gap-x-2 sm:gap-y-1 font-mono text-xs text-zinc-200">
-              {(metricMap[project.id] || project.highlights[0]).split(" · ").map((chunk, cIdx, arr) => (
-                <span key={cIdx} className="inline-flex items-center gap-2">
-                  <span>{chunk}</span>
-                  {cIdx < arr.length - 1 && <span className="hidden sm:inline text-zinc-500">·</span>}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Tech Stack Chips: Subtle inline text list */}
-          <div className="flex flex-wrap gap-x-3 gap-y-1 pt-0.5 font-mono text-xs text-zinc-400">
-            {project.tags.map((tag, idx) => (
-              <span key={idx} className="flex items-center gap-1.5">
-                <span className="text-zinc-500">/</span>
-                <span className="text-zinc-300">{tag}</span>
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Right Column: 3D flip visual — front: image, back: tech stack */}
-        <div className="order-first md:order-last md:col-span-5">
-          <div className="card-flip-wrapper aspect-[16/9] w-full md:max-h-[220px] rounded-xl overflow-hidden">
-            <div className="card-flip-inner rounded-xl">
-              {/* ── Front face ── */}
-              <div className="card-face bg-[#0d0d10] rounded-xl overflow-hidden">
-                {project.img ? (
-                  <div className="relative w-full h-full">
-                    <Image
-                      src={project.img}
-                      alt={project.title}
-                      fill
-                      priority={index === 0}
-                      loading={index === 0 ? "eager" : "lazy"}
-                      sizes="(max-width: 1024px) 100vw, 40vw"
-                      className="object-cover object-top opacity-90"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                    {/* Hover hint */}
-                    <div className="absolute bottom-2 right-2 font-mono text-[9px] text-white/30 tracking-wider">HOVER → STACK</div>
-                  </div>
-                ) : (
-                  <div className="w-full h-full flex flex-col justify-center items-center p-6 text-center">
-                    <Layers className="w-8 h-8 text-white/30 mb-2" />
-                    <span className="font-mono text-xs text-white/70 tracking-wider font-semibold">
-                      API Orchestration Pipeline
-                    </span>
-                    <span className="font-mono text-xs text-zinc-400 mt-1 max-w-[36ch]">
-                      Bol.com v10 ⇄ Monday.com GraphQL ⇄ Node.js Concurrency
-                    </span>
-                    <div className="absolute bottom-2 right-2 font-mono text-[9px] text-white/30 tracking-wider">HOVER → STACK</div>
-                  </div>
-                )}
-              </div>
-
-              {/* ── Back face — tech stack ── */}
-              <div className="card-face card-face-back bg-[#121217] border border-white/10 rounded-xl p-5 flex flex-col justify-center">
-                <div className="font-mono text-[9px] tracking-widest text-zinc-500 uppercase mb-3">TECH STACK</div>
-                <div className="flex flex-wrap gap-x-2 gap-y-2">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-1 rounded bg-white/5 border border-white/10 font-mono text-[10px] text-[#e8e4dc] tracking-wide"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-4 font-mono text-[9px] text-zinc-600 tracking-widest uppercase">
-                  {project.isPrivate ? "PROPRIETARY · CLIENT PRODUCTION" : "OPEN SOURCE · VERIFIED DEPLOYMENT"}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="flex items-center justify-between text-[10px] text-zinc-500 border-t border-white/10 pt-2 z-10">
+        <span>Bol.com v10 ⇄ Monday.com</span>
+        <span className="text-cyan-400 font-semibold">Backend Lead</span>
       </div>
-
-      {/* Bottom Actions Row */}
-      <div className="pt-4 border-t border-white/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <button
-          onClick={() => onInspect(project)}
-          className="group flex items-center gap-1.5 text-xs font-mono text-white hover:text-[#e8e4dc] transition-colors"
-        >
-          <span className="underline underline-offset-4 decoration-white/30 group-hover:decoration-[#e8e4dc]">
-            INSPECT ARCHITECTURE
-          </span>
-          <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </button>
-
-        <div className="flex flex-wrap gap-3 text-xs font-mono">
-          {project.link && project.link.startsWith("http") && (
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors"
-            >
-              <span>LIVE SYSTEM</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
-          )}
-          <span className="text-zinc-400">
-            {project.isPrivate ? "CLIENT PRODUCTION" : "VERIFIED DEPLOYMENT"}
-          </span>
-        </div>
-      </div>
-    </article>
+    </div>
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Project Card
+// ─────────────────────────────────────────────────────────────────────────────
+interface ProjectCardProps {
+  project: Project;
+  index: number;
+  onInspect: (project: Project) => void;
+}
+
+function ModernProjectCard({ project, index, onInspect }: ProjectCardProps) {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const [imgError, setImgError] = useState(false);
+
+  const accent = PROJECT_ACCENTS[project.id] ?? PROJECT_ACCENTS[1];
+  const hasValidImg = Boolean(project.img) && !imgError;
+  const editorialNum = String(index + 1).padStart(2, "0");
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  return (
+    <motion.article
+      layout
+      initial={{ opacity: 0, y: 32 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95, y: -8 }}
+      transition={{ type: "spring", stiffness: 340, damping: 28, delay: index * 0.08 }}
+      onMouseMove={handleMouseMove}
+      className={`group relative rounded-2xl border border-[var(--color-overlay0)]/30 bg-[#232a2e]/95 p-5 sm:p-6 flex flex-col justify-between overflow-hidden transition-all duration-300 ${accent.border} hover:shadow-[0_24px_60px_rgba(0,0,0,0.85)] backdrop-blur-xl`}
+    >
+      {/* Ambient mesh radial per-project accent */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${accent.mesh} pointer-events-none opacity-60`} />
+
+      {/* Accent hairline on top — reveals on hover */}
+      <div className={`absolute top-0 inset-x-0 h-px bg-gradient-to-r ${accent.hairline} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+
+      {/* Cursor spotlight glow */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              420px circle at ${mouseX}px ${mouseY}px,
+              ${accent.spotlightRgba},
+              transparent 80%
+            )
+          `,
+        }}
+      />
+
+      {/* Large decorative editorial numeral */}
+      <span
+        className={`pointer-events-none absolute -bottom-4 -right-2 text-[9rem] font-black leading-none select-none ${accent.numeralColor} transition-opacity duration-300 group-hover:opacity-80`}
+        aria-hidden="true"
+      >
+        {editorialNum}
+      </span>
+
+      <div className="relative z-10 flex flex-col h-full">
+        {/* ── Top header bar ── */}
+        <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/[0.07] text-xs font-mono">
+          <div className="flex items-center gap-2">
+            {React.createElement(accent.Icon, { className: `w-3.5 h-3.5 ${accent.text}` })}
+            <span className={`font-semibold uppercase tracking-widest text-[10px] ${accent.text}`}>
+              {project.categoryLabel}
+            </span>
+          </div>
+
+          {/* Animated status pill */}
+          <span
+            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold border ${accent.statusColors}`}
+          >
+            <span className="relative flex h-1.5 w-1.5">
+              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${accent.bg}`} />
+              <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${accent.bg.replace("bg-", "bg-").replace("/10", "/60")}`} />
+            </span>
+            {accent.statusLabel}
+          </span>
+        </div>
+
+        {/* ── Visual media container ── */}
+        <div className="relative w-full h-44 sm:h-52 rounded-xl overflow-hidden mb-5 bg-[#1c2225] border border-[var(--color-overlay0)]/30 group/img flex items-center justify-center">
+          {hasValidImg ? (
+            <>
+              {/* Bottom gradient title reveal on hover */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0d0e14]/90 via-transparent to-transparent z-10" />
+              <div className={`absolute inset-0 bg-gradient-to-t ${accent.mesh} z-10 opacity-0 group-hover/img:opacity-60 transition-opacity duration-500`} />
+              <Image
+                src={project.img}
+                alt={project.title}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                priority={index < 2}
+                onError={() => setImgError(true)}
+                className="object-cover object-top transition-transform duration-700 ease-out group-hover/img:scale-[1.06]"
+              />
+              <div className="absolute top-2.5 right-2.5 z-20 font-mono text-[9px] px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-zinc-400 border border-white/10">
+                SYS_PREVIEW
+              </div>
+            </>
+          ) : (
+            <WdmHUD />
+          )}
+        </div>
+
+        {/* ── Title & description ── */}
+        <div className="space-y-1.5 mb-4">
+          <h3 className={`text-lg sm:text-[1.2rem] font-bold tracking-tight text-white group-hover:${accent.text} transition-colors duration-300`}>
+            {project.title}
+          </h3>
+          <p className="text-xs sm:text-[0.8rem] text-zinc-400 leading-relaxed font-sans line-clamp-2">
+            {project.des}
+          </p>
+        </div>
+
+        {/* ── Architectural highlights ── */}
+        <div className="p-3 rounded-xl bg-white/[0.025] border border-white/[0.07] space-y-2 mb-4 flex-1">
+          <div className={`flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider ${accent.text} mb-1`}>
+            <Sparkles className="w-3 h-3" />
+            <span>Architectural Highlights</span>
+          </div>
+          <ul className="space-y-1.5 text-[0.72rem] text-zinc-300 font-sans">
+            {project.highlights.slice(0, 3).map((highlight, idx) => (
+              <li key={idx} className="flex items-start gap-2">
+                <Check className={`w-3.5 h-3.5 ${accent.text} shrink-0 mt-0.5`} />
+                <span className="leading-snug text-zinc-300">{highlight}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* ── Tech stack chips (color-coded) ── */}
+        <div className="flex flex-wrap gap-1.5 mb-5">
+          {project.tags.map((tag, idx) => (
+            <span
+              key={idx}
+              className={`px-2 py-0.5 rounded-md border text-[10.5px] font-mono ${getTagStyle(tag)}`}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        {/* ── CTA footer ── */}
+        <div className="mt-auto pt-4 border-t border-white/[0.07] flex items-center justify-between gap-3">
+          {project.hasCaseStudy ? (
+            <Link
+              href={`/projects/${project.slug ?? "wdm-platform"}`}
+              className={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r ${accent.cta} border ${accent.ctaBorder} ${accent.ctaText} font-mono text-xs font-semibold tracking-wider uppercase transition-all duration-300 shadow-lg active:scale-95 group/btn`}
+            >
+              <span>Read Case Study (12 Sections)</span>
+              <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-1" />
+            </Link>
+          ) : project.link && project.link.startsWith("http") ? (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noreferrer"
+              className={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r ${accent.cta} border ${accent.ctaBorder} ${accent.ctaText} font-mono text-xs font-semibold tracking-wider uppercase transition-all duration-300 shadow-lg active:scale-95 group/btn`}
+            >
+              <span>Launch Live Platform</span>
+              <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
+            </a>
+          ) : (
+            <div className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-zinc-500 font-mono text-xs uppercase tracking-wider select-none">
+              <Lock className="w-3.5 h-3.5 text-amber-400/70" />
+              <span>Client Deployment</span>
+            </div>
+          )}
+
+          <button
+            type="button"
+            onClick={() => onInspect(project)}
+            title="Inspect architectural schema & JSON contracts"
+            className={`inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-white/[0.04] hover:${accent.bg} border border-white/10 ${accent.text} font-mono text-xs transition-all active:scale-95 cursor-pointer shrink-0`}
+          >
+            <Code2 className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Inspect</span>
+          </button>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Category filter config
+// ─────────────────────────────────────────────────────────────────────────────
+const CATEGORY_ACCENT: Record<string, { active: string; pill: string }> = {
+  all: {
+    active: "text-white",
+    pill: "bg-white/15 border-white/25",
+  },
+  fullstack: {
+    active: "text-indigo-200",
+    pill: "bg-indigo-500/20 border-indigo-500/40",
+  },
+  ai: {
+    active: "text-amber-200",
+    pill: "bg-amber-500/20 border-amber-500/40",
+  },
+  backend: {
+    active: "text-cyan-200",
+    pill: "bg-cyan-500/20 border-cyan-500/40",
+  },
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Main export
+// ─────────────────────────────────────────────────────────────────────────────
 export function ProjectsStack() {
+  const [activeTab, setActiveTab] = useState<ProjectCategory>("all");
   const [inspectingProject, setInspectingProject] = useState<Project | null>(null);
+
+  const categories = [
+    { id: "all", label: "All Systems", count: projects.length },
+    {
+      id: "fullstack",
+      label: "Full Stack",
+      count: projects.filter((p) => p.category === "fullstack").length,
+    },
+    {
+      id: "ai",
+      label: "AI & Auto",
+      count: projects.filter((p) => p.category === "ai").length,
+    },
+    {
+      id: "backend",
+      label: "Backend / Logistics",
+      count: projects.filter((p) => p.category === "backend").length,
+    },
+  ];
+
+  const filteredProjects =
+    activeTab === "all"
+      ? projects
+      : projects.filter((p) => p.category === activeTab);
+
+  const activeCatAccent = CATEGORY_ACCENT[activeTab] ?? CATEGORY_ACCENT.all;
 
   return (
     <section
       id="projects"
-      className="relative min-h-screen px-4 md:px-8 lg:px-12"
-      style={{ paddingTop: "calc(4.5rem + 1rem)" }}  // navbar height + 1rem gap
+      className="py-24 sm:py-32 px-4 md:px-8 lg:px-12 relative scroll-mt-20"
     >
-      <div className="max-w-5xl mx-auto">
-        {/* ── Compact one-line section badge ── */}
-        <div className="flex items-center justify-between gap-3 text-[10px] sm:text-xs font-mono mb-4 pb-3 border-b border-white/8">
-          <div className="flex items-center gap-2">
-            <span className="text-[#e8e4dc] font-bold">[01]</span>
-            <h2 className="uppercase tracking-widest text-zinc-400 font-semibold">
-              Featured Engineering Systems
-            </h2>
-          </div>
-          <span className="hidden sm:inline text-zinc-600 tracking-wider">
-            {projects.length} SYSTEMS · SCROLL TO STACK
-          </span>
-        </div>
+      {/* Top laser accent line */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--color-green)]/30 to-transparent" />
 
-        {/* Stacking Cards Deck */}
-        <div className="relative pb-28 space-y-8 sm:space-y-12 md:space-y-20">
-          {projects.map((project, index) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              index={index}
-              totalCards={projects.length}
-              onInspect={(p) => setInspectingProject(p)}
-            />
-          ))}
-        </div>
+      {/* Ambient section background glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_40%_at_50%_0%,rgba(203,227,179,0.04),transparent)] pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto space-y-10 sm:space-y-12 relative">
+        {/* ── Section header ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[var(--color-overlay0)]/30"
+        >
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-surface0)]/80 border border-[var(--color-green)]/30 text-xs font-mono text-[var(--color-green)]">
+              <FolderGit2 className="w-3.5 h-3.5" />
+              <span>Production Architecture Showcase</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold tracking-tight text-[var(--color-text)] leading-tight">
+              Featured Systems{" "}
+              <span className="text-[var(--color-green)]">
+                &amp; Engineering Studies
+              </span>
+            </h2>
+
+            <p className="text-sm sm:text-base text-zinc-400 font-sans max-w-2xl leading-relaxed">
+              High-throughput logistics pipelines, SSR ticketing platforms, and
+              autonomous LLM agents — engineered for resilient real-world production.
+            </p>
+          </div>
+
+          {/* ── Category filter pills ── */}
+          <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-md self-start md:self-auto shrink-0">
+            {categories.map((cat) => {
+              const isActive = activeTab === cat.id;
+              const catAccent = CATEGORY_ACCENT[cat.id] ?? CATEGORY_ACCENT.all;
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => setActiveTab(cat.id as ProjectCategory)}
+                  className={`relative px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors duration-200 cursor-pointer flex items-center gap-1.5 ${
+                    isActive ? `${catAccent.active} font-semibold` : "text-zinc-500 hover:text-zinc-300"
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeProjectPill"
+                      transition={{ type: "spring", stiffness: 450, damping: 35 }}
+                      className={`absolute inset-0 ${activeCatAccent.pill} border rounded-lg shadow-sm`}
+                    />
+                  )}
+                  <span className="relative z-10">{cat.label}</span>
+                  <span
+                    className={`relative z-10 text-[10px] px-1.5 py-0.5 rounded-full font-mono ${
+                      isActive
+                        ? "bg-white/20 text-white"
+                        : "bg-white/5 text-zinc-600"
+                    }`}
+                  >
+                    {cat.count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </motion.div>
+
+        {/* ── Project grid ── */}
+        <motion.div
+          layout
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, idx) => (
+              <ModernProjectCard
+                key={project.id}
+                project={project}
+                index={idx}
+                onInspect={(p) => setInspectingProject(p)}
+              />
+            ))}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* ── Subtle footer count ── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="flex items-center gap-3 pt-2"
+        >
+          <div className="h-px flex-1 bg-white/[0.06]" />
+          <span className="text-[11px] font-mono text-zinc-600 shrink-0">
+            {filteredProjects.length} of {projects.length} systems shown
+          </span>
+          <div className="h-px flex-1 bg-white/[0.06]" />
+        </motion.div>
       </div>
 
-      {/* Modal */}
+      {/* Architecture inspector modal */}
       <ArchitectureModal
         project={inspectingProject}
         onClose={() => setInspectingProject(null)}
@@ -229,3 +686,5 @@ export function ProjectsStack() {
     </section>
   );
 }
+
+export default ProjectsStack;

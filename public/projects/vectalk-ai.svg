@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="vectalk-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141622"/>
+      <stop offset="50%" stop-color="#1b1d2e"/>
+      <stop offset="100%" stop-color="#161826"/>
+    </linearGradient>
+    <pattern id="vectalk-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#292e4a" stroke-width="0.75" stroke-opacity="0.5"/>
+    </pattern>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#vectalk-bg)"/>
+  <rect width="800" height="500" fill="url(#vectalk-grid)"/>
+
+  <!-- Top Accent Line -->
+  <line x1="40" y1="36" x2="760" y2="36" stroke="#6366f1" stroke-width="2" stroke-opacity="0.8"/>
+
+  <!-- Header -->
+  <rect x="40" y="48" width="720" height="42" rx="8" fill="#22253b" stroke="#333857" stroke-width="1"/>
+  <circle cx="62" cy="69" r="5" fill="#ef4444"/>
+  <circle cx="78" cy="69" r="5" fill="#f59e0b"/>
+  <circle cx="94" cy="69" r="5" fill="#10b981"/>
+  <text x="120" y="73" font-family="monospace" font-size="12" fill="#a4abdc" font-weight="600">SYS_PREVIEW // RAG STUDIO FORGE (VECTALK AI &amp; EMBEDDABLE WIDGET ECOSYSTEM)</text>
+  <rect x="635" y="58" width="108" height="22" rx="11" fill="#6366f1" fill-opacity="0.2" stroke="#6366f1" stroke-opacity="0.4"/>
+  <text x="689" y="73" font-family="monospace" font-size="10" fill="#818cf8" text-anchor="middle" font-weight="700">● 60 FPS @ 10K LOGS</text>
+
+  <!-- Left: Embeddable Widget -->
+  <rect x="60" y="115" width="200" height="135" rx="10" fill="#1b1e33" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="76" y="142" font-family="sans-serif" font-size="12" font-weight="800" fill="#ffffff">EMBEDDABLE WIDGET</text>
+  <text x="76" y="162" font-family="monospace" font-size="10" fill="#818cf8">&lt;180 KB Sandboxed Iframe</text>
+  <text x="76" y="180" font-family="monospace" font-size="9" fill="#c7d2fe">• UUID v4 Session Regex</text>
+  <text x="76" y="196" font-family="monospace" font-size="9" fill="#c7d2fe">• Zero Host Style Pollution</text>
+  <text x="76" y="212" font-family="monospace" font-size="9" fill="#c7d2fe">• Isolated LocalStorage Key</text>
+  <rect x="76" y="222" width="168" height="16" rx="4" fill="#6366f1" fill-opacity="0.2"/>
+  <text x="160" y="233" font-family="monospace" font-size="8.5" fill="#a5b4fc" text-anchor="middle">CROSS-ORIGIN SCRIPT LOADER</text>
+
+  <!-- Middle: RAG Gateway & Ingestion -->
+  <rect x="300" y="115" width="200" height="135" rx="10" fill="#20243d" stroke="#818cf8" stroke-width="2"/>
+  <text x="316" y="142" font-family="sans-serif" font-size="12" font-weight="800" fill="#ffffff">RAG PIPELINE CORE</text>
+  <text x="316" y="162" font-family="monospace" font-size="10" fill="#cbe3b3">Vite 5 + TypeScript + RTK</text>
+  <text x="316" y="180" font-family="monospace" font-size="9" fill="#c7d2fe">• Citation &amp; Document Maps</text>
+  <text x="316" y="196" font-family="monospace" font-size="9" fill="#c7d2fe">• ReactMarkdown Normalizer</text>
+  <text x="316" y="212" font-family="monospace" font-size="9" fill="#c7d2fe">• DB Error Stripping Interceptor</text>
+  <rect x="316" y="222" width="168" height="16" rx="4" fill="#4f46e5" fill-opacity="0.3"/>
+  <text x="400" y="233" font-family="monospace" font-size="8.5" fill="#e0e7ff" text-anchor="middle">ZERO SCHEMA LEAKAGE</text>
+
+  <!-- Right: Resizable Analytics Grid -->
+  <rect x="540" y="115" width="200" height="135" rx="10" fill="#1b1e33" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="556" y="142" font-family="sans-serif" font-size="12" font-weight="800" fill="#ffffff">ANALYTICS GRID</text>
+  <text x="556" y="162" font-family="monospace" font-size="10" fill="#818cf8">react-grid-layout + Recharts</text>
+  <text x="556" y="180" font-family="monospace" font-size="9" fill="#c7d2fe">• 10,000+ Virtualized Rows</text>
+  <text x="556" y="196" font-family="monospace" font-size="9" fill="#c7d2fe">• Debounced ResizeObserver</text>
+  <text x="556" y="212" font-family="monospace" font-size="9" fill="#c7d2fe">• Constant 60 FPS Layouts</text>
+  <rect x="556" y="222" width="168" height="16" rx="4" fill="#4338ca" fill-opacity="0.3"/>
+  <text x="640" y="233" font-family="monospace" font-size="8.5" fill="#c7d2fe" text-anchor="middle">ENTERPRISE CONVERSATION HUD</text>
+
+  <!-- Connectors -->
+  <line x1="260" y1="180" x2="300" y2="180" stroke="#6366f1" stroke-width="2"/>
+  <line x1="500" y1="180" x2="540" y2="180" stroke="#6366f1" stroke-width="2"/>
+
+  <!-- Terminal Output -->
+  <rect x="60" y="280" width="680" height="175" rx="10" fill="#151724" stroke="#2b304c" stroke-width="1"/>
+  <rect x="60" y="280" width="680" height="26" rx="10" fill="#1d2033"/>
+  <text x="76" y="297" font-family="monospace" font-size="10.5" fill="#8890bd">TERMINAL // RAG CITATION PIPELINE &amp; AXIOS SECURITY INTERCEPTOR</text>
+
+  <text x="76" y="328" font-family="monospace" font-size="10" fill="#818cf8">[11:42:01] LLM_RESPONSE:</text>
+  <text x="250" y="328" font-family="monospace" font-size="10" fill="#e2e8f0">Synthesized 4 source chunks from Shopify API. Normalized citation badges [1][2].</text>
+
+  <text x="76" y="348" font-family="monospace" font-size="10" fill="#a5b4fc">[11:42:01] AXIOS_SANITIZER:</text>
+  <text x="250" y="348" font-family="monospace" font-size="10" fill="#e2e8f0">Intercepted 500 status. Stripped 'asyncpg.exceptions.UniqueViolationError' trace.</text>
+
+  <text x="76" y="368" font-family="monospace" font-size="10" fill="#c7d2fe">[11:44:18] IFRAME_LOADER:</text>
+  <text x="250" y="368" font-family="monospace" font-size="10" fill="#e2e8f0">Mounted /embed/w_7f19 on client host. Verified UUID v4 session token (176 KB bundle).</text>
+
+  <text x="76" y="388" font-family="monospace" font-size="10" fill="#818cf8">[11:45:00] GRID_RENDERER:</text>
+  <text x="250" y="388" font-family="monospace" font-size="10" fill="#e2e8f0">Rendered 10,400 conversation events. Frame timing: 16.4ms (60 FPS maintained).</text>
+
+  <rect x="76" y="410" width="220" height="26" rx="6" fill="#202540" stroke="#373e6b" stroke-width="1"/>
+  <text x="186" y="427" font-family="monospace" font-size="9.5" fill="#c7d2fe" text-anchor="middle" font-weight="700">✓ ENTERPRISE RAG WORKSPACE ACTIVE</text>
+</svg>
