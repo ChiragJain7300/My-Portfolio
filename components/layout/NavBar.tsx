@@ -98,7 +98,6 @@ export function NavBar() {
           className="group flex items-center gap-2 text-xs font-mono font-semibold tracking-wider text-[var(--color-subtext2)] hover:text-white transition-colors shrink-0"
         >
           <span className="text-[var(--color-green)] font-bold text-sm tracking-tight">[ CJ ]</span>
-          <span className="text-zinc-400 font-sans font-medium text-xs hidden sm:inline">Chirag Jain</span>
         </a>
 
         {/* Desktop centre: links */}
@@ -140,7 +139,7 @@ export function NavBar() {
               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[var(--color-green)] text-[#16191b] font-mono text-[10.5px] md:text-xs font-bold hover:bg-[#d8eed0] hover:shadow-[0_0_20px_rgba(203,227,179,0.35)] transition-all active:scale-95 whitespace-nowrap"
             >
               <FileText className="w-3.5 h-3.5 text-[#16191b] shrink-0" />
-              <span>ATS RESUME</span>
+              <span>RESUME</span>
               <ArrowUpRight className="w-3.5 h-3.5 text-[#16191b] shrink-0" />
             </a>
           </div>

@@ -42,14 +42,21 @@ export function CaseStudyView({ caseStudy, prevSlug, nextSlug }: CaseStudyViewPr
   const { lenis } = useLenis();
   const isWdm = caseStudy.slug === "wdm-platform";
 
-  // Ensure navigating to this case study always scrolls to the very top
+  // Ensure navigating to this case study always scrolls to the very top and recalculates dimensions
   useEffect(() => {
     if (lenis) {
       lenis.scrollTo(0, { immediate: true });
+      lenis.resize();
     }
     window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
+
+    const t = setTimeout(() => {
+      lenis?.resize();
+    }, 200);
+
+    return () => clearTimeout(t);
   }, [lenis, caseStudy.slug]);
 
   // Convert capabilities to tree nodes

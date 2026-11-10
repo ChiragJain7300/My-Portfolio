@@ -85,7 +85,7 @@ export function CodeWalkthrough({ summary, snippets }: CodeWalkthroughProps) {
         )}
 
         {/* Code Content Container */}
-        <div className="p-4 overflow-x-auto max-h-[520px] overflow-y-auto bg-[var(--color-base)]">
+        <div data-lenis-prevent className="p-4 overflow-x-auto max-h-[520px] overflow-y-auto bg-[var(--color-base)]">
           <div className="grid grid-cols-[3.25rem_1fr] gap-4 font-mono text-xs leading-relaxed select-text">
             {/* Line numbers gutter */}
             <div

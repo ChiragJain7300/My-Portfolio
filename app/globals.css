@@ -50,6 +50,10 @@
     min-height: 100vh;
   }
 
+  h1, h2, h3, h4, h5, h6 {
+    font-family: inherit;
+  }
+
   /* Impeccable Craft Floor: Tuned browser surfaces */
   ::selection {
     background: rgba(203, 227, 179, 0.25);

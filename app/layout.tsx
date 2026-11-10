@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Bebas_Neue, Cinzel } from "next/font/google";
+import "@astryxdesign/core/reset.css";
+import "@astryxdesign/core/astryx.css";
 import "./globals.css";
+import { AstryxProvider } from "@/components/providers/AstryxProvider";
 import { LenisProvider } from "@/components/providers/LenisProvider";
 import { RecruiterModeProvider } from "@/components/providers/RecruiterModeContext";
 import { GlobalEffects } from "@/components/ui/GlobalEffects";
@@ -71,15 +74,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${bebasNeue.variable} ${cinzel.variable} h-full antialiased dark`}
+      className={`${geistSans.variable} ${geistMono.variable} ${bebasNeue.variable} ${cinzel.variable} min-h-full antialiased dark`}
     >
       <body className="min-h-full flex flex-col bg-[#1c2225] text-[#adc9bc] selection:bg-[#cbe3b3]/25 selection:text-white antialiased">
-        <GlobalEffects />
-        <LenisProvider>
-          <RecruiterModeProvider>
-            {children}
-          </RecruiterModeProvider>
-        </LenisProvider>
+        <AstryxProvider>
+          <GlobalEffects />
+          <LenisProvider>
+            <RecruiterModeProvider>
+              {children}
+            </RecruiterModeProvider>
+          </LenisProvider>
+        </AstryxProvider>
       </body>
     </html>
   );

@@ -57,6 +57,8 @@ interface AccentTheme {
   statusLabel: string;
   /** Status chip color classes */
   statusColors: string;
+  /** Live beacon indicator dot color class */
+  statusDot: string;
   /** Header hairline gradient */
   hairline: string;
   /** CTA button gradient classes */
@@ -81,7 +83,8 @@ const PROJECT_ACCENTS: Record<number, AccentTheme> = {
     Icon: Globe,
     statusLabel: "LIVE ON VERCEL",
     statusColors:
-      "bg-sky-500/15 text-sky-300 border-sky-500/40",
+      "bg-[#091824]/95 text-sky-200 border-sky-400/60 shadow-[0_0_12px_rgba(56,189,248,0.25)]",
+    statusDot: "bg-sky-400",
     hairline:
       "from-transparent via-sky-500/50 via-teal-500/30 to-transparent",
     cta: "from-sky-500/20 via-teal-500/20 to-emerald-500/20 hover:from-sky-500/35 hover:to-emerald-500/35",
@@ -100,7 +103,8 @@ const PROJECT_ACCENTS: Record<number, AccentTheme> = {
     Icon: Bot,
     statusLabel: "AI ENGINE",
     statusColors:
-      "bg-amber-500/15 text-amber-300 border-amber-500/40",
+      "bg-[#241708]/95 text-amber-200 border-amber-400/60 shadow-[0_0_12px_rgba(245,158,11,0.25)]",
+    statusDot: "bg-amber-400",
     hairline:
       "from-transparent via-amber-500/50 via-orange-500/30 to-transparent",
     cta: "from-amber-500/20 via-orange-500/20 to-yellow-500/20 hover:from-amber-500/35 hover:to-yellow-500/35",
@@ -119,7 +123,8 @@ const PROJECT_ACCENTS: Record<number, AccentTheme> = {
     Icon: Server,
     statusLabel: "CASE STUDY",
     statusColors:
-      "bg-cyan-500/15 text-cyan-300 border-cyan-500/40",
+      "bg-[#081e24]/95 text-cyan-200 border-cyan-400/60 shadow-[0_0_12px_rgba(6,182,212,0.25)]",
+    statusDot: "bg-cyan-400",
     hairline:
       "from-transparent via-cyan-500/50 via-indigo-500/30 to-transparent",
     cta: "from-cyan-500/20 via-indigo-500/20 to-purple-500/20 hover:from-cyan-500/35 hover:to-purple-500/35",
@@ -138,7 +143,8 @@ const PROJECT_ACCENTS: Record<number, AccentTheme> = {
     Icon: Layers,
     statusLabel: "CASE STUDY",
     statusColors:
-      "bg-emerald-500/15 text-emerald-300 border-emerald-500/40",
+      "bg-[#082016]/95 text-emerald-200 border-emerald-400/60 shadow-[0_0_12px_rgba(16,185,129,0.25)]",
+    statusDot: "bg-emerald-400",
     hairline:
       "from-transparent via-emerald-500/50 via-teal-500/30 to-transparent",
     cta: "from-emerald-500/20 via-teal-500/20 to-cyan-500/20 hover:from-emerald-500/35 hover:to-cyan-500/35",
@@ -157,7 +163,8 @@ const PROJECT_ACCENTS: Record<number, AccentTheme> = {
     Icon: Building2,
     statusLabel: "CASE STUDY",
     statusColors:
-      "bg-teal-500/15 text-teal-300 border-teal-500/40",
+      "bg-[#08201c]/95 text-teal-200 border-teal-400/60 shadow-[0_0_12px_rgba(20,184,166,0.25)]",
+    statusDot: "bg-teal-400",
     hairline:
       "from-transparent via-teal-500/50 via-emerald-500/30 to-transparent",
     cta: "from-teal-500/20 via-emerald-500/20 to-green-500/20 hover:from-teal-500/35 hover:to-green-500/35",
@@ -176,7 +183,8 @@ const PROJECT_ACCENTS: Record<number, AccentTheme> = {
     Icon: Users,
     statusLabel: "CASE STUDY",
     statusColors:
-      "bg-amber-600/15 text-amber-200 border-amber-600/40",
+      "bg-[#241708]/95 text-amber-100 border-amber-400/60 shadow-[0_0_12px_rgba(217,119,6,0.25)]",
+    statusDot: "bg-amber-400",
     hairline:
       "from-transparent via-amber-600/50 via-stone-500/30 to-transparent",
     cta: "from-amber-600/20 via-stone-700/20 to-emerald-700/20 hover:from-amber-600/35 hover:to-emerald-700/35",
@@ -195,7 +203,8 @@ const PROJECT_ACCENTS: Record<number, AccentTheme> = {
     Icon: Bot,
     statusLabel: "CASE STUDY",
     statusColors:
-      "bg-blue-500/15 text-blue-300 border-blue-500/40",
+      "bg-[#091526]/95 text-blue-200 border-blue-400/60 shadow-[0_0_12px_rgba(59,130,246,0.25)]",
+    statusDot: "bg-blue-400",
     hairline:
       "from-transparent via-blue-500/50 via-indigo-500/30 to-transparent",
     cta: "from-blue-500/20 via-indigo-500/20 to-sky-500/20 hover:from-blue-500/35 hover:to-sky-500/35",
@@ -214,7 +223,8 @@ const PROJECT_ACCENTS: Record<number, AccentTheme> = {
     Icon: ShieldCheck,
     statusLabel: "CASE STUDY",
     statusColors:
-      "bg-sky-500/15 text-sky-300 border-sky-500/40",
+      "bg-[#081824]/95 text-sky-200 border-sky-400/60 shadow-[0_0_12px_rgba(14,165,233,0.25)]",
+    statusDot: "bg-sky-400",
     hairline:
       "from-transparent via-sky-500/50 via-cyan-500/30 to-transparent",
     cta: "from-sky-500/20 via-cyan-500/20 to-teal-500/20 hover:from-sky-500/35 hover:to-teal-500/35",
@@ -222,7 +232,7 @@ const PROJECT_ACCENTS: Record<number, AccentTheme> = {
     ctaText: "text-sky-200 hover:text-white",
     numeralColor: "text-sky-900/40",
   },
-  // CleanCRM — amber/orange (field operations)
+  // Cleaning App — amber/orange (field operations)
   9: {
     name: "amber",
     spotlightRgba: "rgba(245, 158, 11, 0.09)",
@@ -233,7 +243,8 @@ const PROJECT_ACCENTS: Record<number, AccentTheme> = {
     Icon: Calendar,
     statusLabel: "CASE STUDY",
     statusColors:
-      "bg-amber-500/15 text-amber-300 border-amber-500/40",
+      "bg-[#241708]/95 text-amber-200 border-amber-400/60 shadow-[0_0_12px_rgba(245,158,11,0.25)]",
+    statusDot: "bg-amber-400",
     hairline:
       "from-transparent via-amber-500/50 via-orange-500/30 to-transparent",
     cta: "from-amber-500/20 via-orange-500/20 to-yellow-500/20 hover:from-amber-500/35 hover:to-yellow-500/35",
@@ -252,7 +263,8 @@ const PROJECT_ACCENTS: Record<number, AccentTheme> = {
     Icon: Utensils,
     statusLabel: "CASE STUDY",
     statusColors:
-      "bg-rose-500/15 text-rose-300 border-rose-500/40",
+      "bg-[#260e16]/95 text-rose-200 border-rose-400/60 shadow-[0_0_12px_rgba(244,63,94,0.25)]",
+    statusDot: "bg-rose-400",
     hairline:
       "from-transparent via-rose-500/50 via-pink-500/30 to-transparent",
     cta: "from-rose-500/20 via-pink-500/20 to-red-500/20 hover:from-rose-500/35 hover:to-red-500/35",
@@ -394,20 +406,20 @@ function ModernProjectCard({ project, index, onInspect }: ProjectCardProps) {
         <div className="flex items-center justify-between gap-2 pb-3 mb-3.5 sm:mb-4 border-b border-white/[0.07] text-xs font-mono">
           <div className="flex items-center gap-2 min-w-0">
             {React.createElement(accent.Icon, { className: `w-3.5 h-3.5 ${accent.text} shrink-0` })}
-            <span className={`font-semibold uppercase tracking-widest text-[9.5px] sm:text-[10px] ${accent.text} truncate`}>
+            <span className={`font-semibold uppercase tracking-widest text-[10px] sm:text-[10.5px] ${accent.text} truncate`}>
               {project.categoryLabel}
             </span>
           </div>
 
           {/* Animated status pill */}
           <span
-            className={`shrink-0 inline-flex items-center gap-1.5 px-2 sm:px-2.5 py-0.5 rounded-full text-[9.5px] sm:text-[10px] font-mono font-semibold border ${accent.statusColors}`}
+            className={`shrink-0 inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-[10.5px] font-mono font-semibold tracking-wider uppercase border backdrop-blur-md ${accent.statusColors}`}
           >
-            <span className="relative flex h-1.5 w-1.5">
-              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${accent.bg}`} />
-              <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${accent.bg.replace("bg-", "bg-").replace("/10", "/60")}`} />
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-80 ${accent.statusDot}`} />
+              <span className={`relative inline-flex rounded-full h-2 w-2 ${accent.statusDot} shadow-[0_0_6px_currentColor]`} />
             </span>
-            {accent.statusLabel}
+            <span>{accent.statusLabel}</span>
           </span>
         </div>
 

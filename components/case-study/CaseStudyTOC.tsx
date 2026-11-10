@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useCallback, useRef } from "react";
+import { useLenis } from "@/components/providers/LenisProvider";
 
 export interface TOCItem {
   id: string;
@@ -32,113 +33,100 @@ interface CaseStudyTOCProps {
 }
 
 export function CaseStudyTOC({ sections = CASE_STUDY_SECTIONS }: CaseStudyTOCProps) {
+  const { lenis } = useLenis();
   const [activeId, setActiveId] = useState<string>(sections[0]?.id || "overview");
   const [mobileOpen, setMobileOpen] = useState(false);
   const isNavigatingRef = useRef<boolean>(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const sidebarRef = useRef<HTMLElement | null>(null);
 
-  // Smooth scroll with comfortable header clearance and flicker-free locking
-  const scrollTo = useCallback((id: string) => {
-    const el = document.getElementById(id);
-    const container = document.getElementById("main-content");
-    const isContainerScrollable = container && container.scrollHeight > container.clientHeight;
+  // Smooth scroll using Lenis when available, or fallback to native smooth scroll
+  const scrollTo = useCallback(
+    (id: string) => {
+      const el = document.getElementById(id);
+      if (!el) return;
 
-    if (el && isContainerScrollable) {
       isNavigatingRef.current = true;
       setActiveId(id);
       setMobileOpen(false);
 
-      const containerRect = container.getBoundingClientRect();
-      const elRect = el.getBoundingClientRect();
-      const topOffset = 52; // generous clearance beneath sticky breadcrumbs header
-      const targetScrollTop = container.scrollTop + (elRect.top - containerRect.top) - topOffset;
-
-      container.scrollTo({ top: Math.max(0, targetScrollTop), behavior: "smooth" });
-
-      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-      scrollTimeoutRef.current = setTimeout(() => {
-        isNavigatingRef.current = false;
-      }, 750);
-    } else if (el) {
-      isNavigatingRef.current = true;
-      setActiveId(id);
-      setMobileOpen(false);
-
-      const elRect = el.getBoundingClientRect();
-      const targetScrollTop = window.scrollY + elRect.top - 80;
-      window.scrollTo({ top: Math.max(0, targetScrollTop), behavior: "smooth" });
+      if (lenis) {
+        lenis.scrollTo(el, {
+          offset: -70,
+          immediate: false,
+          onComplete: () => {
+            isNavigatingRef.current = false;
+          },
+        });
+      } else {
+        const topOffset = 70;
+        const elRect = el.getBoundingClientRect();
+        const targetScrollTop = window.scrollY + elRect.top - topOffset;
+        window.scrollTo({ top: Math.max(0, targetScrollTop), behavior: "smooth" });
+      }
 
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
       scrollTimeoutRef.current = setTimeout(() => {
         isNavigatingRef.current = false;
-      }, 750);
-    }
-  }, []);
+      }, 850);
+    },
+    [lenis]
+  );
 
-  // Set up active section tracking on the scroll container (#main-content or window)
+  // Set up active section tracking relative to the viewport
   useEffect(() => {
-    const container = document.getElementById("main-content");
-    const isContainerScrollable = container && container.scrollHeight > container.clientHeight;
-    const targetElement = isContainerScrollable ? container : window;
-
     const handleScroll = () => {
-      // Don't override activeId while a programmatic smooth scroll is animating
       if (isNavigatingRef.current) return;
 
-      if (isContainerScrollable && container) {
-        // Check if user has scrolled to the bottom of the container
-        const isAtBottom =
-          container.scrollHeight - container.scrollTop - container.clientHeight < 80;
-        if (isAtBottom) {
-          setActiveId(sections[sections.length - 1].id);
-          return;
-        }
+      // Check if user has reached bottom of page
+      const isAtBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80;
+      if (isAtBottom) {
+        setActiveId(sections[sections.length - 1].id);
+        return;
+      }
 
-        const containerTop = container.getBoundingClientRect().top;
-        const targetLine = containerTop + 100;
-
-        for (let i = sections.length - 1; i >= 0; i--) {
-          const el = document.getElementById(sections[i].id);
-          if (el) {
-            const rect = el.getBoundingClientRect();
-            if (rect.top <= targetLine) {
-              setActiveId(sections[i].id);
-              break;
-            }
-          }
-        }
-      } else {
-        // Window scroll tracking
-        const scrollPosition = window.scrollY + 140;
-        const isAtBottom =
-          window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80;
-
-        if (isAtBottom) {
-          setActiveId(sections[sections.length - 1].id);
-          return;
-        }
-
-        for (let i = sections.length - 1; i >= 0; i--) {
-          const el = document.getElementById(sections[i].id);
-          if (el) {
-            const top = el.offsetTop;
-            if (top <= scrollPosition) {
-              setActiveId(sections[i].id);
-              break;
-            }
+      // 120px threshold beneath sticky header
+      const targetLine = 120;
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i].id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= targetLine) {
+            setActiveId(sections[i].id);
+            break;
           }
         }
       }
     };
 
-    targetElement.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
     return () => {
-      targetElement.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
     };
   }, [sections]);
+
+  // Keep the active item visible inside the scrollable sidebar
+  useEffect(() => {
+    if (!sidebarRef.current) return;
+    const activeEl = sidebarRef.current.querySelector<HTMLElement>(`[data-toc-id="${activeId}"]`);
+    if (activeEl) {
+      const sidebar = sidebarRef.current;
+      const elTop = activeEl.offsetTop;
+      const elBottom = elTop + activeEl.offsetHeight;
+      const sidebarTop = sidebar.scrollTop;
+      const sidebarBottom = sidebarTop + sidebar.clientHeight;
+
+      if (elTop < sidebarTop) {
+        sidebar.scrollTo({ top: elTop - 16, behavior: "smooth" });
+      } else if (elBottom > sidebarBottom) {
+        sidebar.scrollTo({ top: elBottom - sidebar.clientHeight + 16, behavior: "smooth" });
+      }
+    }
+  }, [activeId]);
 
   const activeSection = sections.find((s) => s.id === activeId) || sections[0];
 
@@ -172,7 +160,8 @@ export function CaseStudyTOC({ sections = CASE_STUDY_SECTIONS }: CaseStudyTOCPro
         {mobileOpen && (
           <nav
             aria-label="Mobile Table of Contents"
-            className="mt-2.5 pt-2.5 border-t border-[var(--color-overlay0)]/40 space-y-3 max-h-80 overflow-y-auto"
+            data-lenis-prevent
+            className="mt-2.5 pt-2.5 border-t border-[var(--color-overlay0)]/40 space-y-3 max-h-[60vh] overflow-y-auto [scrollbar-width:thin]"
           >
             {/* Briefing Group */}
             <div>
@@ -185,6 +174,7 @@ export function CaseStudyTOC({ sections = CASE_STUDY_SECTIONS }: CaseStudyTOCPro
                   return (
                     <button
                       key={sec.id}
+                      data-toc-id={sec.id}
                       onClick={() => scrollTo(sec.id)}
                       className={`w-full text-left px-3 py-2 text-sm rounded-xs flex items-center gap-3 transition-colors cursor-pointer min-h-[40px] ${
                         isActive
@@ -214,6 +204,7 @@ export function CaseStudyTOC({ sections = CASE_STUDY_SECTIONS }: CaseStudyTOCPro
                     return (
                       <button
                         key={sec.id}
+                        data-toc-id={sec.id}
                         onClick={() => scrollTo(sec.id)}
                         className={`w-full text-left px-3 py-2 text-sm rounded-xs flex items-center gap-3 transition-colors cursor-pointer min-h-[40px] ${
                           isActive
@@ -235,18 +226,20 @@ export function CaseStudyTOC({ sections = CASE_STUDY_SECTIONS }: CaseStudyTOCPro
         )}
       </div>
 
-      {/* Desktop Sticky Sidebar TOC: STRICTLY LOCKED TO 240px */}
+      {/* Desktop Sticky Sidebar TOC: STRICTLY LOCKED TO 240px WITH NATIVE SMOOTH SCROLL */}
       <aside
+        ref={sidebarRef}
         aria-label="Table of Contents"
-        className="hidden xl:block sticky top-8 w-[240px] min-w-[240px] max-w-[240px] shrink-0 font-sans text-sm select-none"
+        data-lenis-prevent
+        className="hidden xl:flex flex-col sticky top-8 w-[240px] min-w-[240px] max-w-[240px] shrink-0 font-sans text-sm select-none max-h-[calc(100vh-4rem)] overflow-y-auto pr-1 pb-4 [scrollbar-width:thin] [scrollbar-color:rgba(203,227,179,0.25)_transparent]"
       >
-        <div className="text-[11px] font-mono uppercase tracking-wider text-[var(--color-overlay2)] font-semibold pb-2.5 mb-3 border-b border-[var(--color-overlay0)]/40 flex items-center justify-between">
+        <div className="text-[11px] font-mono uppercase tracking-wider text-[var(--color-overlay2)] font-semibold pb-2.5 mb-3 border-b border-[var(--color-overlay0)]/40 flex items-center justify-between shrink-0">
           <span>Table of Contents</span>
           <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-green)] animate-pulse" />
         </div>
 
         {/* Group 1: Executive Briefing */}
-        <div className="mb-4">
+        <div className="mb-4 shrink-0">
           <div className="px-3 py-1 mb-1 font-mono text-[10px] uppercase tracking-wider text-[var(--color-green)] font-semibold flex items-center justify-between">
             <span>Executive Briefing</span>
             <span className="text-[9px] px-1 py-0.2 bg-[var(--color-green)]/15 border border-[var(--color-green)]/30 rounded-2xs">
@@ -254,15 +247,16 @@ export function CaseStudyTOC({ sections = CASE_STUDY_SECTIONS }: CaseStudyTOCPro
             </span>
           </div>
 
-          <ul className="space-y-1 list-none pl-0 w-[240px]">
+          <ul className="space-y-1 list-none pl-0 w-[230px]">
             {briefingSections.map((sec) => {
               const isActive = activeId === sec.id;
 
               return (
-                <li key={sec.id} className="w-[240px]">
+                <li key={sec.id} className="w-[230px]">
                   <button
+                    data-toc-id={sec.id}
                     onClick={() => scrollTo(sec.id)}
-                    className={`w-[240px] text-left py-2 px-3 rounded-md transition-all flex items-baseline gap-2.5 group cursor-pointer border ${
+                    className={`w-[230px] text-left py-2 px-3 rounded-md transition-all flex items-baseline gap-2.5 group cursor-pointer border ${
                       isActive
                         ? "bg-[var(--color-surface1)] text-[var(--color-text)] font-semibold border-[var(--color-green)]/35 shadow-xs"
                         : "text-[var(--color-subtext1)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface1)]/40 border-transparent"
@@ -289,7 +283,7 @@ export function CaseStudyTOC({ sections = CASE_STUDY_SECTIONS }: CaseStudyTOCPro
 
         {/* Group 2: Technical Appendix */}
         {appendixSections.length > 0 && (
-          <div className="pt-3 border-t border-[var(--color-overlay0)]/30">
+          <div className="pt-3 border-t border-[var(--color-overlay0)]/30 shrink-0">
             <div className="px-3 py-1 mb-1 font-mono text-[10px] uppercase tracking-wider text-[var(--color-purple)] font-semibold flex items-center justify-between">
               <span>Technical Appendix</span>
               <span className="text-[9px] px-1 py-0.2 bg-[var(--color-purple)]/15 border border-[var(--color-purple)]/30 rounded-2xs">
@@ -297,15 +291,16 @@ export function CaseStudyTOC({ sections = CASE_STUDY_SECTIONS }: CaseStudyTOCPro
               </span>
             </div>
 
-            <ul className="space-y-1 list-none pl-0 w-[240px]">
+            <ul className="space-y-1 list-none pl-0 w-[230px]">
               {appendixSections.map((sec) => {
                 const isActive = activeId === sec.id;
 
                 return (
-                  <li key={sec.id} className="w-[240px]">
+                  <li key={sec.id} className="w-[230px]">
                     <button
+                      data-toc-id={sec.id}
                       onClick={() => scrollTo(sec.id)}
-                      className={`w-[240px] text-left py-2 px-3 rounded-md transition-all flex items-baseline gap-2.5 group cursor-pointer border ${
+                      className={`w-[230px] text-left py-2 px-3 rounded-md transition-all flex items-baseline gap-2.5 group cursor-pointer border ${
                         isActive
                           ? "bg-[var(--color-surface1)] text-[var(--color-text)] font-semibold border-[var(--color-green)]/35 shadow-xs"
                           : "text-[var(--color-subtext1)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface1)]/40 border-transparent"
