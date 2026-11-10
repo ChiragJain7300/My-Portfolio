@@ -168,6 +168,18 @@ export function RecruiterTable() {
 
                   <td className="py-4 px-4 text-right">
                     <div className="flex items-center justify-end gap-2">
+                      {(proj.liveUrl || (proj.link && proj.link.startsWith("http"))) && (
+                        <a
+                          href={proj.liveUrl || proj.link}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[var(--color-green)] text-[#16191b] hover:bg-[#d8eed0] font-bold transition-colors text-[11px]"
+                          title="Open Hosted Live Site"
+                        >
+                          <span>LIVE</span>
+                          <ArrowUpRight className="w-3 h-3" />
+                        </a>
+                      )}
                       {proj.hasCaseStudy && (
                         <a
                           href={`/projects/${proj.slug || "wdm-platform"}`}

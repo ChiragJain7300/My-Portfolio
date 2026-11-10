@@ -10,6 +10,7 @@ export interface Project {
   graphicType?: "logistics" | "ticketing";
   tags: string[];
   link: string;
+  liveUrl?: string; // Hosted live platform or deployment website URL
   github: string;
   isPrivate: boolean;
   highlights: string[];
@@ -55,6 +56,7 @@ export const projects: Project[] = [
     img: "/Prompt.png",
     tags: ["Next.js", "TypeScript", "Tailwind CSS", "MongoDB", "NextAuth"],
     link: "https://prompt-pedia-seven.vercel.app/",
+    liveUrl: "https://prompt-pedia-seven.vercel.app/",
     github: "https://github.com/ChiragJain7300",
     isPrivate: false,
     hasCaseStudy: false,
@@ -91,7 +93,7 @@ export const projects: Project[] = [
     category: "backend",
     categoryLabel: "Backend / Logistics API",
     des: "Mission-critical backend integration engine orchestrating high-volume catalog synchronization, report ingestion, and order operations between Bol.com and Monday.com.",
-    img: "/projects/wdm-platform.svg",
+    img: "/projects/wdm-platform.png",
     graphicType: "logistics",
     tags: ["Node.js (ESM)", "Express.js 5", "MongoDB", "Bol.com API v10", "Monday.com GraphQL", "node-cron", "PM2"],
     link: "/projects/wdm-platform",
@@ -112,10 +114,11 @@ export const projects: Project[] = [
     category: "fullstack",
     categoryLabel: "Full Stack / SSR App",
     des: "Production-grade sports ticketing and endurance event platform built to handle high-traffic registration spikes, dynamic group registrations, and real-time conversion telemetry.",
-    img: "/projects/just-walk-india.svg",
+    img: "/projects/jwi-01.png",
     graphicType: "ticketing",
     tags: ["Next.js 15", "React 19", "TypeScript", "Redux Toolkit", "NextAuth.js", "Material UI v6", "Sentry", "Mixpanel"],
     link: "/projects/just-walk-india",
+    liveUrl: "https://www.justwalkindia.com/",
     github: "https://github.com/ChiragJain7300",
     isPrivate: true,
     hasCaseStudy: true,
@@ -133,7 +136,7 @@ export const projects: Project[] = [
     category: "fullstack",
     categoryLabel: "Full Stack / Enterprise Architecture",
     des: "A decoupled multi-platform real estate portal uniting a high-performance Next.js 16 public discovery frontend, a dense React 18 data workbench, and an enterprise NestJS 11 REST API.",
-    img: "/projects/blanca.svg",
+    img: "/projects/blanca.png",
     tags: ["Next.js 16 (App Router)", "NestJS 11", "TypeORM", "PostgreSQL", "TanStack Query v5", "Redux Toolkit", "@dnd-kit", "Buildesk CRM"],
     link: "/projects/blanca",
     github: "https://github.com/ChiragJain7300",

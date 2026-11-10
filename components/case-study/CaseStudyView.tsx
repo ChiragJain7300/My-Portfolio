@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
+import { useLenis } from "@/components/providers/LenisProvider";
 import { CaseStudy } from "@/types/case-study";
 import { CaseStudyHero } from "./CaseStudyHero";
 import { CaseStudyTOC } from "./CaseStudyTOC";
@@ -38,7 +39,18 @@ interface CaseStudyViewProps {
 }
 
 export function CaseStudyView({ caseStudy, prevSlug, nextSlug }: CaseStudyViewProps) {
+  const { lenis } = useLenis();
   const isWdm = caseStudy.slug === "wdm-platform";
+
+  // Ensure navigating to this case study always scrolls to the very top
+  useEffect(() => {
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [lenis, caseStudy.slug]);
 
   // Convert capabilities to tree nodes
   const capabilityTreeNodes = caseStudy.capabilities.map((cat) => ({

@@ -133,9 +133,9 @@ export default async function ProjectPage({
 
         {/* Links */}
         <div className="pt-6 border-t border-[var(--color-overlay0)]/40 flex items-center gap-4 text-xs font-mono">
-          {project?.link && (
+          {(project?.liveUrl || (project?.link?.startsWith("http") ? project.link : undefined)) && (
             <a
-              href={project.link}
+              href={project?.liveUrl || (project?.link?.startsWith("http") ? project.link : "#")}
               target="_blank"
               rel="noreferrer"
               className="ide-btn"
@@ -145,7 +145,7 @@ export default async function ProjectPage({
               <span>Launch Live System</span>
             </a>
           )}
-          {project?.github && (
+          {project?.github && !project.isPrivate && (
             <a
               href={project.github}
               target="_blank"

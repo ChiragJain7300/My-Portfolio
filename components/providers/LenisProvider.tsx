@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 
 interface LenisContextType {
@@ -19,6 +20,7 @@ export function useLenis() {
 
 export function LenisProvider({ children }: { children: React.ReactNode }) {
   const [lenisInstance, setLenisInstance] = useState<Lenis | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     // Respect user's motion preferences
@@ -50,6 +52,21 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       lenis.destroy();
     };
   }, []);
+
+  // Reset scroll to top upon pathname change (e.g., navigating to a case study)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    // Do not override anchor links on the current page
+    if (!window.location.hash) {
+      if (lenisInstance) {
+        lenisInstance.scrollTo(0, { immediate: true });
+      }
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
+  }, [pathname, lenisInstance]);
 
   const scrollTo = (target: string | number | HTMLElement, options?: Record<string, unknown>) => {
     if (typeof target === "string") {

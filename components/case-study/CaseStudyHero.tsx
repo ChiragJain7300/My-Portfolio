@@ -44,6 +44,19 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
         </Link>
 
         <div className="flex items-center gap-2.5">
+          {caseStudy.liveUrl && (
+            <a
+              href={caseStudy.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ide-btn text-xs font-mono min-h-[36px] sm:min-h-[32px] px-3.5 py-1.5 flex items-center gap-1.5 font-bold shadow-sm"
+              style={{ "--btn-color": "var(--color-green)" } as React.CSSProperties}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-green)] animate-pulse" />
+              <span>Launch Live Site ↗</span>
+            </a>
+          )}
+
           <button
             type="button"
             onClick={handleCopyLink}
