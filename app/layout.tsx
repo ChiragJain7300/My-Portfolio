@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Bebas_Neue, Cinzel } from "next/font/google";
-import "@astryxdesign/core/reset.css";
-import "@astryxdesign/core/astryx.css";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 import { AstryxProvider } from "@/components/providers/AstryxProvider";
 import { LenisProvider } from "@/components/providers/LenisProvider";
@@ -57,6 +56,15 @@ export const metadata: Metadata = {
     "Digital Meadow Style Portfolio",
   ],
   authors: [{ name: "Chirag Jain", url: "https://github.com/ChiragJain7300" }],
+  icons: {
+    icon: [
+      { url: "/chirag-jain-logo-angular.png", type: "image/png" },
+    ],
+    shortcut: "/chirag-jain-logo-angular.png",
+    apple: [
+      { url: "/chirag-jain-logo-angular.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   openGraph: {
     title: "Chirag Jain — Full Stack Developer & AI Automation Engineer",
     description:

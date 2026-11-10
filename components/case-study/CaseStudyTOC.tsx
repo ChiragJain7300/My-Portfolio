@@ -50,25 +50,32 @@ export function CaseStudyTOC({ sections = CASE_STUDY_SECTIONS }: CaseStudyTOCPro
       setActiveId(id);
       setMobileOpen(false);
 
+      // Measure target relative to the actual section heading so it aligns cleanly at top
+      const isDesktop = typeof window !== "undefined" && window.innerWidth >= 1280;
+      const targetOffset = isDesktop ? 28 : 74;
+
+      const headerEl = el.querySelector("h2")?.closest("div.flex") || el.querySelector("h2") || el;
+      const rect = headerEl.getBoundingClientRect();
+      const targetY = Math.max(0, Math.round(window.scrollY + rect.top - targetOffset));
+
       if (lenis) {
-        lenis.scrollTo(el, {
-          offset: -70,
+        lenis.resize();
+        lenis.scrollTo(targetY, {
           immediate: false,
+          duration: 0.85,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           onComplete: () => {
             isNavigatingRef.current = false;
           },
         });
       } else {
-        const topOffset = 70;
-        const elRect = el.getBoundingClientRect();
-        const targetScrollTop = window.scrollY + elRect.top - topOffset;
-        window.scrollTo({ top: Math.max(0, targetScrollTop), behavior: "smooth" });
+        window.scrollTo({ top: targetY, behavior: "smooth" });
       }
 
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
       scrollTimeoutRef.current = setTimeout(() => {
         isNavigatingRef.current = false;
-      }, 850);
+      }, 950);
     },
     [lenis]
   );
@@ -86,12 +93,13 @@ export function CaseStudyTOC({ sections = CASE_STUDY_SECTIONS }: CaseStudyTOCPro
         return;
       }
 
-      // 120px threshold beneath sticky header
-      const targetLine = 120;
+      // Detection threshold line beneath top of screen / floating header
+      const targetLine = window.innerWidth >= 1280 ? 100 : 130;
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i].id);
         if (el) {
-          const rect = el.getBoundingClientRect();
+          const headerEl = el.querySelector("h2") || el;
+          const rect = headerEl.getBoundingClientRect();
           if (rect.top <= targetLine) {
             setActiveId(sections[i].id);
             break;
@@ -109,21 +117,19 @@ export function CaseStudyTOC({ sections = CASE_STUDY_SECTIONS }: CaseStudyTOCPro
     };
   }, [sections]);
 
-  // Keep the active item visible inside the scrollable sidebar
+  // Keep the active item visible inside the scrollable sidebar without fighting user interactions
   useEffect(() => {
     if (!sidebarRef.current) return;
     const activeEl = sidebarRef.current.querySelector<HTMLElement>(`[data-toc-id="${activeId}"]`);
     if (activeEl) {
       const sidebar = sidebarRef.current;
-      const elTop = activeEl.offsetTop;
-      const elBottom = elTop + activeEl.offsetHeight;
-      const sidebarTop = sidebar.scrollTop;
-      const sidebarBottom = sidebarTop + sidebar.clientHeight;
+      const sidebarRect = sidebar.getBoundingClientRect();
+      const activeRect = activeEl.getBoundingClientRect();
 
-      if (elTop < sidebarTop) {
-        sidebar.scrollTo({ top: elTop - 16, behavior: "smooth" });
-      } else if (elBottom > sidebarBottom) {
-        sidebar.scrollTo({ top: elBottom - sidebar.clientHeight + 16, behavior: "smooth" });
+      if (activeRect.top < sidebarRect.top + 20) {
+        sidebar.scrollBy({ top: activeRect.top - sidebarRect.top - 24, behavior: "smooth" });
+      } else if (activeRect.bottom > sidebarRect.bottom - 20) {
+        sidebar.scrollBy({ top: activeRect.bottom - sidebarRect.bottom + 24, behavior: "smooth" });
       }
     }
   }, [activeId]);
@@ -136,7 +142,7 @@ export function CaseStudyTOC({ sections = CASE_STUDY_SECTIONS }: CaseStudyTOCPro
   return (
     <>
       {/* Mobile Floating Sticky Header Bar */}
-      <div className="xl:hidden sticky top-12 z-30 mb-8 bg-[var(--color-surface0)]/95 backdrop-blur-md border border-[var(--color-overlay0)]/60 rounded-md p-2.5 font-sans shadow-lg">
+      <div className="xl:hidden sticky top-3 sm:top-4 z-30 mb-8 bg-[var(--color-surface0)]/95 backdrop-blur-md border border-[var(--color-overlay0)]/60 rounded-md p-2.5 font-sans shadow-lg">
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="w-full flex items-center justify-between text-left text-sm text-[var(--color-text)] cursor-pointer min-h-[44px]"
@@ -231,7 +237,7 @@ export function CaseStudyTOC({ sections = CASE_STUDY_SECTIONS }: CaseStudyTOCPro
         ref={sidebarRef}
         aria-label="Table of Contents"
         data-lenis-prevent
-        className="hidden xl:flex flex-col sticky top-8 w-[240px] min-w-[240px] max-w-[240px] shrink-0 font-sans text-sm select-none max-h-[calc(100vh-4rem)] overflow-y-auto pr-1 pb-4 [scrollbar-width:thin] [scrollbar-color:rgba(203,227,179,0.25)_transparent]"
+        className="hidden xl:flex flex-col relative sticky top-8 w-[240px] min-w-[240px] max-w-[240px] shrink-0 font-sans text-sm select-none max-h-[calc(100vh-4rem)] overflow-y-auto pr-1 pb-4 [scrollbar-width:thin] [scrollbar-color:rgba(203,227,179,0.25)_transparent]"
       >
         <div className="text-[11px] font-mono uppercase tracking-wider text-[var(--color-overlay2)] font-semibold pb-2.5 mb-3 border-b border-[var(--color-overlay0)]/40 flex items-center justify-between shrink-0">
           <span>Table of Contents</span>

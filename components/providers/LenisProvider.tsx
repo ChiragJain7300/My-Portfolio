@@ -30,10 +30,12 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     }
 
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       touchMultiplier: 1.5,
+      naiveDimensions: true,
+      autoResize: true,
     });
 
     setLenisInstance(lenis);
@@ -47,24 +49,31 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
 
     animationFrameId = requestAnimationFrame(raf);
 
-    // Live body observer ensures Lenis always knows the true scrollHeight
-    // even when dynamic routes, heavy code walkthroughs, or diagrams mount
+    // Live document and body observer ensures Lenis dynamically recalculates dimensions
+    // as long-form case studies, diagrams, syntax highlighting, and expandable drawers render
     let resizeObserver: ResizeObserver | null = null;
-    if (typeof ResizeObserver !== "undefined" && document.body) {
+    if (typeof ResizeObserver !== "undefined") {
       resizeObserver = new ResizeObserver(() => {
         lenis.resize();
       });
-      resizeObserver.observe(document.body);
+      if (document.documentElement) resizeObserver.observe(document.documentElement);
+      if (document.body) resizeObserver.observe(document.body);
     }
+
+    const handleWindowResize = () => {
+      lenis.resize();
+    };
+    window.addEventListener("resize", handleWindowResize, { passive: true });
 
     return () => {
       cancelAnimationFrame(animationFrameId);
       resizeObserver?.disconnect();
+      window.removeEventListener("resize", handleWindowResize);
       lenis.destroy();
     };
   }, []);
 
-  // Reset scroll to top upon pathname change (e.g., navigating to a case study)
+  // Reset scroll to top and refresh dimensions upon pathname change
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -79,18 +88,15 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       document.body.scrollTop = 0;
     }
 
-    // Refresh Lenis boundaries after new page DOM settles
-    const t1 = setTimeout(() => {
-      lenisInstance?.resize();
-    }, 120);
-
-    const t2 = setTimeout(() => {
-      lenisInstance?.resize();
-    }, 450);
+    // Refresh Lenis boundaries as dynamic components, diagrams, and code snippets mount
+    const timers = [50, 150, 300, 600, 1000].map((delay) =>
+      setTimeout(() => {
+        lenisInstance?.resize();
+      }, delay)
+    );
 
     return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
+      timers.forEach(clearTimeout);
     };
   }, [pathname, lenisInstance]);
 

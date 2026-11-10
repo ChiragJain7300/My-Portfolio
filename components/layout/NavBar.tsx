@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { useLenis } from "@/components/providers/LenisProvider";
 import { useRecruiterMode } from "@/components/providers/RecruiterModeContext";
 import { useMagneticHover } from "@/hooks/useMagneticHover";
@@ -95,9 +96,9 @@ export function NavBar() {
         <a
           href="#top"
           onClick={(e) => handleNavClick(e, "#top")}
-          className="group flex items-center gap-2 text-xs font-mono font-semibold tracking-wider text-[var(--color-subtext2)] hover:text-white transition-colors shrink-0"
+          className="group flex items-center gap-2.5 text-xs font-mono font-semibold tracking-wider text-[var(--color-subtext2)] hover:text-white transition-colors shrink-0"
         >
-          <span className="text-[var(--color-green)] font-bold text-sm tracking-tight">[ CJ ]</span>
+          <span className="text-[var(--color-green)] font-bold text-sm tracking-tight font-mono">[ CJ ]</span>
         </a>
 
         {/* Desktop centre: links */}

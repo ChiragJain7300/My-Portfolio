@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { CaseStudy } from "@/types/case-study";
 import { Server, Shield, CheckCircle2, ArrowRight } from "lucide-react";
@@ -35,10 +36,19 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
       >
         <Link
           href="/#projects"
-          className="ide-btn text-xs min-h-[36px] sm:min-h-[32px] px-3.5 py-1.5 flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-[var(--color-green)] focus-visible:outline-none"
+          className="ide-btn text-xs min-h-[36px] sm:min-h-[32px] px-3.5 py-1.5 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-[var(--color-green)] focus-visible:outline-none group"
           style={{ "--btn-color": "var(--color-green)" } as React.CSSProperties}
           aria-label="Back to projects showcase"
         >
+          <div className="relative w-4 h-4 rounded-xs overflow-hidden shrink-0 border border-[var(--color-green)]/40 group-hover:border-[var(--color-green)] transition-colors">
+            <Image
+              src="/chirag-jain-logo-angular.png"
+              alt="Logo"
+              width={16}
+              height={16}
+              className="w-full h-full object-cover"
+            />
+          </div>
           <span>←</span>
           <span>back to portfolio / projects</span>
         </Link>

@@ -52,11 +52,18 @@ export function CaseStudyView({ caseStudy, prevSlug, nextSlug }: CaseStudyViewPr
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
 
-    const t = setTimeout(() => {
+    const t1 = setTimeout(() => {
       lenis?.resize();
-    }, 200);
+    }, 150);
 
-    return () => clearTimeout(t);
+    const t2 = setTimeout(() => {
+      lenis?.resize();
+    }, 500);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
   }, [lenis, caseStudy.slug]);
 
   // Convert capabilities to tree nodes
@@ -121,7 +128,7 @@ export function CaseStudyView({ caseStudy, prevSlug, nextSlug }: CaseStudyViewPr
           {/* ========================================================================= */}
 
           {/* Section 01: Project Overview */}
-          <section id="overview" className="scroll-mt-16 pt-2 pb-16 sm:pb-24 border-b border-[var(--color-overlay0)]/30">
+          <section id="overview" className="scroll-mt-8 pt-4 pb-12 sm:pb-16 border-b border-[var(--color-overlay0)]/30">
             <SectionReveal>
               <div className="flex items-center gap-2.5 pb-3.5 mb-6 border-b border-[var(--color-overlay0)]/30">
                 <span className="font-mono text-xs font-bold text-[var(--color-green)] px-2 py-0.5 rounded-xs border border-[var(--color-green)]/40 bg-[var(--color-green)]/10">
@@ -195,7 +202,7 @@ export function CaseStudyView({ caseStudy, prevSlug, nextSlug }: CaseStudyViewPr
           </section>
 
           {/* Section 02: Business Problem */}
-          <section id="problem" className="scroll-mt-16 pt-16 sm:pt-24 pb-16 sm:pb-24 border-b border-[var(--color-overlay0)]/30">
+          <section id="problem" className="scroll-mt-8 pt-10 sm:pt-14 pb-12 sm:pb-16 border-b border-[var(--color-overlay0)]/30">
             <SectionReveal>
               <div className="flex items-center gap-2.5 pb-3.5 mb-6 border-b border-[var(--color-overlay0)]/30">
                 <span className="font-mono text-xs font-bold text-[var(--color-green)] px-2 py-0.5 rounded-xs border border-[var(--color-green)]/40 bg-[var(--color-green)]/10">
@@ -239,7 +246,7 @@ export function CaseStudyView({ caseStudy, prevSlug, nextSlug }: CaseStudyViewPr
           </section>
 
           {/* Section 03: Quantitative Impact */}
-          <section id="impact" className="scroll-mt-16 pt-16 sm:pt-24 pb-16 sm:pb-24 border-b border-[var(--color-overlay0)]/30">
+          <section id="impact" className="scroll-mt-8 pt-10 sm:pt-14 pb-12 sm:pb-16 border-b border-[var(--color-overlay0)]/30">
             <SectionReveal>
               <div className="flex items-center gap-2.5 pb-3.5 mb-6 border-b border-[var(--color-overlay0)]/30">
                 <span className="font-mono text-xs font-bold text-[var(--color-green)] px-2 py-0.5 rounded-xs border border-[var(--color-green)]/40 bg-[var(--color-green)]/10">
@@ -256,7 +263,7 @@ export function CaseStudyView({ caseStudy, prevSlug, nextSlug }: CaseStudyViewPr
           </section>
 
           {/* Section 04: System Architecture (Visual Centerpiece) */}
-          <section id="architecture" className="scroll-mt-16 pt-16 sm:pt-24 pb-16 sm:pb-24 border-b border-[var(--color-overlay0)]/30">
+          <section id="architecture" className="scroll-mt-8 pt-10 sm:pt-14 pb-12 sm:pb-16 border-b border-[var(--color-overlay0)]/30">
             <SectionReveal>
               <div className="flex items-center gap-2.5 pb-3.5 mb-6 border-b border-[var(--color-overlay0)]/30">
                 <span className="font-mono text-xs font-bold text-[var(--color-green)] px-2 py-0.5 rounded-xs border border-[var(--color-green)]/40 bg-[var(--color-green)]/10">
@@ -376,7 +383,7 @@ export function CaseStudyView({ caseStudy, prevSlug, nextSlug }: CaseStudyViewPr
           </section>
 
           {/* Section 05: Pivotal Decisions & Trade-offs (ADR) */}
-          <section id="decisions" className="scroll-mt-16 pt-16 sm:pt-24 pb-16 sm:pb-24 border-b border-[var(--color-overlay0)]/30">
+          <section id="decisions" className="scroll-mt-8 pt-10 sm:pt-14 pb-12 sm:pb-16 border-b border-[var(--color-overlay0)]/30">
             <SectionReveal>
               <div className="flex items-center gap-2.5 pb-3.5 mb-6 border-b border-[var(--color-overlay0)]/30">
                 <span className="font-mono text-xs font-bold text-[var(--color-green)] px-2 py-0.5 rounded-xs border border-[var(--color-green)]/40 bg-[var(--color-green)]/10">
@@ -429,7 +436,7 @@ export function CaseStudyView({ caseStudy, prevSlug, nextSlug }: CaseStudyViewPr
           </section>
 
           {/* Section 06: Production Incidents & Solutions (STAR) */}
-          <section id="challenges" className="scroll-mt-16 pt-16 sm:pt-24 pb-16 sm:pb-24 border-b border-[var(--color-overlay0)]/30">
+          <section id="challenges" className="scroll-mt-8 pt-10 sm:pt-14 pb-12 sm:pb-16 border-b border-[var(--color-overlay0)]/30">
             <SectionReveal>
               <div className="flex items-center gap-2.5 pb-3.5 mb-6 border-b border-[var(--color-overlay0)]/30">
                 <span className="font-mono text-xs font-bold text-[var(--color-green)] px-2 py-0.5 rounded-xs border border-[var(--color-green)]/40 bg-[var(--color-green)]/10">
@@ -578,7 +585,7 @@ export function CaseStudyView({ caseStudy, prevSlug, nextSlug }: CaseStudyViewPr
           {/* ========================================================================= */}
 
           {/* Section 07: Pipeline & Execution Trace */}
-          <section id="pipeline-trace" className="scroll-mt-16 pb-16 sm:pb-24 border-b border-[var(--color-overlay0)]/30">
+          <section id="pipeline-trace" className="scroll-mt-8 pt-6 pb-12 sm:pb-16 border-b border-[var(--color-overlay0)]/30">
             <SectionReveal>
               <div className="flex items-center gap-2.5 pb-3.5 mb-6 border-b border-[var(--color-overlay0)]/30">
                 <span className="font-mono text-xs font-bold text-[var(--color-green)] px-2 py-0.5 rounded-xs border border-[var(--color-green)]/40 bg-[var(--color-green)]/10">
@@ -660,7 +667,7 @@ export function CaseStudyView({ caseStudy, prevSlug, nextSlug }: CaseStudyViewPr
           </section>
 
           {/* Section 08: Database Design & ERD */}
-          <section id="database" className="scroll-mt-16 pt-16 sm:pt-24 pb-16 sm:pb-24 border-b border-[var(--color-overlay0)]/30">
+          <section id="database" className="scroll-mt-8 pt-10 sm:pt-14 pb-12 sm:pb-16 border-b border-[var(--color-overlay0)]/30">
             <SectionReveal>
               <div className="flex items-center gap-2.5 pb-3.5 mb-6 border-b border-[var(--color-overlay0)]/30">
                 <span className="font-mono text-xs font-bold text-[var(--color-green)] px-2 py-0.5 rounded-xs border border-[var(--color-green)]/40 bg-[var(--color-green)]/10">
@@ -683,7 +690,7 @@ export function CaseStudyView({ caseStudy, prevSlug, nextSlug }: CaseStudyViewPr
           </section>
 
           {/* Section 09: API & Integrations */}
-          <section id="api" className="scroll-mt-16 pt-16 sm:pt-24 pb-16 sm:pb-24 border-b border-[var(--color-overlay0)]/30">
+          <section id="api" className="scroll-mt-8 pt-10 sm:pt-14 pb-12 sm:pb-16 border-b border-[var(--color-overlay0)]/30">
             <SectionReveal>
               <div className="flex items-center gap-2.5 pb-3.5 mb-6 border-b border-[var(--color-overlay0)]/30">
                 <span className="font-mono text-xs font-bold text-[var(--color-green)] px-2 py-0.5 rounded-xs border border-[var(--color-green)]/40 bg-[var(--color-green)]/10">
@@ -702,7 +709,7 @@ export function CaseStudyView({ caseStudy, prevSlug, nextSlug }: CaseStudyViewPr
           </section>
 
           {/* Section 10: Code Implementation Walkthrough */}
-          <section id="code" className="scroll-mt-16 pt-16 sm:pt-24 pb-16 sm:pb-24 border-b border-[var(--color-overlay0)]/30">
+          <section id="code" className="scroll-mt-8 pt-10 sm:pt-14 pb-12 sm:pb-16 border-b border-[var(--color-overlay0)]/30">
             <SectionReveal>
               <div className="flex items-center gap-2.5 pb-3.5 mb-6 border-b border-[var(--color-overlay0)]/30">
                 <span className="font-mono text-xs font-bold text-[var(--color-green)] px-2 py-0.5 rounded-xs border border-[var(--color-green)]/40 bg-[var(--color-green)]/10">
@@ -721,7 +728,7 @@ export function CaseStudyView({ caseStudy, prevSlug, nextSlug }: CaseStudyViewPr
           </section>
 
           {/* Section 11: Subsystems, Resilience & Concurrency */}
-          <section id="resilience" className="scroll-mt-16 pt-16 sm:pt-24 pb-16 sm:pb-24 border-b border-[var(--color-overlay0)]/30">
+          <section id="resilience" className="scroll-mt-8 pt-10 sm:pt-14 pb-12 sm:pb-16 border-b border-[var(--color-overlay0)]/30">
             <SectionReveal>
               <div className="flex items-center gap-2.5 pb-3.5 mb-6 border-b border-[var(--color-overlay0)]/30">
                 <span className="font-mono text-xs font-bold text-[var(--color-green)] px-2 py-0.5 rounded-xs border border-[var(--color-green)]/40 bg-[var(--color-green)]/10">
@@ -864,7 +871,7 @@ export function CaseStudyView({ caseStudy, prevSlug, nextSlug }: CaseStudyViewPr
           </section>
 
           {/* Section 12: Interview Talking Points & V2 Roadmap */}
-          <section id="interview-defense" className="scroll-mt-16 pt-16 sm:pt-24 pb-16">
+          <section id="interview-defense" className="scroll-mt-8 pt-10 sm:pt-14 pb-16">
             <SectionReveal>
               <div className="flex items-center gap-2.5 pb-3.5 mb-6 border-b border-[var(--color-overlay0)]/30">
                 <span className="font-mono text-xs font-bold text-[var(--color-green)] px-2 py-0.5 rounded-xs border border-[var(--color-green)]/40 bg-[var(--color-green)]/10">
