@@ -78,7 +78,7 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.25, ease: "easeOut" }}
           className="text-center select-none pb-1"
         >
-          <span className="font-mono text-xs sm:text-[13px] tracking-[0.28em] text-[#b0beae]/90 lowercase">
+          <span className="font-mono text-xs sm:text-[13px] tracking-[0.28em] text-black lowercase bg-[#cbe3b3] px-5 py-2 rounded-full">
             chiragjain™
           </span>
         </motion.div>

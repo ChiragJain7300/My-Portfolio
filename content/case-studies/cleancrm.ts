@@ -2,7 +2,7 @@ import { CaseStudy } from "@/types/case-study";
 
 export const cleancrmCaseStudy: CaseStudy = {
   slug: "cleancrm",
-  title: "CleanCRM — Property Turnover & Field Service Platform",
+  title: "Cleaning App — Property Turnover & Field Service Platform",
   subtitle:
     "Multi-Calendar Turnover Scheduling, Real-Time Socket.io Telemetry & High-Density Client Data Grids",
   tagline:
@@ -75,7 +75,7 @@ export const cleancrmCaseStudy: CaseStudy = {
   // 01 / Executive Summary
   executiveSummary: {
     overview:
-      "CleanCRM is an enterprise-grade field service management and customer relationship platform engineered for on-demand property cleaning, vacation rental turnover operations (Airbnb / VRBO), and commercial facility maintenance. The platform coordinates client onboarding, automated cleaner dispatch, calendar synchronization, real-time check-in/checkout telemetry, and multi-status invoice reconciliation.",
+      "Cleaning App is an enterprise-grade field service management and customer relationship platform engineered for on-demand property cleaning, vacation rental turnover operations (Airbnb / VRBO), and commercial facility maintenance. The platform coordinates client onboarding, automated cleaner dispatch, calendar synchronization, real-time check-in/checkout telemetry, and multi-status invoice reconciliation.",
     targetUsers:
       "Property managers, vacation rental hosts, cleaning service supervisors, and distributed field cleaners.",
     businessContext:
@@ -155,7 +155,7 @@ export const cleancrmCaseStudy: CaseStudy = {
         role: "Polls external Airbnb and VRBO calendar links to extract new guest turnover dates.",
         tech: "Node.js cron, node-ical",
         inputs: "External .ics calendar URLs",
-        outputs: "Scheduled cleaning slots in CleanCRM database",
+        outputs: "Scheduled cleaning slots in Cleaning App database",
         failureMode: "Retries failed iCal feeds up to 3 times before flagging calendar URL error.",
       },
     ],

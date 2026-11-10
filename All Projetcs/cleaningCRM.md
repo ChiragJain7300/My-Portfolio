@@ -1,11 +1,11 @@
-# Engineering Case Study: CleanCRM (Property Cleaning & Turnover Management Platform)
+# Engineering Case Study: Cleaning App (Property Cleaning & Turnover Management Platform)
 **An Enterprise Field Service Management, Multi-Calendar Scheduling & Automated Billing Ecosystem**
 
 ---
 
 ## 1. Executive Summary
 
-**CleanCRM** is an enterprise-grade field service management and customer relationship platform engineered for on-demand property cleaning, vacation rental turnover operations (Airbnb / VRBO), and commercial facility maintenance. The platform coordinates client onboarding, automated cleaner dispatch, calendar synchronization, real-time check-in/checkout telemetry, and multi-status invoice reconciliation.
+**Cleaning App** is an enterprise-grade field service management and customer relationship platform engineered for on-demand property cleaning, vacation rental turnover operations (Airbnb / VRBO), and commercial facility maintenance. The platform coordinates client onboarding, automated cleaner dispatch, calendar synchronization, real-time check-in/checkout telemetry, and multi-status invoice reconciliation.
 
 Built with **React**, **Redux Toolkit**, **FullCalendar**, **Socket.io**, and **Firebase Cloud Messaging (FCM)**, the platform coordinates five core operational subsystems:
 1. **Multi-Calendar Scheduling Engine:** Real-time synchronization across Month, Week, Day, and Year views with external iCal integrations, timezone normalizations, and booking status lifecycles (`scheduled`, `in-progress`, `completed`, `canceled`).
@@ -16,11 +16,11 @@ Built with **React**, **Redux Toolkit**, **FullCalendar**, **Socket.io**, and **
 
 ```
 +---------------------------------------------------------------------------------------------------------+
-|                                    CLEANCRM ECOSYSTEM ARCHITECTURE                                      |
+|                                    Cleaning App ECOSYSTEM ARCHITECTURE                                      |
 +---------------------------------------------------------------------------------------------------------+
 |                                                                                                         |
 |   +------------------------------------+              +------------------------------------+            |
-|   |   CleanCRM Administrative Web UI   |              |       Cleaner Field Service App    |            |
+|   |   Cleaning App Admin Web UI   |              |       Cleaner Field Service App    |            |
 |   |  • React (SPA) + Bootstrap 5 / AntD|              |  • Mobile Responsive Web / PWA     |            |
 |   |  • Redux Toolkit (20+ Slices)      |              |  • Geolocation Check-in / Out      |            |
 |   |  • FullCalendar Multi-View Engine  |              |  • Live Job Status Toggles         |            |
@@ -78,7 +78,7 @@ The following sequence illustrates the complete lifecycle of a property turnover
 sequenceDiagram
     autonumber
     actor Admin as Property Manager / Admin
-    participant FE as CleanCRM React Portal
+    participant FE as Cleaning App React Portal
     participant Redux as Redux Toolkit Store
     participant Axios as Axios Interceptor
     participant API as Backend REST Services
@@ -311,7 +311,7 @@ export const hasAccess = (feature, userRole) => {
 +----------------------------+-----------------------+-----------------------+
 ```
 
-*Rationale:* CleanCRM manages 20+ interconnected business domains (clients, cleaners, bookings, properties, invoices, reports, payments, notifications). React Context across this volume of state triggers broad component re-renders during high-frequency WebSocket updates. Redux Toolkit provides immutable slice updates and targeted component re-renders.
+*Rationale:* Cleaning App manages 20+ interconnected business domains (clients, cleaners, bookings, properties, invoices, reports, payments, notifications). React Context across this volume of state triggers broad component re-renders during high-frequency WebSocket updates. Redux Toolkit provides immutable slice updates and targeted component re-renders.
 
 ---
 
@@ -343,7 +343,7 @@ export const hasAccess = (feature, userRole) => {
                             |                                                 |
                             v                                                 v
                +-------------------------+                       +-------------------------+
-               |  CleanCRM Web Portal    |                       | Mobile Field Cleaners   |
+               |  Cleaning App Web Portal    |                       | Mobile Field Cleaners   |
                | (CDN Distributed SPA)   |                       | (FCM & WebSocket Client)|
                +------------+------------+                       +------------+------------+
                             |                                                 |

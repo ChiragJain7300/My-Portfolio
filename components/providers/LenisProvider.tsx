@@ -47,8 +47,19 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
 
     animationFrameId = requestAnimationFrame(raf);
 
+    // Live body observer ensures Lenis always knows the true scrollHeight
+    // even when dynamic routes, heavy code walkthroughs, or diagrams mount
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined" && document.body) {
+      resizeObserver = new ResizeObserver(() => {
+        lenis.resize();
+      });
+      resizeObserver.observe(document.body);
+    }
+
     return () => {
       cancelAnimationFrame(animationFrameId);
+      resizeObserver?.disconnect();
       lenis.destroy();
     };
   }, []);
@@ -61,11 +72,26 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     if (!window.location.hash) {
       if (lenisInstance) {
         lenisInstance.scrollTo(0, { immediate: true });
+        lenisInstance.resize();
       }
       window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
     }
+
+    // Refresh Lenis boundaries after new page DOM settles
+    const t1 = setTimeout(() => {
+      lenisInstance?.resize();
+    }, 120);
+
+    const t2 = setTimeout(() => {
+      lenisInstance?.resize();
+    }, 450);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
   }, [pathname, lenisInstance]);
 
   const scrollTo = (target: string | number | HTMLElement, options?: Record<string, unknown>) => {
